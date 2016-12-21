@@ -1,0 +1,3 @@
+# Module dependencies
+client.o client.pic.o: client.cc
+server.o server.pic.o: server.cc

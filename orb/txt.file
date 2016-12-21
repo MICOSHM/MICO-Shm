@@ -1,0 +1,2441 @@
+c++ -I../include  -O2 -g -Wall -Wwrite-strings -D_REENTRANT -D_GNU_SOURCE  -DPIC -fPIC  -c orb.cc -o orb.pic.o
+orb.cc:1:1: error: ‘h’ does not name a type
+ h/*
+ ^
+In file included from ../include/mico/assert.h:28:0,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/stdlib.h:139:8: error: ‘size_t’ does not name a type
+ extern size_t __ctype_get_mb_cur_max (void) __THROW __wur;
+        ^
+In file included from ../include/mico/assert.h:28:0,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/stdlib.h:331:4: error: ‘size_t’ has not been declared
+    size_t __statelen) __THROW __nonnull ((2));
+    ^
+/usr/include/stdlib.h:361:4: error: ‘size_t’ has not been declared
+    size_t __statelen,
+    ^
+/usr/include/stdlib.h:466:22: error: ‘size_t’ was not declared in this scope
+ extern void *malloc (size_t __size) __THROW __attribute_malloc__ __wur;
+                      ^
+In file included from /usr/include/features.h:367:0,
+                 from /usr/include/stdlib.h:24,
+                 from ../include/mico/assert.h:28,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/stdlib.h:466:37: error: expected ‘,’ or ‘;’ before ‘throw’
+ extern void *malloc (size_t __size) __THROW __attribute_malloc__ __wur;
+                                     ^
+In file included from ../include/mico/assert.h:28:0,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/stdlib.h:468:22: error: ‘size_t’ was not declared in this scope
+ extern void *calloc (size_t __nmemb, size_t __size)
+                      ^
+/usr/include/stdlib.h:468:38: error: ‘size_t’ was not declared in this scope
+ extern void *calloc (size_t __nmemb, size_t __size)
+                                      ^
+/usr/include/stdlib.h:468:51: error: expression list treated as compound expression in initializer [-fpermissive]
+ extern void *calloc (size_t __nmemb, size_t __size)
+                                                   ^
+In file included from /usr/include/features.h:367:0,
+                 from /usr/include/stdlib.h:24,
+                 from ../include/mico/assert.h:28,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/stdlib.h:469:6: error: expected ‘,’ or ‘;’ before ‘throw’
+      __THROW __attribute_malloc__ __wur;
+      ^
+In file included from ../include/mico/assert.h:28:0,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/stdlib.h:480:36: error: ‘size_t’ has not been declared
+ extern void *realloc (void *__ptr, size_t __size)
+                                    ^
+In file included from /usr/include/stdlib.h:492:0,
+                 from ../include/mico/assert.h:28,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/alloca.h:32:22: error: ‘size_t’ was not declared in this scope
+ extern void *alloca (size_t __size) __THROW;
+                      ^
+In file included from /usr/include/features.h:367:0,
+                 from /usr/include/stdlib.h:24,
+                 from ../include/mico/assert.h:28,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/alloca.h:32:37: error: expected ‘,’ or ‘;’ before ‘throw’
+ extern void *alloca (size_t __size) __THROW;
+                                     ^
+In file included from ../include/mico/assert.h:28:0,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/stdlib.h:498:22: error: ‘size_t’ was not declared in this scope
+ extern void *valloc (size_t __size) __THROW __attribute_malloc__ __wur;
+                      ^
+In file included from /usr/include/features.h:367:0,
+                 from /usr/include/stdlib.h:24,
+                 from ../include/mico/assert.h:28,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/stdlib.h:498:37: error: expected ‘,’ or ‘;’ before ‘throw’
+ extern void *valloc (size_t __size) __THROW __attribute_malloc__ __wur;
+                                     ^
+In file included from ../include/mico/assert.h:28:0,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/stdlib.h:503:45: error: ‘size_t’ has not been declared
+ extern int posix_memalign (void **__memptr, size_t __alignment, size_t __size)
+                                             ^
+/usr/include/stdlib.h:503:65: error: ‘size_t’ has not been declared
+ extern int posix_memalign (void **__memptr, size_t __alignment, size_t __size)
+                                                                 ^
+/usr/include/stdlib.h:509:29: error: ‘size_t’ was not declared in this scope
+ extern void *aligned_alloc (size_t __alignment, size_t __size)
+                             ^
+/usr/include/stdlib.h:509:49: error: ‘size_t’ was not declared in this scope
+ extern void *aligned_alloc (size_t __alignment, size_t __size)
+                                                 ^
+/usr/include/stdlib.h:509:62: error: expression list treated as compound expression in initializer [-fpermissive]
+ extern void *aligned_alloc (size_t __alignment, size_t __size)
+                                                              ^
+In file included from /usr/include/features.h:367:0,
+                 from /usr/include/stdlib.h:24,
+                 from ../include/mico/assert.h:28,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/stdlib.h:510:6: error: expected ‘,’ or ‘;’ before ‘throw’
+      __THROW __attribute_malloc__ __attribute_alloc_size__ ((2)) __wur;
+      ^
+In file included from ../include/mico/assert.h:28:0,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/stdlib.h:755:9: error: ‘size_t’ has not been declared
+         size_t __nmemb, size_t __size, __compar_fn_t __compar)
+         ^
+/usr/include/stdlib.h:755:25: error: ‘size_t’ has not been declared
+         size_t __nmemb, size_t __size, __compar_fn_t __compar)
+                         ^
+In file included from /usr/include/stdlib.h:759:0,
+                 from ../include/mico/assert.h:28,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/stdlib-bsearch.h:20:49: error: ‘size_t’ has not been declared
+ bsearch (const void *__key, const void *__base, size_t __nmemb, size_t __size,
+                                                 ^
+/usr/include/x86_64-linux-gnu/bits/stdlib-bsearch.h:20:65: error: ‘size_t’ has not been declared
+ bsearch (const void *__key, const void *__base, size_t __nmemb, size_t __size,
+                                                                 ^
+/usr/include/x86_64-linux-gnu/bits/stdlib-bsearch.h: In function ‘void* bsearch(const void*, const void*, int, int, __compar_fn_t)’:
+/usr/include/x86_64-linux-gnu/bits/stdlib-bsearch.h:23:3: error: ‘size_t’ was not declared in this scope
+   size_t __l, __u, __idx;
+   ^
+/usr/include/x86_64-linux-gnu/bits/stdlib-bsearch.h:27:3: error: ‘__l’ was not declared in this scope
+   __l = 0;
+   ^
+/usr/include/x86_64-linux-gnu/bits/stdlib-bsearch.h:28:3: error: ‘__u’ was not declared in this scope
+   __u = __nmemb;
+   ^
+/usr/include/x86_64-linux-gnu/bits/stdlib-bsearch.h:31:7: error: ‘__idx’ was not declared in this scope
+       __idx = (__l + __u) / 2;
+       ^
+In file included from ../include/mico/assert.h:28:0,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/stdlib.h: At global scope:
+/usr/include/stdlib.h:764:34: error: ‘size_t’ has not been declared
+ extern void qsort (void *__base, size_t __nmemb, size_t __size,
+                                  ^
+/usr/include/stdlib.h:764:50: error: ‘size_t’ has not been declared
+ extern void qsort (void *__base, size_t __nmemb, size_t __size,
+                                                  ^
+/usr/include/stdlib.h:767:36: error: ‘size_t’ has not been declared
+ extern void qsort_r (void *__base, size_t __nmemb, size_t __size,
+                                    ^
+/usr/include/stdlib.h:767:52: error: ‘size_t’ has not been declared
+ extern void qsort_r (void *__base, size_t __nmemb, size_t __size,
+                                                    ^
+/usr/include/stdlib.h:843:6: error: ‘size_t’ has not been declared
+      size_t __len) __THROW __nonnull ((3, 4, 5));
+      ^
+/usr/include/stdlib.h:846:6: error: ‘size_t’ has not been declared
+      size_t __len) __THROW __nonnull ((3, 4, 5));
+      ^
+/usr/include/stdlib.h:850:31: error: ‘size_t’ has not been declared
+       char *__restrict __buf, size_t __len)
+                               ^
+/usr/include/stdlib.h:854:31: error: ‘size_t’ has not been declared
+       char *__restrict __buf, size_t __len)
+                               ^
+/usr/include/stdlib.h:862:36: error: ‘size_t’ has not been declared
+ extern int mblen (const char *__s, size_t __n) __THROW;
+                                    ^
+/usr/include/stdlib.h:866:34: error: ‘size_t’ has not been declared
+      const char *__restrict __s, size_t __n) __THROW;
+                                  ^
+/usr/include/stdlib.h:873:8: error: ‘size_t’ does not name a type
+ extern size_t mbstowcs (wchar_t *__restrict  __pwcs,
+        ^
+/usr/include/stdlib.h:876:8: error: ‘size_t’ does not name a type
+ extern size_t wcstombs (char *__restrict __s,
+        ^
+/usr/include/stdlib.h:939:46: error: ‘size_t’ has not been declared
+ extern int ptsname_r (int __fd, char *__buf, size_t __buflen)
+                                              ^
+In file included from /usr/include/stdlib.h:958:0,
+                 from ../include/mico/assert.h:28,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/stdlib.h:25:9: error: ‘size_t’ has not been declared
+         size_t __resolvedlen) __THROW __wur;
+         ^
+In file included from /usr/include/features.h:367:0,
+                 from /usr/include/stdlib.h:24,
+                 from ../include/mico/assert.h:28,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/stdlib.h:29:14: error: ‘size_t’ has not been declared
+ extern char *__REDIRECT_NTH (__realpath_chk_warn,
+              ^
+In file included from /usr/include/stdlib.h:958:0,
+                 from ../include/mico/assert.h:28,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/stdlib.h: In function ‘char* realpath(const char*, char*)’:
+/usr/include/x86_64-linux-gnu/bits/stdlib.h:39:30: error: ‘size_t’ was not declared in this scope
+   if (__bos (__resolved) != (size_t) -1)
+                              ^
+/usr/include/x86_64-linux-gnu/bits/stdlib.h: At global scope:
+/usr/include/x86_64-linux-gnu/bits/stdlib.h:52:52: error: ‘size_t’ has not been declared
+ extern int __ptsname_r_chk (int __fd, char *__buf, size_t __buflen,
+                                                    ^
+/usr/include/x86_64-linux-gnu/bits/stdlib.h:53:8: error: ‘size_t’ has not been declared
+        size_t __nreal) __THROW __nonnull ((2));
+        ^
+In file included from /usr/include/features.h:367:0,
+                 from /usr/include/stdlib.h:24,
+                 from ../include/mico/assert.h:28,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/stdlib.h:54:12: error: ‘size_t’ has not been declared
+ extern int __REDIRECT_NTH (__ptsname_r_alias, (int __fd, char *__buf,
+            ^
+/usr/include/x86_64-linux-gnu/bits/stdlib.h:57:12: error: ‘size_t’ has not been declared
+ extern int __REDIRECT_NTH (__ptsname_r_chk_warn,
+            ^
+/usr/include/x86_64-linux-gnu/bits/stdlib.h:57:12: error: ‘size_t’ has not been declared
+ extern int __REDIRECT_NTH (__ptsname_r_chk_warn,
+            ^
+/usr/include/x86_64-linux-gnu/bits/stdlib.h:64:1: error: ‘size_t’ has not been declared
+ __NTH (ptsname_r (int __fd, char *__buf, size_t __buflen))
+ ^
+In file included from /usr/include/stdlib.h:958:0,
+                 from ../include/mico/assert.h:28,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/stdlib.h: In function ‘int ptsname_r(int, char*, int)’:
+/usr/include/x86_64-linux-gnu/bits/stdlib.h:66:25: error: ‘size_t’ was not declared in this scope
+   if (__bos (__buf) != (size_t) -1)
+                         ^
+/usr/include/x86_64-linux-gnu/bits/stdlib.h: At global scope:
+/usr/include/x86_64-linux-gnu/bits/stdlib.h:77:54: error: ‘size_t’ has not been declared
+ extern int __wctomb_chk (char *__s, wchar_t __wchar, size_t __buflen)
+                                                      ^
+/usr/include/x86_64-linux-gnu/bits/stdlib.h: In function ‘int wctomb(char*, wchar_t)’:
+/usr/include/x86_64-linux-gnu/bits/stdlib.h:92:23: error: ‘size_t’ was not declared in this scope
+   if (__bos (__s) != (size_t) -1 && __STDLIB_MB_LEN_MAX > __bos (__s))
+                       ^
+/usr/include/x86_64-linux-gnu/bits/stdlib.h: At global scope:
+/usr/include/x86_64-linux-gnu/bits/stdlib.h:98:8: error: ‘size_t’ does not name a type
+ extern size_t __mbstowcs_chk (wchar_t *__restrict __dst,
+        ^
+/usr/include/x86_64-linux-gnu/bits/stdlib.h:101:8: error: ‘size_t’ does not name a type
+ extern size_t __REDIRECT_NTH (__mbstowcs_alias,
+        ^
+/usr/include/x86_64-linux-gnu/bits/stdlib.h:105:8: error: ‘size_t’ does not name a type
+ extern size_t __REDIRECT_NTH (__mbstowcs_chk_warn,
+        ^
+/usr/include/x86_64-linux-gnu/bits/stdlib.h:112:20: error: ‘size_t’ does not name a type
+ __fortify_function size_t
+                    ^
+/usr/include/x86_64-linux-gnu/bits/stdlib.h:130:8: error: ‘size_t’ does not name a type
+ extern size_t __wcstombs_chk (char *__restrict __dst,
+        ^
+/usr/include/x86_64-linux-gnu/bits/stdlib.h:133:8: error: ‘size_t’ does not name a type
+ extern size_t __REDIRECT_NTH (__wcstombs_alias,
+        ^
+/usr/include/x86_64-linux-gnu/bits/stdlib.h:137:8: error: ‘size_t’ does not name a type
+ extern size_t __REDIRECT_NTH (__wcstombs_chk_warn,
+        ^
+/usr/include/x86_64-linux-gnu/bits/stdlib.h:143:20: error: ‘size_t’ does not name a type
+ __fortify_function size_t
+                    ^
+In file included from /usr/include/stdio.h:74:0,
+                 from ../include/mico/assert.h:29,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/libio.h:302:3: error: ‘size_t’ does not name a type
+   size_t __pad5;
+   ^
+/usr/include/libio.h:305:67: error: ‘size_t’ was not declared in this scope
+   char _unused2[15 * sizeof (int) - 4 * sizeof (void *) - sizeof (size_t)];
+                                                                   ^
+/usr/include/libio.h:333:62: error: ‘size_t’ has not been declared
+ typedef __ssize_t __io_read_fn (void *__cookie, char *__buf, size_t __nbytes);
+                                                              ^
+/usr/include/libio.h:342:6: error: ‘size_t’ has not been declared
+      size_t __n);
+      ^
+In file included from /usr/include/stdio.h:74:0,
+                 from ../include/mico/assert.h:29,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/libio.h:464:8: error: ‘size_t’ does not name a type
+ extern _IO_size_t _IO_sgetn (_IO_FILE *, void *, _IO_size_t);
+        ^
+In file included from ../include/mico/assert.h:29:0,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/stdio.h:319:35: error: ‘size_t’ has not been declared
+ extern FILE *fmemopen (void *__s, size_t __len, const char *__modes)
+                                   ^
+/usr/include/stdio.h:325:47: error: ‘size_t’ has not been declared
+ extern FILE *open_memstream (char **__bufloc, size_t *__sizeloc) __THROW __wur;
+                                               ^
+/usr/include/stdio.h:337:20: error: ‘size_t’ has not been declared
+       int __modes, size_t __n) __THROW;
+                    ^
+/usr/include/stdio.h:344:10: error: ‘size_t’ has not been declared
+          size_t __size) __THROW;
+          ^
+/usr/include/stdio.h:386:44: error: ‘size_t’ has not been declared
+ extern int snprintf (char *__restrict __s, size_t __maxlen,
+                                            ^
+/usr/include/stdio.h:390:45: error: ‘size_t’ has not been declared
+ extern int vsnprintf (char *__restrict __s, size_t __maxlen,
+                                             ^
+/usr/include/stdio.h:666:11: error: ‘size_t’ has not been declared
+           size_t *__restrict __n, int __delimiter,
+           ^
+/usr/include/stdio.h:669:9: error: ‘size_t’ has not been declared
+         size_t *__restrict __n, int __delimiter,
+         ^
+/usr/include/stdio.h:679:8: error: ‘size_t’ has not been declared
+        size_t *__restrict __n,
+        ^
+/usr/include/stdio.h:709:8: error: ‘size_t’ does not name a type
+ extern size_t fread (void *__restrict __ptr, size_t __size,
+        ^
+/usr/include/stdio.h:715:8: error: ‘size_t’ does not name a type
+ extern size_t fwrite (const void *__restrict __ptr, size_t __size,
+        ^
+/usr/include/stdio.h:737:8: error: ‘size_t’ does not name a type
+ extern size_t fread_unlocked (void *__restrict __ptr, size_t __size,
+        ^
+/usr/include/stdio.h:739:8: error: ‘size_t’ does not name a type
+ extern size_t fwrite_unlocked (const void *__restrict __ptr, size_t __size,
+        ^
+In file included from /usr/include/stdio.h:933:0,
+                 from ../include/mico/assert.h:29,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/stdio.h:115:28: error: ‘size_t’ has not been declared
+ getline (char **__lineptr, size_t *__n, FILE *__stream)
+                            ^
+In file included from /usr/include/stdio.h:936:0,
+                 from ../include/mico/assert.h:29,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:23:61: error: ‘size_t’ has not been declared
+ extern int __sprintf_chk (char *__restrict __s, int __flag, size_t __slen,
+                                                             ^
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:25:62: error: ‘size_t’ has not been declared
+ extern int __vsprintf_chk (char *__restrict __s, int __flag, size_t __slen,
+                                                              ^
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:52:50: error: ‘size_t’ has not been declared
+ extern int __snprintf_chk (char *__restrict __s, size_t __n, int __flag,
+                                                  ^
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:53:7: error: ‘size_t’ has not been declared
+       size_t __slen, const char *__restrict __format,
+       ^
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:55:51: error: ‘size_t’ has not been declared
+ extern int __vsnprintf_chk (char *__restrict __s, size_t __n, int __flag,
+                                                   ^
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:56:8: error: ‘size_t’ has not been declared
+        size_t __slen, const char *__restrict __format,
+        ^
+In file included from /usr/include/features.h:367:0,
+                 from /usr/include/stdlib.h:24,
+                 from ../include/mico/assert.h:28,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:61:1: error: ‘size_t’ has not been declared
+ __NTH (snprintf (char *__restrict __s, size_t __n,
+ ^
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:74:1: error: ‘size_t’ has not been declared
+ __NTH (vsnprintf (char *__restrict __s, size_t __n,
+ ^
+In file included from /usr/include/stdio.h:936:0,
+                 from ../include/mico/assert.h:29,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:241:49: error: ‘size_t’ has not been declared
+ extern char *__fgets_chk (char *__restrict __s, size_t __size, int __n,
+                                                 ^
+In file included from /usr/include/features.h:367:0,
+                 from /usr/include/stdlib.h:24,
+                 from ../include/mico/assert.h:28,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:246:14: error: ‘size_t’ has not been declared
+ extern char *__REDIRECT (__fgets_chk_warn,
+              ^
+In file included from /usr/include/stdio.h:936:0,
+                 from ../include/mico/assert.h:29,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h: In function ‘char* fgets(char*, int, FILE*)’:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:255:23: error: ‘size_t’ was not declared in this scope
+   if (__bos (__s) != (size_t) -1)
+                       ^
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:260:20: error: expected ‘)’ before ‘__n’
+       if ((size_t) __n > __bos (__s))
+                    ^
+/usr/include/x86_64-linux-gnu/bits/stdio2.h: At global scope:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:266:8: error: ‘size_t’ does not name a type
+ extern size_t __fread_chk (void *__restrict __ptr, size_t __ptrlen,
+        ^
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:269:8: error: ‘size_t’ does not name a type
+ extern size_t __REDIRECT (__fread_alias,
+        ^
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:273:8: error: ‘size_t’ does not name a type
+ extern size_t __REDIRECT (__fread_chk_warn,
+        ^
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:281:26: error: ‘size_t’ does not name a type
+ __fortify_function __wur size_t
+                          ^
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:299:58: error: ‘size_t’ has not been declared
+ extern char *__fgets_unlocked_chk (char *__restrict __s, size_t __size,
+                                                          ^
+In file included from /usr/include/features.h:367:0,
+                 from /usr/include/stdlib.h:24,
+                 from ../include/mico/assert.h:28,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:304:14: error: ‘size_t’ has not been declared
+ extern char *__REDIRECT (__fgets_unlocked_chk_warn,
+              ^
+In file included from /usr/include/stdio.h:936:0,
+                 from ../include/mico/assert.h:29,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h: In function ‘char* fgets_unlocked(char*, int, FILE*)’:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:313:23: error: ‘size_t’ was not declared in this scope
+   if (__bos (__s) != (size_t) -1)
+                       ^
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:318:20: error: expected ‘)’ before ‘__n’
+       if ((size_t) __n > __bos (__s))
+                    ^
+/usr/include/x86_64-linux-gnu/bits/stdio2.h: At global scope:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:327:8: error: ‘size_t’ does not name a type
+ extern size_t __fread_unlocked_chk (void *__restrict __ptr, size_t __ptrlen,
+        ^
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:330:8: error: ‘size_t’ does not name a type
+ extern size_t __REDIRECT (__fread_unlocked_alias,
+        ^
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:334:8: error: ‘size_t’ does not name a type
+ extern size_t __REDIRECT (__fread_unlocked_chk_warn,
+        ^
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:342:26: error: ‘size_t’ does not name a type
+ __fortify_function __wur size_t
+                          ^
+In file included from /usr/include/c++/5/cwchar:44:0,
+                 from /usr/include/c++/5/bits/postypes.h:40,
+                 from /usr/include/c++/5/bits/char_traits.h:40,
+                 from /usr/include/c++/5/string:40,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/wchar.h:153:38: error: ‘size_t’ has not been declared
+     const wchar_t *__restrict __src, size_t __n)
+                                      ^
+/usr/include/wchar.h:162:38: error: ‘size_t’ has not been declared
+     const wchar_t *__restrict __src, size_t __n)
+                                      ^
+/usr/include/wchar.h:169:63: error: ‘size_t’ has not been declared
+ extern int wcsncmp (const wchar_t *__s1, const wchar_t *__s2, size_t __n)
+                                                               ^
+/usr/include/wchar.h:179:4: error: ‘size_t’ has not been declared
+    size_t __n) __THROW;
+    ^
+/usr/include/wchar.h:189:6: error: ‘size_t’ has not been declared
+      size_t __n, __locale_t __loc) __THROW;
+      ^
+/usr/include/wchar.h:199:8: error: ‘size_t’ does not name a type
+ extern size_t wcsxfrm (wchar_t *__restrict __s1,
+        ^
+/usr/include/wchar.h:215:8: error: ‘size_t’ does not name a type
+ extern size_t wcsxfrm_l (wchar_t *__s1, const wchar_t *__s2,
+        ^
+/usr/include/wchar.h:255:8: error: ‘size_t’ does not name a type
+ extern size_t wcscspn (const wchar_t *__wcs, const wchar_t *__reject)
+        ^
+/usr/include/wchar.h:259:8: error: ‘size_t’ does not name a type
+ extern size_t wcsspn (const wchar_t *__wcs, const wchar_t *__accept)
+        ^
+/usr/include/wchar.h:290:8: error: ‘size_t’ does not name a type
+ extern size_t wcslen (const wchar_t *__s) __THROW __attribute_pure__;
+        ^
+/usr/include/wchar.h:309:8: error: ‘size_t’ does not name a type
+ extern size_t wcsnlen (const wchar_t *__s, size_t __maxlen)
+        ^
+/usr/include/wchar.h:317:59: error: ‘size_t’ has not been declared
+ extern "C++" wchar_t *wmemchr (wchar_t *__s, wchar_t __c, size_t __n)
+                                                           ^
+/usr/include/wchar.h:320:10: error: ‘size_t’ has not been declared
+          size_t __n)
+          ^
+/usr/include/wchar.h:328:63: error: ‘size_t’ has not been declared
+ extern int wmemcmp (const wchar_t *__s1, const wchar_t *__s2, size_t __n)
+                                                               ^
+/usr/include/wchar.h:333:37: error: ‘size_t’ has not been declared
+     const wchar_t *__restrict __s2, size_t __n) __THROW;
+                                     ^
+/usr/include/wchar.h:337:63: error: ‘size_t’ has not been declared
+ extern wchar_t *wmemmove (wchar_t *__s1, const wchar_t *__s2, size_t __n)
+                                                               ^
+/usr/include/wchar.h:341:53: error: ‘size_t’ has not been declared
+ extern wchar_t *wmemset (wchar_t *__s, wchar_t __c, size_t __n) __THROW;
+                                                     ^
+/usr/include/wchar.h:348:38: error: ‘size_t’ has not been declared
+      const wchar_t *__restrict __s2, size_t __n)
+                                      ^
+/usr/include/wchar.h:368:8: error: ‘size_t’ does not name a type
+ extern size_t mbrtowc (wchar_t *__restrict __pwc,
+        ^
+/usr/include/wchar.h:373:8: error: ‘size_t’ does not name a type
+ extern size_t wcrtomb (char *__restrict __s, wchar_t __wc,
+        ^
+/usr/include/wchar.h:377:8: error: ‘size_t’ does not name a type
+ extern size_t __mbrlen (const char *__restrict __s, size_t __n,
+        ^
+/usr/include/wchar.h:379:8: error: ‘size_t’ does not name a type
+ extern size_t mbrlen (const char *__restrict __s, size_t __n,
+        ^
+/usr/include/wchar.h:401:17: error: ‘size_t’ does not name a type
+ __extern_inline size_t
+                 ^
+/usr/include/wchar.h:411:8: error: ‘size_t’ does not name a type
+ extern size_t mbsrtowcs (wchar_t *__restrict __dst,
+        ^
+/usr/include/wchar.h:417:8: error: ‘size_t’ does not name a type
+ extern size_t wcsrtombs (char *__restrict __dst,
+        ^
+/usr/include/wchar.h:426:8: error: ‘size_t’ does not name a type
+ extern size_t mbsnrtowcs (wchar_t *__restrict __dst,
+        ^
+/usr/include/wchar.h:432:8: error: ‘size_t’ does not name a type
+ extern size_t wcsnrtombs (char *__restrict __dst,
+        ^
+/usr/include/wchar.h:446:42: error: ‘size_t’ has not been declared
+ extern int wcswidth (const wchar_t *__s, size_t __n) __THROW;
+                                          ^
+/usr/include/wchar.h:575:38: error: ‘size_t’ has not been declared
+     const wchar_t *__restrict __src, size_t __n)
+                                      ^
+/usr/include/wchar.h:583:53: error: ‘size_t’ has not been declared
+ extern __FILE *open_wmemstream (wchar_t **__bufloc, size_t *__sizeloc) __THROW;
+                                                     ^
+/usr/include/wchar.h:607:47: error: ‘size_t’ has not been declared
+ extern int swprintf (wchar_t *__restrict __s, size_t __n,
+                                               ^
+/usr/include/wchar.h:628:48: error: ‘size_t’ has not been declared
+ extern int vswprintf (wchar_t *__restrict __s, size_t __n,
+                                                ^
+/usr/include/wchar.h:858:8: error: ‘size_t’ does not name a type
+ extern size_t wcsftime (wchar_t *__restrict __s, size_t __maxsize,
+        ^
+/usr/include/wchar.h:868:8: error: ‘size_t’ does not name a type
+ extern size_t wcsftime_l (wchar_t *__restrict __s, size_t __maxsize,
+        ^
+In file included from /usr/include/wchar.h:887:0,
+                 from /usr/include/c++/5/cwchar:44,
+                 from /usr/include/c++/5/bits/postypes.h:40,
+                 from /usr/include/c++/5/bits/char_traits.h:40,
+                 from /usr/include/c++/5/string:40,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:25:43: error: ‘size_t’ has not been declared
+           const wchar_t *__restrict __s2, size_t __n,
+                                           ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:26:11: error: ‘size_t’ has not been declared
+           size_t __ns1) __THROW;
+           ^
+In file included from /usr/include/features.h:367:0,
+                 from /usr/include/stdlib.h:24,
+                 from ../include/mico/assert.h:28,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:27:17: error: ‘size_t’ has not been declared
+ extern wchar_t *__REDIRECT_NTH (__wmemcpy_alias,
+                 ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:31:17: error: ‘size_t’ has not been declared
+ extern wchar_t *__REDIRECT_NTH (__wmemcpy_chk_warn,
+                 ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:31:17: error: ‘size_t’ has not been declared
+ extern wchar_t *__REDIRECT_NTH (__wmemcpy_chk_warn,
+                 ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:39:1: error: ‘size_t’ has not been declared
+ __NTH (wmemcpy (wchar_t *__restrict __s1, const wchar_t *__restrict __s2,
+ ^
+In file included from /usr/include/wchar.h:887:0,
+                 from /usr/include/c++/5/cwchar:44,
+                 from /usr/include/c++/5/bits/postypes.h:40,
+                 from /usr/include/c++/5/bits/char_traits.h:40,
+                 from /usr/include/c++/5/string:40,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h: In function ‘wchar_t* wmemcpy(wchar_t*, const wchar_t*, int)’:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:42:25: error: ‘size_t’ was not declared in this scope
+   if (__bos0 (__s1) != (size_t) -1)
+                         ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:42:25: note: suggested alternative:
+In file included from /usr/include/c++/5/string:38:0,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h:196:26: note:   ‘std::size_t’
+   typedef __SIZE_TYPE__  size_t;
+                          ^
+In file included from /usr/include/wchar.h:887:0,
+                 from /usr/include/c++/5/cwchar:44,
+                 from /usr/include/c++/5/bits/postypes.h:40,
+                 from /usr/include/c++/5/bits/char_traits.h:40,
+                 from /usr/include/c++/5/string:40,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h: At global scope:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:57:5: error: ‘size_t’ has not been declared
+     size_t __n, size_t __ns1) __THROW;
+     ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:57:17: error: ‘size_t’ has not been declared
+     size_t __n, size_t __ns1) __THROW;
+                 ^
+In file included from /usr/include/features.h:367:0,
+                 from /usr/include/stdlib.h:24,
+                 from ../include/mico/assert.h:28,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:58:17: error: ‘size_t’ has not been declared
+ extern wchar_t *__REDIRECT_NTH (__wmemmove_alias, (wchar_t *__s1,
+                 ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:61:17: error: ‘size_t’ has not been declared
+ extern wchar_t *__REDIRECT_NTH (__wmemmove_chk_warn,
+                 ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:61:17: error: ‘size_t’ has not been declared
+ extern wchar_t *__REDIRECT_NTH (__wmemmove_chk_warn,
+                 ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:68:1: error: ‘size_t’ has not been declared
+ __NTH (wmemmove (wchar_t *__s1, const wchar_t *__s2, size_t __n))
+ ^
+In file included from /usr/include/wchar.h:887:0,
+                 from /usr/include/c++/5/cwchar:44,
+                 from /usr/include/c++/5/bits/postypes.h:40,
+                 from /usr/include/c++/5/bits/char_traits.h:40,
+                 from /usr/include/c++/5/string:40,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h: In function ‘wchar_t* wmemmove(wchar_t*, const wchar_t*, int)’:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:70:25: error: ‘size_t’ was not declared in this scope
+   if (__bos0 (__s1) != (size_t) -1)
+                         ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:70:25: note: suggested alternative:
+In file included from /usr/include/c++/5/string:38:0,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h:196:26: note:   ‘std::size_t’
+   typedef __SIZE_TYPE__  size_t;
+                          ^
+In file included from /usr/include/wchar.h:887:0,
+                 from /usr/include/c++/5/cwchar:44,
+                 from /usr/include/c++/5/bits/postypes.h:40,
+                 from /usr/include/c++/5/bits/char_traits.h:40,
+                 from /usr/include/c++/5/string:40,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h: At global scope:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:86:37: error: ‘size_t’ has not been declared
+     const wchar_t *__restrict __s2, size_t __n,
+                                     ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:87:5: error: ‘size_t’ has not been declared
+     size_t __ns1) __THROW;
+     ^
+In file included from /usr/include/features.h:367:0,
+                 from /usr/include/stdlib.h:24,
+                 from ../include/mico/assert.h:28,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:88:17: error: ‘size_t’ has not been declared
+ extern wchar_t *__REDIRECT_NTH (__wmempcpy_alias,
+                 ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:92:17: error: ‘size_t’ has not been declared
+ extern wchar_t *__REDIRECT_NTH (__wmempcpy_chk_warn,
+                 ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:92:17: error: ‘size_t’ has not been declared
+ extern wchar_t *__REDIRECT_NTH (__wmempcpy_chk_warn,
+                 ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:100:1: error: ‘size_t’ has not been declared
+ __NTH (wmempcpy (wchar_t *__restrict __s1, const wchar_t *__restrict __s2,
+ ^
+In file included from /usr/include/wchar.h:887:0,
+                 from /usr/include/c++/5/cwchar:44,
+                 from /usr/include/c++/5/bits/postypes.h:40,
+                 from /usr/include/c++/5/bits/char_traits.h:40,
+                 from /usr/include/c++/5/string:40,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h: In function ‘wchar_t* wmempcpy(wchar_t*, const wchar_t*, int)’:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:103:25: error: ‘size_t’ was not declared in this scope
+   if (__bos0 (__s1) != (size_t) -1)
+                         ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:103:25: note: suggested alternative:
+In file included from /usr/include/c++/5/string:38:0,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h:196:26: note:   ‘std::size_t’
+   typedef __SIZE_TYPE__  size_t;
+                          ^
+In file included from /usr/include/wchar.h:887:0,
+                 from /usr/include/c++/5/cwchar:44,
+                 from /usr/include/c++/5/bits/postypes.h:40,
+                 from /usr/include/c++/5/bits/char_traits.h:40,
+                 from /usr/include/c++/5/string:40,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h: At global scope:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:118:59: error: ‘size_t’ has not been declared
+ extern wchar_t *__wmemset_chk (wchar_t *__s, wchar_t __c, size_t __n,
+                                                           ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:119:11: error: ‘size_t’ has not been declared
+           size_t __ns) __THROW;
+           ^
+In file included from /usr/include/features.h:367:0,
+                 from /usr/include/stdlib.h:24,
+                 from ../include/mico/assert.h:28,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:120:17: error: ‘size_t’ has not been declared
+ extern wchar_t *__REDIRECT_NTH (__wmemset_alias, (wchar_t *__s, wchar_t __c,
+                 ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:122:17: error: ‘size_t’ has not been declared
+ extern wchar_t *__REDIRECT_NTH (__wmemset_chk_warn,
+                 ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:122:17: error: ‘size_t’ has not been declared
+ extern wchar_t *__REDIRECT_NTH (__wmemset_chk_warn,
+                 ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:129:1: error: ‘size_t’ has not been declared
+ __NTH (wmemset (wchar_t *__s, wchar_t __c, size_t __n))
+ ^
+In file included from /usr/include/wchar.h:887:0,
+                 from /usr/include/c++/5/cwchar:44,
+                 from /usr/include/c++/5/bits/postypes.h:40,
+                 from /usr/include/c++/5/bits/char_traits.h:40,
+                 from /usr/include/c++/5/string:40,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h: In function ‘wchar_t* wmemset(wchar_t*, wchar_t, int)’:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:131:24: error: ‘size_t’ was not declared in this scope
+   if (__bos0 (__s) != (size_t) -1)
+                        ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:131:24: note: suggested alternative:
+In file included from /usr/include/c++/5/string:38:0,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h:196:26: note:   ‘std::size_t’
+   typedef __SIZE_TYPE__  size_t;
+                          ^
+In file included from /usr/include/wchar.h:887:0,
+                 from /usr/include/c++/5/cwchar:44,
+                 from /usr/include/c++/5/bits/postypes.h:40,
+                 from /usr/include/c++/5/bits/char_traits.h:40,
+                 from /usr/include/c++/5/string:40,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h: At global scope:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:146:10: error: ‘size_t’ has not been declared
+          size_t __n) __THROW;
+          ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h: In function ‘wchar_t* wcscpy(wchar_t*, const wchar_t*)’:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:154:26: error: ‘size_t’ was not declared in this scope
+   if (__bos (__dest) != (size_t) -1)
+                          ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:154:26: note: suggested alternative:
+In file included from /usr/include/c++/5/string:38:0,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h:196:26: note:   ‘std::size_t’
+   typedef __SIZE_TYPE__  size_t;
+                          ^
+In file included from /usr/include/wchar.h:887:0,
+                 from /usr/include/c++/5/cwchar:44,
+                 from /usr/include/c++/5/bits/postypes.h:40,
+                 from /usr/include/c++/5/bits/char_traits.h:40,
+                 from /usr/include/c++/5/string:40,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h: At global scope:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:162:10: error: ‘size_t’ has not been declared
+          size_t __destlen) __THROW;
+          ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h: In function ‘wchar_t* wcpcpy(wchar_t*, const wchar_t*)’:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:170:26: error: ‘size_t’ was not declared in this scope
+   if (__bos (__dest) != (size_t) -1)
+                          ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:170:26: note: suggested alternative:
+In file included from /usr/include/c++/5/string:38:0,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h:196:26: note:   ‘std::size_t’
+   typedef __SIZE_TYPE__  size_t;
+                          ^
+In file included from /usr/include/wchar.h:887:0,
+                 from /usr/include/c++/5/cwchar:44,
+                 from /usr/include/c++/5/bits/postypes.h:40,
+                 from /usr/include/c++/5/bits/char_traits.h:40,
+                 from /usr/include/c++/5/string:40,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h: At global scope:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:177:44: error: ‘size_t’ has not been declared
+           const wchar_t *__restrict __src, size_t __n,
+                                            ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:178:11: error: ‘size_t’ has not been declared
+           size_t __destlen) __THROW;
+           ^
+In file included from /usr/include/features.h:367:0,
+                 from /usr/include/stdlib.h:24,
+                 from ../include/mico/assert.h:28,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:179:17: error: ‘size_t’ has not been declared
+ extern wchar_t *__REDIRECT_NTH (__wcsncpy_alias,
+                 ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:183:17: error: ‘size_t’ has not been declared
+ extern wchar_t *__REDIRECT_NTH (__wcsncpy_chk_warn,
+                 ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:183:17: error: ‘size_t’ has not been declared
+ extern wchar_t *__REDIRECT_NTH (__wcsncpy_chk_warn,
+                 ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:191:1: error: ‘size_t’ has not been declared
+ __NTH (wcsncpy (wchar_t *__restrict __dest, const wchar_t *__restrict __src,
+ ^
+In file included from /usr/include/wchar.h:887:0,
+                 from /usr/include/c++/5/cwchar:44,
+                 from /usr/include/c++/5/bits/postypes.h:40,
+                 from /usr/include/c++/5/bits/char_traits.h:40,
+                 from /usr/include/c++/5/string:40,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h: In function ‘wchar_t* wcsncpy(wchar_t*, const wchar_t*, int)’:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:194:26: error: ‘size_t’ was not declared in this scope
+   if (__bos (__dest) != (size_t) -1)
+                          ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:194:26: note: suggested alternative:
+In file included from /usr/include/c++/5/string:38:0,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h:196:26: note:   ‘std::size_t’
+   typedef __SIZE_TYPE__  size_t;
+                          ^
+In file included from /usr/include/wchar.h:887:0,
+                 from /usr/include/c++/5/cwchar:44,
+                 from /usr/include/c++/5/bits/postypes.h:40,
+                 from /usr/include/c++/5/bits/char_traits.h:40,
+                 from /usr/include/c++/5/string:40,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h: At global scope:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:208:44: error: ‘size_t’ has not been declared
+           const wchar_t *__restrict __src, size_t __n,
+                                            ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:209:11: error: ‘size_t’ has not been declared
+           size_t __destlen) __THROW;
+           ^
+In file included from /usr/include/features.h:367:0,
+                 from /usr/include/stdlib.h:24,
+                 from ../include/mico/assert.h:28,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:210:17: error: ‘size_t’ has not been declared
+ extern wchar_t *__REDIRECT_NTH (__wcpncpy_alias,
+                 ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:214:17: error: ‘size_t’ has not been declared
+ extern wchar_t *__REDIRECT_NTH (__wcpncpy_chk_warn,
+                 ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:214:17: error: ‘size_t’ has not been declared
+ extern wchar_t *__REDIRECT_NTH (__wcpncpy_chk_warn,
+                 ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:222:1: error: ‘size_t’ has not been declared
+ __NTH (wcpncpy (wchar_t *__restrict __dest, const wchar_t *__restrict __src,
+ ^
+In file included from /usr/include/wchar.h:887:0,
+                 from /usr/include/c++/5/cwchar:44,
+                 from /usr/include/c++/5/bits/postypes.h:40,
+                 from /usr/include/c++/5/bits/char_traits.h:40,
+                 from /usr/include/c++/5/string:40,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h: In function ‘wchar_t* wcpncpy(wchar_t*, const wchar_t*, int)’:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:225:26: error: ‘size_t’ was not declared in this scope
+   if (__bos (__dest) != (size_t) -1)
+                          ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:225:26: note: suggested alternative:
+In file included from /usr/include/c++/5/string:38:0,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h:196:26: note:   ‘std::size_t’
+   typedef __SIZE_TYPE__  size_t;
+                          ^
+In file included from /usr/include/wchar.h:887:0,
+                 from /usr/include/c++/5/cwchar:44,
+                 from /usr/include/c++/5/bits/postypes.h:40,
+                 from /usr/include/c++/5/bits/char_traits.h:40,
+                 from /usr/include/c++/5/string:40,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h: At global scope:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:240:10: error: ‘size_t’ has not been declared
+          size_t __destlen) __THROW;
+          ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h: In function ‘wchar_t* wcscat(wchar_t*, const wchar_t*)’:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:248:26: error: ‘size_t’ was not declared in this scope
+   if (__bos (__dest) != (size_t) -1)
+                          ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:248:26: note: suggested alternative:
+In file included from /usr/include/c++/5/string:38:0,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h:196:26: note:   ‘std::size_t’
+   typedef __SIZE_TYPE__  size_t;
+                          ^
+In file included from /usr/include/wchar.h:887:0,
+                 from /usr/include/c++/5/cwchar:44,
+                 from /usr/include/c++/5/bits/postypes.h:40,
+                 from /usr/include/c++/5/bits/char_traits.h:40,
+                 from /usr/include/c++/5/string:40,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h: At global scope:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:256:11: error: ‘size_t’ has not been declared
+           size_t __n, size_t __destlen) __THROW;
+           ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:256:23: error: ‘size_t’ has not been declared
+           size_t __n, size_t __destlen) __THROW;
+                       ^
+In file included from /usr/include/features.h:367:0,
+                 from /usr/include/stdlib.h:24,
+                 from ../include/mico/assert.h:28,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:257:17: error: ‘size_t’ has not been declared
+ extern wchar_t *__REDIRECT_NTH (__wcsncat_alias,
+                 ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:263:1: error: ‘size_t’ has not been declared
+ __NTH (wcsncat (wchar_t *__restrict __dest, const wchar_t *__restrict __src,
+ ^
+In file included from /usr/include/wchar.h:887:0,
+                 from /usr/include/c++/5/cwchar:44,
+                 from /usr/include/c++/5/bits/postypes.h:40,
+                 from /usr/include/c++/5/bits/char_traits.h:40,
+                 from /usr/include/c++/5/string:40,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h: In function ‘wchar_t* wcsncat(wchar_t*, const wchar_t*, int)’:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:266:26: error: ‘size_t’ was not declared in this scope
+   if (__bos (__dest) != (size_t) -1)
+                          ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:266:26: note: suggested alternative:
+In file included from /usr/include/c++/5/string:38:0,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h:196:26: note:   ‘std::size_t’
+   typedef __SIZE_TYPE__  size_t;
+                          ^
+In file included from /usr/include/wchar.h:887:0,
+                 from /usr/include/c++/5/cwchar:44,
+                 from /usr/include/c++/5/bits/postypes.h:40,
+                 from /usr/include/c++/5/bits/char_traits.h:40,
+                 from /usr/include/c++/5/string:40,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h: At global scope:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:273:53: error: ‘size_t’ has not been declared
+ extern int __swprintf_chk (wchar_t *__restrict __s, size_t __n,
+                                                     ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:274:19: error: ‘size_t’ has not been declared
+       int __flag, size_t __s_len,
+                   ^
+In file included from /usr/include/features.h:367:0,
+                 from /usr/include/stdlib.h:24,
+                 from ../include/mico/assert.h:28,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:278:12: error: ‘size_t’ has not been declared
+ extern int __REDIRECT_NTH_LDBL (__swprintf_alias,
+            ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:285:1: error: ‘size_t’ has not been declared
+ __NTH (swprintf (wchar_t *__restrict __s, size_t __n,
+ ^
+In file included from /usr/include/wchar.h:887:0,
+                 from /usr/include/c++/5/cwchar:44,
+                 from /usr/include/c++/5/bits/postypes.h:40,
+                 from /usr/include/c++/5/bits/char_traits.h:40,
+                 from /usr/include/c++/5/string:40,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h: In function ‘int swprintf(wchar_t*, int, const wchar_t*, ...)’:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:288:23: error: ‘size_t’ was not declared in this scope
+   if (__bos (__s) != (size_t) -1 || __USE_FORTIFY_LEVEL > 1)
+                       ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:288:23: note: suggested alternative:
+In file included from /usr/include/c++/5/string:38:0,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h:196:26: note:   ‘std::size_t’
+   typedef __SIZE_TYPE__  size_t;
+                          ^
+In file included from /usr/include/wchar.h:887:0,
+                 from /usr/include/c++/5/cwchar:44,
+                 from /usr/include/c++/5/bits/postypes.h:40,
+                 from /usr/include/c++/5/bits/char_traits.h:40,
+                 from /usr/include/c++/5/string:40,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h: At global scope:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:303:54: error: ‘size_t’ has not been declared
+ extern int __vswprintf_chk (wchar_t *__restrict __s, size_t __n,
+                                                      ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:304:20: error: ‘size_t’ has not been declared
+        int __flag, size_t __s_len,
+                    ^
+In file included from /usr/include/features.h:367:0,
+                 from /usr/include/stdlib.h:24,
+                 from ../include/mico/assert.h:28,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:309:12: error: ‘size_t’ has not been declared
+ extern int __REDIRECT_NTH_LDBL (__vswprintf_alias,
+            ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:315:1: error: ‘size_t’ has not been declared
+ __NTH (vswprintf (wchar_t *__restrict __s, size_t __n,
+ ^
+In file included from /usr/include/wchar.h:887:0,
+                 from /usr/include/c++/5/cwchar:44,
+                 from /usr/include/c++/5/bits/postypes.h:40,
+                 from /usr/include/c++/5/bits/char_traits.h:40,
+                 from /usr/include/c++/5/string:40,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h: In function ‘int vswprintf(wchar_t*, int, const wchar_t*, __va_list_tag*)’:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:318:23: error: ‘size_t’ was not declared in this scope
+   if (__bos (__s) != (size_t) -1 || __USE_FORTIFY_LEVEL > 1)
+                       ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:318:23: note: suggested alternative:
+In file included from /usr/include/c++/5/string:38:0,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h:196:26: note:   ‘std::size_t’
+   typedef __SIZE_TYPE__  size_t;
+                          ^
+In file included from /usr/include/wchar.h:887:0,
+                 from /usr/include/c++/5/cwchar:44,
+                 from /usr/include/c++/5/bits/postypes.h:40,
+                 from /usr/include/c++/5/bits/char_traits.h:40,
+                 from /usr/include/c++/5/string:40,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h: At global scope:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:372:56: error: ‘size_t’ has not been declared
+ extern wchar_t *__fgetws_chk (wchar_t *__restrict __s, size_t __size, int __n,
+                                                        ^
+In file included from /usr/include/features.h:367:0,
+                 from /usr/include/stdlib.h:24,
+                 from ../include/mico/assert.h:28,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:377:17: error: ‘size_t’ has not been declared
+ extern wchar_t *__REDIRECT (__fgetws_chk_warn,
+                 ^
+In file included from /usr/include/wchar.h:887:0,
+                 from /usr/include/c++/5/cwchar:44,
+                 from /usr/include/c++/5/bits/postypes.h:40,
+                 from /usr/include/c++/5/bits/char_traits.h:40,
+                 from /usr/include/c++/5/string:40,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h: In function ‘wchar_t* fgetws(wchar_t*, int, __FILE*)’:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:386:23: error: ‘size_t’ was not declared in this scope
+   if (__bos (__s) != (size_t) -1)
+                       ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:386:23: note: suggested alternative:
+In file included from /usr/include/c++/5/string:38:0,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h:196:26: note:   ‘std::size_t’
+   typedef __SIZE_TYPE__  size_t;
+                          ^
+In file included from /usr/include/wchar.h:887:0,
+                 from /usr/include/c++/5/cwchar:44,
+                 from /usr/include/c++/5/bits/postypes.h:40,
+                 from /usr/include/c++/5/bits/char_traits.h:40,
+                 from /usr/include/c++/5/string:40,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:392:20: error: expected ‘)’ before ‘__n’
+       if ((size_t) __n > __bos (__s) / sizeof (wchar_t))
+                    ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h: At global scope:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:400:65: error: ‘size_t’ has not been declared
+ extern wchar_t *__fgetws_unlocked_chk (wchar_t *__restrict __s, size_t __size,
+                                                                 ^
+In file included from /usr/include/features.h:367:0,
+                 from /usr/include/stdlib.h:24,
+                 from ../include/mico/assert.h:28,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:407:17: error: ‘size_t’ has not been declared
+ extern wchar_t *__REDIRECT (__fgetws_unlocked_chk_warn,
+                 ^
+In file included from /usr/include/wchar.h:887:0,
+                 from /usr/include/c++/5/cwchar:44,
+                 from /usr/include/c++/5/bits/postypes.h:40,
+                 from /usr/include/c++/5/bits/char_traits.h:40,
+                 from /usr/include/c++/5/string:40,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h: In function ‘wchar_t* fgetws_unlocked(wchar_t*, int, __FILE*)’:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:417:23: error: ‘size_t’ was not declared in this scope
+   if (__bos (__s) != (size_t) -1)
+                       ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:417:23: note: suggested alternative:
+In file included from /usr/include/c++/5/string:38:0,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h:196:26: note:   ‘std::size_t’
+   typedef __SIZE_TYPE__  size_t;
+                          ^
+In file included from /usr/include/wchar.h:887:0,
+                 from /usr/include/c++/5/cwchar:44,
+                 from /usr/include/c++/5/bits/postypes.h:40,
+                 from /usr/include/c++/5/bits/char_traits.h:40,
+                 from /usr/include/c++/5/string:40,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:423:20: error: expected ‘)’ before ‘__n’
+       if ((size_t) __n > __bos (__s) / sizeof (wchar_t))
+                    ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h: At global scope:
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:432:8: error: ‘size_t’ does not name a type
+ extern size_t __wcrtomb_chk (char *__restrict __s, wchar_t __wchar,
+        ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:435:8: error: ‘size_t’ does not name a type
+ extern size_t __REDIRECT_NTH (__wcrtomb_alias,
+        ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:439:26: error: ‘size_t’ does not name a type
+ __fortify_function __wur size_t
+                          ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:456:8: error: ‘size_t’ does not name a type
+ extern size_t __mbsrtowcs_chk (wchar_t *__restrict __dst,
+        ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:460:8: error: ‘size_t’ does not name a type
+ extern size_t __REDIRECT_NTH (__mbsrtowcs_alias,
+        ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:465:8: error: ‘size_t’ does not name a type
+ extern size_t __REDIRECT_NTH (__mbsrtowcs_chk_warn,
+        ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:473:20: error: ‘size_t’ does not name a type
+ __fortify_function size_t
+                    ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:491:8: error: ‘size_t’ does not name a type
+ extern size_t __wcsrtombs_chk (char *__restrict __dst,
+        ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:495:8: error: ‘size_t’ does not name a type
+ extern size_t __REDIRECT_NTH (__wcsrtombs_alias,
+        ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:500:8: error: ‘size_t’ does not name a type
+ extern size_t __REDIRECT_NTH (__wcsrtombs_chk_warn,
+        ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:507:20: error: ‘size_t’ does not name a type
+ __fortify_function size_t
+                    ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:524:8: error: ‘size_t’ does not name a type
+ extern size_t __mbsnrtowcs_chk (wchar_t *__restrict __dst,
+        ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:528:8: error: ‘size_t’ does not name a type
+ extern size_t __REDIRECT_NTH (__mbsnrtowcs_alias,
+        ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:533:8: error: ‘size_t’ does not name a type
+ extern size_t __REDIRECT_NTH (__mbsnrtowcs_chk_warn,
+        ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:541:20: error: ‘size_t’ does not name a type
+ __fortify_function size_t
+                    ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:559:8: error: ‘size_t’ does not name a type
+ extern size_t __wcsnrtombs_chk (char *__restrict __dst,
+        ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:564:8: error: ‘size_t’ does not name a type
+ extern size_t __REDIRECT_NTH (__wcsnrtombs_alias,
+        ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:569:8: error: ‘size_t’ does not name a type
+ extern size_t __REDIRECT_NTH (__wcsnrtombs_chk_warn,
+        ^
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:577:20: error: ‘size_t’ does not name a type
+ __fortify_function size_t
+                    ^
+In file included from /usr/include/c++/5/bits/postypes.h:40:0,
+                 from /usr/include/c++/5/bits/char_traits.h:40,
+                 from /usr/include/c++/5/string:40,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/c++/5/cwchar:151:11: error: ‘::mbrlen’ has not been declared
+   using ::mbrlen;
+           ^
+/usr/include/c++/5/cwchar:152:11: error: ‘::mbrtowc’ has not been declared
+   using ::mbrtowc;
+           ^
+/usr/include/c++/5/cwchar:154:11: error: ‘::mbsrtowcs’ has not been declared
+   using ::mbsrtowcs;
+           ^
+/usr/include/c++/5/cwchar:176:11: error: ‘::wcrtomb’ has not been declared
+   using ::wcrtomb;
+           ^
+/usr/include/c++/5/cwchar:181:11: error: ‘::wcscspn’ has not been declared
+   using ::wcscspn;
+           ^
+/usr/include/c++/5/cwchar:182:11: error: ‘::wcsftime’ has not been declared
+   using ::wcsftime;
+           ^
+/usr/include/c++/5/cwchar:183:11: error: ‘::wcslen’ has not been declared
+   using ::wcslen;
+           ^
+/usr/include/c++/5/cwchar:187:11: error: ‘::wcsrtombs’ has not been declared
+   using ::wcsrtombs;
+           ^
+/usr/include/c++/5/cwchar:188:11: error: ‘::wcsspn’ has not been declared
+   using ::wcsspn;
+           ^
+/usr/include/c++/5/cwchar:196:11: error: ‘::wcsxfrm’ has not been declared
+   using ::wcsxfrm;
+           ^
+In file included from /usr/include/c++/5/string:40:0,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/c++/5/bits/char_traits.h: In static member function ‘static std::size_t std::char_traits<wchar_t>::length(const char_type*)’:
+/usr/include/c++/5/bits/char_traits.h:358:26: error: ‘wcslen’ was not declared in this scope
+       { return wcslen(__s); }
+                          ^
+In file included from /usr/include/sched.h:43:0,
+                 from /usr/include/pthread.h:23,
+                 from /usr/include/x86_64-linux-gnu/c++/5/bits/gthr-default.h:35,
+                 from /usr/include/x86_64-linux-gnu/c++/5/bits/gthr.h:148,
+                 from /usr/include/c++/5/ext/atomicity.h:35,
+                 from /usr/include/c++/5/bits/basic_string.h:39,
+                 from /usr/include/c++/5/string:52,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/sched.h: At global scope:
+/usr/include/x86_64-linux-gnu/bits/sched.h:203:30: error: ‘size_t’ was not declared in this scope
+ extern int __sched_cpucount (size_t __setsize, const cpu_set_t *__setp)
+                              ^
+/usr/include/x86_64-linux-gnu/bits/sched.h:203:30: note: suggested alternatives:
+In file included from /usr/include/c++/5/string:38:0,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h:196:26: note:   ‘std::size_t’
+   typedef __SIZE_TYPE__  size_t;
+                          ^
+/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h:196:26: note:   ‘std::size_t’
+In file included from /usr/include/sched.h:43:0,
+                 from /usr/include/pthread.h:23,
+                 from /usr/include/x86_64-linux-gnu/c++/5/bits/gthr-default.h:35,
+                 from /usr/include/x86_64-linux-gnu/c++/5/bits/gthr.h:148,
+                 from /usr/include/c++/5/ext/atomicity.h:35,
+                 from /usr/include/c++/5/bits/basic_string.h:39,
+                 from /usr/include/c++/5/string:52,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/sched.h:203:48: error: expected primary-expression before ‘const’
+ extern int __sched_cpucount (size_t __setsize, const cpu_set_t *__setp)
+                                                ^
+/usr/include/x86_64-linux-gnu/bits/sched.h:203:71: error: expression list treated as compound expression in initializer [-fpermissive]
+ extern int __sched_cpucount (size_t __setsize, const cpu_set_t *__setp)
+                                                                       ^
+In file included from /usr/include/features.h:367:0,
+                 from /usr/include/stdlib.h:24,
+                 from ../include/mico/assert.h:28,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/sched.h:204:3: error: expected ‘,’ or ‘;’ before ‘throw’
+   __THROW;
+   ^
+In file included from /usr/include/sched.h:43:0,
+                 from /usr/include/pthread.h:23,
+                 from /usr/include/x86_64-linux-gnu/c++/5/bits/gthr-default.h:35,
+                 from /usr/include/x86_64-linux-gnu/c++/5/bits/gthr.h:148,
+                 from /usr/include/c++/5/ext/atomicity.h:35,
+                 from /usr/include/c++/5/bits/basic_string.h:39,
+                 from /usr/include/c++/5/string:52,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/sched.h:205:37: error: ‘size_t’ was not declared in this scope
+ extern cpu_set_t *__sched_cpualloc (size_t __count) __THROW __wur;
+                                     ^
+/usr/include/x86_64-linux-gnu/bits/sched.h:205:37: note: suggested alternatives:
+In file included from /usr/include/c++/5/string:38:0,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h:196:26: note:   ‘std::size_t’
+   typedef __SIZE_TYPE__  size_t;
+                          ^
+/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h:196:26: note:   ‘std::size_t’
+In file included from /usr/include/features.h:367:0,
+                 from /usr/include/stdlib.h:24,
+                 from ../include/mico/assert.h:28,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/sched.h:205:53: error: expected ‘,’ or ‘;’ before ‘throw’
+ extern cpu_set_t *__sched_cpualloc (size_t __count) __THROW __wur;
+                                                     ^
+In file included from /usr/include/pthread.h:23:0,
+                 from /usr/include/x86_64-linux-gnu/c++/5/bits/gthr-default.h:35,
+                 from /usr/include/x86_64-linux-gnu/c++/5/bits/gthr.h:148,
+                 from /usr/include/c++/5/ext/atomicity.h:35,
+                 from /usr/include/c++/5/bits/basic_string.h:39,
+                 from /usr/include/c++/5/string:52,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/sched.h:118:46: error: ‘size_t’ has not been declared
+ extern int sched_setaffinity (__pid_t __pid, size_t __cpusetsize,
+                                              ^
+/usr/include/sched.h:122:46: error: ‘size_t’ has not been declared
+ extern int sched_getaffinity (__pid_t __pid, size_t __cpusetsize,
+                                              ^
+In file included from /usr/include/pthread.h:24:0,
+                 from /usr/include/x86_64-linux-gnu/c++/5/bits/gthr-default.h:35,
+                 from /usr/include/x86_64-linux-gnu/c++/5/bits/gthr.h:148,
+                 from /usr/include/c++/5/ext/atomicity.h:35,
+                 from /usr/include/c++/5/bits/basic_string.h:39,
+                 from /usr/include/c++/5/string:52,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/time.h:205:8: error: ‘size_t’ does not name a type
+ extern size_t strftime (char *__restrict __s, size_t __maxsize,
+        ^
+/usr/include/time.h:223:8: error: ‘size_t’ does not name a type
+ extern size_t strftime_l (char *__restrict __s, size_t __maxsize,
+        ^
+In file included from /usr/include/x86_64-linux-gnu/c++/5/bits/gthr-default.h:35:0,
+                 from /usr/include/x86_64-linux-gnu/c++/5/bits/gthr.h:148,
+                 from /usr/include/c++/5/ext/atomicity.h:35,
+                 from /usr/include/c++/5/bits/basic_string.h:39,
+                 from /usr/include/c++/5/string:52,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/pthread.h:306:11: error: ‘size_t’ has not been declared
+           size_t *__guardsize)
+           ^
+/usr/include/pthread.h:311:11: error: ‘size_t’ has not been declared
+           size_t __guardsize)
+           ^
+/usr/include/pthread.h:369:19: error: ‘size_t’ has not been declared
+           __attr, size_t *__restrict __stacksize)
+                   ^
+/usr/include/pthread.h:376:11: error: ‘size_t’ has not been declared
+           size_t __stacksize)
+           ^
+/usr/include/pthread.h:383:7: error: ‘size_t’ has not been declared
+       size_t *__restrict __stacksize)
+       ^
+/usr/include/pthread.h:390:7: error: ‘size_t’ has not been declared
+       size_t __stacksize) __THROW __nonnull ((1));
+       ^
+/usr/include/pthread.h:397:6: error: ‘size_t’ has not been declared
+      size_t __cpusetsize,
+      ^
+/usr/include/pthread.h:404:6: error: ‘size_t’ has not been declared
+      size_t __cpusetsize,
+      ^
+/usr/include/pthread.h:447:11: error: ‘size_t’ has not been declared
+           size_t __buflen)
+           ^
+/usr/include/pthread.h:474:52: error: ‘size_t’ has not been declared
+ extern int pthread_setaffinity_np (pthread_t __th, size_t __cpusetsize,
+                                                    ^
+/usr/include/pthread.h:479:52: error: ‘size_t’ has not been declared
+ extern int pthread_getaffinity_np (pthread_t __th, size_t __cpusetsize,
+                                                    ^
+In file included from ../include/mico/throw.h:28:0,
+                 from ../include/CORBA.h:288,
+                 from orb.cc:32:
+/usr/include/string.h:43:8: error: ‘size_t’ has not been declared
+        size_t __n) __THROW __nonnull ((1, 2));
+        ^
+/usr/include/string.h:46:56: error: ‘size_t’ has not been declared
+ extern void *memmove (void *__dest, const void *__src, size_t __n)
+                                                        ^
+/usr/include/string.h:55:18: error: ‘size_t’ has not been declared
+         int __c, size_t __n)
+                  ^
+/usr/include/string.h:62:42: error: ‘size_t’ has not been declared
+ extern void *memset (void *__s, int __c, size_t __n) __THROW __nonnull ((1));
+                                          ^
+/usr/include/string.h:65:56: error: ‘size_t’ has not been declared
+ extern int memcmp (const void *__s1, const void *__s2, size_t __n)
+                                                        ^
+/usr/include/string.h:72:42: error: ‘size_t’ has not been declared
+ extern void *memchr (void *__s, int __c, size_t __n)
+                                          ^
+/usr/include/string.h:74:54: error: ‘size_t’ has not been declared
+ extern const void *memchr (const void *__s, int __c, size_t __n)
+                                                      ^
+/usr/include/string.h:79:29: error: ‘size_t’ has not been declared
+ memchr (void *__s, int __c, size_t __n) __THROW
+                             ^
+/usr/include/string.h:85:35: error: ‘size_t’ has not been declared
+ memchr (const void *__s, int __c, size_t __n) __THROW
+                                   ^
+/usr/include/string.h:112:49: error: ‘size_t’ has not been declared
+ extern "C++" void *memrchr (void *__s, int __c, size_t __n)
+                                                 ^
+/usr/include/string.h:114:61: error: ‘size_t’ has not been declared
+ extern "C++" const void *memrchr (const void *__s, int __c, size_t __n)
+                                                             ^
+/usr/include/string.h:129:39: error: ‘size_t’ has not been declared
+         const char *__restrict __src, size_t __n)
+                                       ^
+/usr/include/string.h:137:9: error: ‘size_t’ has not been declared
+         size_t __n) __THROW __nonnull ((1, 2));
+         ^
+/usr/include/string.h:143:57: error: ‘size_t’ has not been declared
+ extern int strncmp (const char *__s1, const char *__s2, size_t __n)
+                                                         ^
+/usr/include/string.h:150:8: error: ‘size_t’ does not name a type
+ extern size_t strxfrm (char *__restrict __dest,
+        ^
+/usr/include/string.h:165:8: error: ‘size_t’ does not name a type
+ extern size_t strxfrm_l (char *__dest, const char *__src, size_t __n,
+        ^
+/usr/include/string.h:179:45: error: ‘size_t’ has not been declared
+ extern char *strndup (const char *__string, size_t __n)
+                                             ^
+/usr/include/string.h:280:8: error: ‘size_t’ does not name a type
+ extern size_t strcspn (const char *__s, const char *__reject)
+        ^
+/usr/include/string.h:284:8: error: ‘size_t’ does not name a type
+ extern size_t strspn (const char *__s, const char *__accept)
+        ^
+/usr/include/string.h:377:46: error: ‘size_t’ has not been declared
+ extern void *memmem (const void *__haystack, size_t __haystacklen,
+                                              ^
+/usr/include/string.h:378:30: error: ‘size_t’ has not been declared
+        const void *__needle, size_t __needlelen)
+                              ^
+/usr/include/string.h:384:34: error: ‘size_t’ has not been declared
+    const void *__restrict __src, size_t __n)
+                                  ^
+/usr/include/string.h:387:39: error: ‘size_t’ has not been declared
+         const void *__restrict __src, size_t __n)
+                                       ^
+/usr/include/string.h:394:8: error: ‘size_t’ does not name a type
+ extern size_t strlen (const char *__s)
+        ^
+/usr/include/string.h:401:8: error: ‘size_t’ does not name a type
+ extern size_t strnlen (const char *__string, size_t __maxlen)
+        ^
+/usr/include/string.h:433:53: error: ‘size_t’ has not been declared
+ extern char *strerror_r (int __errnum, char *__buf, size_t __buflen)
+                                                     ^
+/usr/include/string.h:446:33: error: ‘size_t’ has not been declared
+ extern void __bzero (void *__s, size_t __n) __THROW __nonnull ((1));
+                                 ^
+/usr/include/string.h:450:53: error: ‘size_t’ has not been declared
+ extern void bcopy (const void *__src, void *__dest, size_t __n)
+                                                     ^
+/usr/include/string.h:454:31: error: ‘size_t’ has not been declared
+ extern void bzero (void *__s, size_t __n) __THROW __nonnull ((1));
+                               ^
+/usr/include/string.h:457:54: error: ‘size_t’ has not been declared
+ extern int bcmp (const void *__s1, const void *__s2, size_t __n)
+                                                      ^
+/usr/include/string.h:533:61: error: ‘size_t’ has not been declared
+ extern int strncasecmp (const char *__s1, const char *__s2, size_t __n)
+                                                             ^
+/usr/include/string.h:545:6: error: ‘size_t’ has not been declared
+      size_t __n, __locale_t __loc)
+      ^
+/usr/include/string.h:570:34: error: ‘size_t’ has not been declared
+    const char *__restrict __src, size_t __n)
+                                  ^
+/usr/include/string.h:573:39: error: ‘size_t’ has not been declared
+         const char *__restrict __src, size_t __n)
+                                       ^
+/usr/include/string.h:586:34: error: ‘size_t’ has not been declared
+ extern void *memfrob (void *__s, size_t __n) __THROW __nonnull ((1));
+                                  ^
+In file included from /usr/include/features.h:367:0,
+                 from /usr/include/stdlib.h:24,
+                 from ../include/mico/assert.h:28,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/string3.h:50:1: error: ‘size_t’ has not been declared
+ __NTH (memcpy (void *__restrict __dest, const void *__restrict __src,
+ ^
+/usr/include/x86_64-linux-gnu/bits/string3.h:57:1: error: ‘size_t’ has not been declared
+ __NTH (memmove (void *__dest, const void *__src, size_t __len))
+ ^
+/usr/include/x86_64-linux-gnu/bits/string3.h:64:1: error: ‘size_t’ has not been declared
+ __NTH (mempcpy (void *__restrict __dest, const void *__restrict __src,
+ ^
+/usr/include/x86_64-linux-gnu/bits/string3.h:78:1: error: ‘size_t’ has not been declared
+ __NTH (memset (void *__dest, int __ch, size_t __len))
+ ^
+/usr/include/x86_64-linux-gnu/bits/string3.h:95:1: error: ‘size_t’ has not been declared
+ __NTH (bcopy (const void *__src, void *__dest, size_t __len))
+ ^
+/usr/include/x86_64-linux-gnu/bits/string3.h:101:1: error: ‘size_t’ has not been declared
+ __NTH (bzero (void *__dest, size_t __len))
+ ^
+/usr/include/x86_64-linux-gnu/bits/string3.h:123:1: error: ‘size_t’ has not been declared
+ __NTH (strncpy (char *__restrict __dest, const char *__restrict __src,
+ ^
+In file included from /usr/include/string.h:635:0,
+                 from ../include/mico/throw.h:28,
+                 from ../include/CORBA.h:288,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/string3.h:130:62: error: ‘size_t’ has not been declared
+ extern char *__stpncpy_chk (char *__dest, const char *__src, size_t __n,
+                                                              ^
+/usr/include/x86_64-linux-gnu/bits/string3.h:131:8: error: ‘size_t’ has not been declared
+        size_t __destlen) __THROW;
+        ^
+In file included from /usr/include/features.h:367:0,
+                 from /usr/include/stdlib.h:24,
+                 from ../include/mico/assert.h:28,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/string3.h:132:14: error: ‘size_t’ has not been declared
+ extern char *__REDIRECT_NTH (__stpncpy_alias, (char *__dest, const char *__src,
+              ^
+/usr/include/x86_64-linux-gnu/bits/string3.h:136:1: error: ‘size_t’ has not been declared
+ __NTH (stpncpy (char *__dest, const char *__src, size_t __n))
+ ^
+In file included from /usr/include/string.h:635:0,
+                 from ../include/mico/throw.h:28,
+                 from ../include/CORBA.h:288,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/string3.h: In function ‘char* stpncpy(char*, const char*, int)’:
+/usr/include/x86_64-linux-gnu/bits/string3.h:138:26: error: ‘size_t’ was not declared in this scope
+   if (__bos (__dest) != (size_t) -1
+                          ^
+/usr/include/x86_64-linux-gnu/bits/string3.h:138:26: note: suggested alternatives:
+In file included from /usr/include/c++/5/string:38:0,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h:196:26: note:   ‘std::size_t’
+   typedef __SIZE_TYPE__  size_t;
+                          ^
+/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h:196:26: note:   ‘std::size_t’
+In file included from /usr/include/features.h:367:0,
+                 from /usr/include/stdlib.h:24,
+                 from ../include/mico/assert.h:28,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/string3.h: At global scope:
+/usr/include/x86_64-linux-gnu/bits/string3.h:153:1: error: ‘size_t’ has not been declared
+ __NTH (strncat (char *__restrict __dest, const char *__restrict __src,
+ ^
+In file included from ../include/mico/throw.h:28:0,
+                 from ../include/CORBA.h:288,
+                 from orb.cc:32:
+/usr/include/string.h:650:35: error: ‘size_t’ has not been declared
+     const void *__restrict __src, size_t __n)
+                                   ^
+In file included from /usr/include/c++/5/fstream:41:0,
+                 from orb.cc:38:
+/usr/include/c++/5/cstdio:113:11: error: ‘::fread’ has not been declared
+   using ::fread;
+           ^
+/usr/include/c++/5/cstdio:119:11: error: ‘::fwrite’ has not been declared
+   using ::fwrite;
+           ^
+In file included from /usr/include/x86_64-linux-gnu/bits/fcntl-linux.h:38:0,
+                 from /usr/include/x86_64-linux-gnu/bits/fcntl.h:61,
+                 from /usr/include/fcntl.h:35,
+                 from ../include/mico/os-net.h:263,
+                 from orb.cc:43:
+/usr/include/x86_64-linux-gnu/bits/uio.h:46:5: error: ‘size_t’ does not name a type
+     size_t iov_len; /* Length of data.  */
+     ^
+In file included from /usr/include/x86_64-linux-gnu/bits/fcntl.h:61:0,
+                 from /usr/include/fcntl.h:35,
+                 from ../include/mico/os-net.h:263,
+                 from orb.cc:43:
+/usr/include/x86_64-linux-gnu/bits/fcntl-linux.h:368:57: error: ‘size_t’ has not been declared
+ extern ssize_t readahead (int __fd, __off64_t __offset, size_t __count)
+                                                         ^
+/usr/include/x86_64-linux-gnu/bits/fcntl-linux.h:385:5: error: ‘size_t’ has not been declared
+     size_t __count, unsigned int __flags);
+     ^
+/usr/include/x86_64-linux-gnu/bits/fcntl-linux.h:392:31: error: ‘size_t’ has not been declared
+          __off64_t *__offout, size_t __len,
+                               ^
+/usr/include/x86_64-linux-gnu/bits/fcntl-linux.h:399:46: error: ‘size_t’ has not been declared
+ extern ssize_t tee (int __fdin, int __fdout, size_t __len,
+                                              ^
+In file included from ../include/mico/os-net.h:264:0,
+                 from orb.cc:43:
+/usr/include/unistd.h:363:45: error: ‘size_t’ has not been declared
+ extern ssize_t read (int __fd, void *__buf, size_t __nbytes) __wur;
+                                             ^
+/usr/include/unistd.h:369:52: error: ‘size_t’ has not been declared
+ extern ssize_t write (int __fd, const void *__buf, size_t __n) __wur;
+                                                    ^
+/usr/include/unistd.h:379:46: error: ‘size_t’ has not been declared
+ extern ssize_t pread (int __fd, void *__buf, size_t __nbytes,
+                                              ^
+/usr/include/unistd.h:387:53: error: ‘size_t’ has not been declared
+ extern ssize_t pwrite (int __fd, const void *__buf, size_t __n,
+                                                     ^
+/usr/include/unistd.h:407:48: error: ‘size_t’ has not been declared
+ extern ssize_t pread64 (int __fd, void *__buf, size_t __nbytes,
+                                                ^
+/usr/include/unistd.h:411:55: error: ‘size_t’ has not been declared
+ extern ssize_t pwrite64 (int __fd, const void *__buf, size_t __n,
+                                                       ^
+/usr/include/unistd.h:514:35: error: ‘size_t’ has not been declared
+ extern char *getcwd (char *__buf, size_t __size) __THROW __wur;
+                                   ^
+In file included from ../include/mico/os-net.h:264:0,
+                 from orb.cc:43:
+/usr/include/unistd.h:626:8: error: ‘size_t’ does not name a type
+ extern size_t confstr (int __name, char *__buf, size_t __len) __THROW;
+        ^
+/usr/include/unistd.h:777:46: error: ‘size_t’ has not been declared
+ extern int ttyname_r (int __fd, char *__buf, size_t __buflen)
+                                              ^
+/usr/include/unistd.h:813:29: error: ‘size_t’ has not been declared
+     char *__restrict __buf, size_t __len)
+                             ^
+/usr/include/unistd.h:824:31: error: ‘size_t’ has not been declared
+       char *__restrict __buf, size_t __len)
+                               ^
+/usr/include/unistd.h:860:38: error: ‘size_t’ has not been declared
+ extern int getlogin_r (char *__name, size_t __name_len) __nonnull ((1));
+                                      ^
+In file included from ../include/mico/os-net.h:264:0,
+                 from orb.cc:43:
+/usr/include/unistd.h:882:39: error: ‘size_t’ has not been declared
+ extern int gethostname (char *__name, size_t __len) __THROW __nonnull ((1));
+                                       ^
+/usr/include/unistd.h:889:45: error: ‘size_t’ has not been declared
+ extern int sethostname (const char *__name, size_t __len)
+                                             ^
+/usr/include/unistd.h:900:41: error: ‘size_t’ has not been declared
+ extern int getdomainname (char *__name, size_t __len)
+                                         ^
+/usr/include/unistd.h:902:47: error: ‘size_t’ has not been declared
+ extern int setdomainname (const char *__name, size_t __len)
+                                               ^
+/usr/include/unistd.h:920:57: error: ‘size_t’ has not been declared
+ extern int profil (unsigned short int *__sample_buffer, size_t __size,
+                                                         ^
+/usr/include/unistd.h:921:6: error: ‘size_t’ has not been declared
+      size_t __offset, unsigned int __scale)
+      ^
+In file included from /usr/include/unistd.h:1151:0,
+                 from ../include/mico/os-net.h:264,
+                 from orb.cc:43:
+/usr/include/x86_64-linux-gnu/bits/unistd.h:23:51: error: ‘size_t’ has not been declared
+ extern ssize_t __read_chk (int __fd, void *__buf, size_t __nbytes,
+                                                   ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h:24:7: error: ‘size_t’ has not been declared
+       size_t __buflen) __wur;
+       ^
+In file included from /usr/include/features.h:367:0,
+                 from /usr/include/stdlib.h:24,
+                 from ../include/mico/assert.h:28,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/unistd.h:25:16: error: ‘size_t’ has not been declared
+ extern ssize_t __REDIRECT (__read_alias, (int __fd, void *__buf,
+                ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h:27:16: error: ‘size_t’ has not been declared
+ extern ssize_t __REDIRECT (__read_chk_warn,
+                ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h:27:16: error: ‘size_t’ has not been declared
+ extern ssize_t __REDIRECT (__read_chk_warn,
+                ^
+In file included from /usr/include/unistd.h:1151:0,
+                 from ../include/mico/os-net.h:264,
+                 from orb.cc:43:
+/usr/include/x86_64-linux-gnu/bits/unistd.h:34:30: error: ‘size_t’ has not been declared
+ read (int __fd, void *__buf, size_t __nbytes)
+                              ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h: In function ‘ssize_t read(int, void*, int)’:
+/usr/include/x86_64-linux-gnu/bits/unistd.h:36:26: error: ‘size_t’ was not declared in this scope
+   if (__bos0 (__buf) != (size_t) -1)
+                          ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h:36:26: note: suggested alternatives:
+In file included from /usr/include/c++/5/string:38:0,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h:196:26: note:   ‘std::size_t’
+   typedef __SIZE_TYPE__  size_t;
+                          ^
+/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h:196:26: note:   ‘std::size_t’
+In file included from /usr/include/unistd.h:1151:0,
+                 from ../include/mico/os-net.h:264,
+                 from orb.cc:43:
+/usr/include/x86_64-linux-gnu/bits/unistd.h: At global scope:
+/usr/include/x86_64-linux-gnu/bits/unistd.h:48:52: error: ‘size_t’ has not been declared
+ extern ssize_t __pread_chk (int __fd, void *__buf, size_t __nbytes,
+                                                    ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h:49:26: error: ‘size_t’ has not been declared
+        __off_t __offset, size_t __bufsize) __wur;
+                          ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h:50:54: error: ‘size_t’ has not been declared
+ extern ssize_t __pread64_chk (int __fd, void *__buf, size_t __nbytes,
+                                                      ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h:51:30: error: ‘size_t’ has not been declared
+          __off64_t __offset, size_t __bufsize) __wur;
+                              ^
+In file included from /usr/include/features.h:367:0,
+                 from /usr/include/stdlib.h:24,
+                 from ../include/mico/assert.h:28,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/unistd.h:52:16: error: ‘size_t’ has not been declared
+ extern ssize_t __REDIRECT (__pread_alias,
+                ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h:55:16: error: ‘size_t’ has not been declared
+ extern ssize_t __REDIRECT (__pread64_alias,
+                ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h:58:16: error: ‘size_t’ has not been declared
+ extern ssize_t __REDIRECT (__pread_chk_warn,
+                ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h:58:16: error: ‘size_t’ has not been declared
+ extern ssize_t __REDIRECT (__pread_chk_warn,
+                ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h:63:16: error: ‘size_t’ has not been declared
+ extern ssize_t __REDIRECT (__pread64_chk_warn,
+                ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h:63:16: error: ‘size_t’ has not been declared
+ extern ssize_t __REDIRECT (__pread64_chk_warn,
+                ^
+In file included from /usr/include/unistd.h:1151:0,
+                 from ../include/mico/os-net.h:264,
+                 from orb.cc:43:
+/usr/include/x86_64-linux-gnu/bits/unistd.h:72:31: error: ‘size_t’ has not been declared
+ pread (int __fd, void *__buf, size_t __nbytes, __off_t __offset)
+                               ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h: In function ‘ssize_t pread(int, void*, int, __off_t)’:
+/usr/include/x86_64-linux-gnu/bits/unistd.h:74:26: error: ‘size_t’ was not declared in this scope
+   if (__bos0 (__buf) != (size_t) -1)
+                          ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h:74:26: note: suggested alternatives:
+In file included from /usr/include/c++/5/string:38:0,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h:196:26: note:   ‘std::size_t’
+   typedef __SIZE_TYPE__  size_t;
+                          ^
+/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h:196:26: note:   ‘std::size_t’
+In file included from /usr/include/unistd.h:1151:0,
+                 from ../include/mico/os-net.h:264,
+                 from orb.cc:43:
+/usr/include/x86_64-linux-gnu/bits/unistd.h: At global scope:
+/usr/include/x86_64-linux-gnu/bits/unistd.h:105:33: error: ‘size_t’ has not been declared
+ pread64 (int __fd, void *__buf, size_t __nbytes, __off64_t __offset)
+                                 ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h: In function ‘ssize_t pread64(int, void*, int, __off64_t)’:
+/usr/include/x86_64-linux-gnu/bits/unistd.h:107:26: error: ‘size_t’ was not declared in this scope
+   if (__bos0 (__buf) != (size_t) -1)
+                          ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h:107:26: note: suggested alternatives:
+In file included from /usr/include/c++/5/string:38:0,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h:196:26: note:   ‘std::size_t’
+   typedef __SIZE_TYPE__  size_t;
+                          ^
+/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h:196:26: note:   ‘std::size_t’
+In file included from /usr/include/unistd.h:1151:0,
+                 from ../include/mico/os-net.h:264,
+                 from orb.cc:43:
+/usr/include/x86_64-linux-gnu/bits/unistd.h: At global scope:
+/usr/include/x86_64-linux-gnu/bits/unistd.h:124:35: error: ‘size_t’ has not been declared
+           char *__restrict __buf, size_t __len,
+                                   ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h:125:11: error: ‘size_t’ has not been declared
+           size_t __buflen)
+           ^
+In file included from /usr/include/features.h:367:0,
+                 from /usr/include/stdlib.h:24,
+                 from ../include/mico/assert.h:28,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/unistd.h:127:16: error: ‘size_t’ has not been declared
+ extern ssize_t __REDIRECT_NTH (__readlink_alias,
+                ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h:131:16: error: ‘size_t’ has not been declared
+ extern ssize_t __REDIRECT_NTH (__readlink_chk_warn,
+                ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h:131:16: error: ‘size_t’ has not been declared
+ extern ssize_t __REDIRECT_NTH (__readlink_chk_warn,
+                ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h:139:1: error: ‘size_t’ has not been declared
+ __NTH (readlink (const char *__restrict __path, char *__restrict __buf,
+ ^
+In file included from /usr/include/unistd.h:1151:0,
+                 from ../include/mico/os-net.h:264,
+                 from orb.cc:43:
+/usr/include/x86_64-linux-gnu/bits/unistd.h: In function ‘ssize_t readlink(const char*, char*, int)’:
+/usr/include/x86_64-linux-gnu/bits/unistd.h:142:25: error: ‘size_t’ was not declared in this scope
+   if (__bos (__buf) != (size_t) -1)
+                         ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h:142:25: note: suggested alternatives:
+In file included from /usr/include/c++/5/string:38:0,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h:196:26: note:   ‘std::size_t’
+   typedef __SIZE_TYPE__  size_t;
+                          ^
+/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h:196:26: note:   ‘std::size_t’
+In file included from /usr/include/unistd.h:1151:0,
+                 from ../include/mico/os-net.h:264,
+                 from orb.cc:43:
+/usr/include/x86_64-linux-gnu/bits/unistd.h: At global scope:
+/usr/include/x86_64-linux-gnu/bits/unistd.h:156:30: error: ‘size_t’ has not been declared
+      char *__restrict __buf, size_t __len,
+                              ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h:157:6: error: ‘size_t’ has not been declared
+      size_t __buflen)
+      ^
+In file included from /usr/include/features.h:367:0,
+                 from /usr/include/stdlib.h:24,
+                 from ../include/mico/assert.h:28,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/unistd.h:159:16: error: ‘size_t’ has not been declared
+ extern ssize_t __REDIRECT_NTH (__readlinkat_alias,
+                ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h:164:16: error: ‘size_t’ has not been declared
+ extern ssize_t __REDIRECT_NTH (__readlinkat_chk_warn,
+                ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h:164:16: error: ‘size_t’ has not been declared
+ extern ssize_t __REDIRECT_NTH (__readlinkat_chk_warn,
+                ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h:173:1: error: ‘size_t’ has not been declared
+ __NTH (readlinkat (int __fd, const char *__restrict __path,
+ ^
+In file included from /usr/include/unistd.h:1151:0,
+                 from ../include/mico/os-net.h:264,
+                 from orb.cc:43:
+/usr/include/x86_64-linux-gnu/bits/unistd.h: In function ‘ssize_t readlinkat(int, const char*, char*, int)’:
+/usr/include/x86_64-linux-gnu/bits/unistd.h:176:25: error: ‘size_t’ was not declared in this scope
+   if (__bos (__buf) != (size_t) -1)
+                         ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h:176:25: note: suggested alternatives:
+In file included from /usr/include/c++/5/string:38:0,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h:196:26: note:   ‘std::size_t’
+   typedef __SIZE_TYPE__  size_t;
+                          ^
+/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h:196:26: note:   ‘std::size_t’
+In file included from /usr/include/unistd.h:1151:0,
+                 from ../include/mico/os-net.h:264,
+                 from orb.cc:43:
+/usr/include/x86_64-linux-gnu/bits/unistd.h: At global scope:
+/usr/include/x86_64-linux-gnu/bits/unistd.h:189:41: error: ‘size_t’ has not been declared
+ extern char *__getcwd_chk (char *__buf, size_t __size, size_t __buflen)
+                                         ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h:189:56: error: ‘size_t’ has not been declared
+ extern char *__getcwd_chk (char *__buf, size_t __size, size_t __buflen)
+                                                        ^
+In file included from /usr/include/features.h:367:0,
+                 from /usr/include/stdlib.h:24,
+                 from ../include/mico/assert.h:28,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/unistd.h:191:14: error: ‘size_t’ has not been declared
+ extern char *__REDIRECT_NTH (__getcwd_alias,
+              ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h:193:14: error: ‘size_t’ has not been declared
+ extern char *__REDIRECT_NTH (__getcwd_chk_warn,
+              ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h:193:14: error: ‘size_t’ has not been declared
+ extern char *__REDIRECT_NTH (__getcwd_chk_warn,
+              ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h:200:1: error: ‘size_t’ has not been declared
+ __NTH (getcwd (char *__buf, size_t __size))
+ ^
+In file included from /usr/include/unistd.h:1151:0,
+                 from ../include/mico/os-net.h:264,
+                 from orb.cc:43:
+/usr/include/x86_64-linux-gnu/bits/unistd.h: In function ‘char* getcwd(char*, int)’:
+/usr/include/x86_64-linux-gnu/bits/unistd.h:202:25: error: ‘size_t’ was not declared in this scope
+   if (__bos (__buf) != (size_t) -1)
+                         ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h:202:25: note: suggested alternatives:
+In file included from /usr/include/c++/5/string:38:0,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h:196:26: note:   ‘std::size_t’
+   typedef __SIZE_TYPE__  size_t;
+                          ^
+/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h:196:26: note:   ‘std::size_t’
+In file included from /usr/include/unistd.h:1151:0,
+                 from ../include/mico/os-net.h:264,
+                 from orb.cc:43:
+/usr/include/x86_64-linux-gnu/bits/unistd.h: At global scope:
+/usr/include/x86_64-linux-gnu/bits/unistd.h:214:40: error: ‘size_t’ has not been declared
+ extern char *__getwd_chk (char *__buf, size_t buflen)
+                                        ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h: In function ‘char* getwd(char*)’:
+/usr/include/x86_64-linux-gnu/bits/unistd.h:223:25: error: ‘size_t’ was not declared in this scope
+   if (__bos (__buf) != (size_t) -1)
+                         ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h:223:25: note: suggested alternatives:
+In file included from /usr/include/c++/5/string:38:0,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h:196:26: note:   ‘std::size_t’
+   typedef __SIZE_TYPE__  size_t;
+                          ^
+/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h:196:26: note:   ‘std::size_t’
+In file included from /usr/include/unistd.h:1151:0,
+                 from ../include/mico/os-net.h:264,
+                 from orb.cc:43:
+/usr/include/x86_64-linux-gnu/bits/unistd.h: At global scope:
+/usr/include/x86_64-linux-gnu/bits/unistd.h:229:8: error: ‘size_t’ does not name a type
+ extern size_t __confstr_chk (int __name, char *__buf, size_t __len,
+        ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h:231:8: error: ‘size_t’ does not name a type
+ extern size_t __REDIRECT_NTH (__confstr_alias, (int __name, char *__buf,
+        ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h:233:8: error: ‘size_t’ does not name a type
+ extern size_t __REDIRECT_NTH (__confstr_chk_warn,
+        ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h:239:20: error: ‘size_t’ does not name a type
+ __fortify_function size_t
+                    ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h:254:59: error: ‘size_t’ has not been declared
+ extern int __getgroups_chk (int __size, __gid_t __list[], size_t __listlen)
+                                                           ^
+In file included from /usr/include/features.h:367:0,
+                 from /usr/include/stdlib.h:24,
+                 from ../include/mico/assert.h:28,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/unistd.h:258:12: error: ‘size_t’ has not been declared
+ extern int __REDIRECT_NTH (__getgroups_chk_warn,
+            ^
+In file included from /usr/include/unistd.h:1151:0,
+                 from ../include/mico/os-net.h:264,
+                 from orb.cc:43:
+/usr/include/x86_64-linux-gnu/bits/unistd.h: In function ‘int getgroups(int, __gid_t*)’:
+/usr/include/x86_64-linux-gnu/bits/unistd.h:267:26: error: ‘size_t’ was not declared in this scope
+   if (__bos (__list) != (size_t) -1)
+                          ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h:267:26: note: suggested alternatives:
+In file included from /usr/include/c++/5/string:38:0,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h:196:26: note:   ‘std::size_t’
+   typedef __SIZE_TYPE__  size_t;
+                          ^
+/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h:196:26: note:   ‘std::size_t’
+In file included from /usr/include/unistd.h:1151:0,
+                 from ../include/mico/os-net.h:264,
+                 from orb.cc:43:
+/usr/include/x86_64-linux-gnu/bits/unistd.h: At global scope:
+/usr/include/x86_64-linux-gnu/bits/unistd.h:279:52: error: ‘size_t’ has not been declared
+ extern int __ttyname_r_chk (int __fd, char *__buf, size_t __buflen,
+                                                    ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h:280:8: error: ‘size_t’ has not been declared
+        size_t __nreal) __THROW __nonnull ((2));
+        ^
+In file included from /usr/include/features.h:367:0,
+                 from /usr/include/stdlib.h:24,
+                 from ../include/mico/assert.h:28,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/unistd.h:281:12: error: ‘size_t’ has not been declared
+ extern int __REDIRECT_NTH (__ttyname_r_alias, (int __fd, char *__buf,
+            ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h:284:12: error: ‘size_t’ has not been declared
+ extern int __REDIRECT_NTH (__ttyname_r_chk_warn,
+            ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h:284:12: error: ‘size_t’ has not been declared
+ extern int __REDIRECT_NTH (__ttyname_r_chk_warn,
+            ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h:291:1: error: ‘size_t’ has not been declared
+ __NTH (ttyname_r (int __fd, char *__buf, size_t __buflen))
+ ^
+In file included from /usr/include/unistd.h:1151:0,
+                 from ../include/mico/os-net.h:264,
+                 from orb.cc:43:
+/usr/include/x86_64-linux-gnu/bits/unistd.h: In function ‘int ttyname_r(int, char*, int)’:
+/usr/include/x86_64-linux-gnu/bits/unistd.h:293:25: error: ‘size_t’ was not declared in this scope
+   if (__bos (__buf) != (size_t) -1)
+                         ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h:293:25: note: suggested alternatives:
+In file included from /usr/include/c++/5/string:38:0,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h:196:26: note:   ‘std::size_t’
+   typedef __SIZE_TYPE__  size_t;
+                          ^
+/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h:196:26: note:   ‘std::size_t’
+In file included from /usr/include/unistd.h:1151:0,
+                 from ../include/mico/os-net.h:264,
+                 from orb.cc:43:
+/usr/include/x86_64-linux-gnu/bits/unistd.h: At global scope:
+/usr/include/x86_64-linux-gnu/bits/unistd.h:306:43: error: ‘size_t’ has not been declared
+ extern int __getlogin_r_chk (char *__buf, size_t __buflen, size_t __nreal)
+                                           ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h:306:60: error: ‘size_t’ has not been declared
+ extern int __getlogin_r_chk (char *__buf, size_t __buflen, size_t __nreal)
+                                                            ^
+In file included from /usr/include/features.h:367:0,
+                 from /usr/include/stdlib.h:24,
+                 from ../include/mico/assert.h:28,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/unistd.h:308:12: error: ‘size_t’ has not been declared
+ extern int __REDIRECT (__getlogin_r_alias, (char *__buf, size_t __buflen),
+            ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h:310:12: error: ‘size_t’ has not been declared
+ extern int __REDIRECT (__getlogin_r_chk_warn,
+            ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h:310:12: error: ‘size_t’ has not been declared
+ extern int __REDIRECT (__getlogin_r_chk_warn,
+            ^
+In file included from /usr/include/unistd.h:1151:0,
+                 from ../include/mico/os-net.h:264,
+                 from orb.cc:43:
+/usr/include/x86_64-linux-gnu/bits/unistd.h:317:26: error: ‘size_t’ has not been declared
+ getlogin_r (char *__buf, size_t __buflen)
+                          ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h: In function ‘int getlogin_r(char*, int)’:
+/usr/include/x86_64-linux-gnu/bits/unistd.h:319:25: error: ‘size_t’ was not declared in this scope
+   if (__bos (__buf) != (size_t) -1)
+                         ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h:319:25: note: suggested alternatives:
+In file included from /usr/include/c++/5/string:38:0,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h:196:26: note:   ‘std::size_t’
+   typedef __SIZE_TYPE__  size_t;
+                          ^
+/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h:196:26: note:   ‘std::size_t’
+In file included from /usr/include/unistd.h:1151:0,
+                 from ../include/mico/os-net.h:264,
+                 from orb.cc:43:
+/usr/include/x86_64-linux-gnu/bits/unistd.h: At global scope:
+/usr/include/x86_64-linux-gnu/bits/unistd.h:333:44: error: ‘size_t’ has not been declared
+ extern int __gethostname_chk (char *__buf, size_t __buflen, size_t __nreal)
+                                            ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h:333:61: error: ‘size_t’ has not been declared
+ extern int __gethostname_chk (char *__buf, size_t __buflen, size_t __nreal)
+                                                             ^
+In file included from /usr/include/features.h:367:0,
+                 from /usr/include/stdlib.h:24,
+                 from ../include/mico/assert.h:28,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/unistd.h:335:12: error: ‘size_t’ has not been declared
+ extern int __REDIRECT_NTH (__gethostname_alias, (char *__buf, size_t __buflen),
+            ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h:337:12: error: ‘size_t’ has not been declared
+ extern int __REDIRECT_NTH (__gethostname_chk_warn,
+            ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h:337:12: error: ‘size_t’ has not been declared
+ extern int __REDIRECT_NTH (__gethostname_chk_warn,
+            ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h:344:1: error: ‘size_t’ has not been declared
+ __NTH (gethostname (char *__buf, size_t __buflen))
+ ^
+In file included from /usr/include/unistd.h:1151:0,
+                 from ../include/mico/os-net.h:264,
+                 from orb.cc:43:
+/usr/include/x86_64-linux-gnu/bits/unistd.h: In function ‘int gethostname(char*, int)’:
+/usr/include/x86_64-linux-gnu/bits/unistd.h:346:25: error: ‘size_t’ was not declared in this scope
+   if (__bos (__buf) != (size_t) -1)
+                         ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h:346:25: note: suggested alternatives:
+In file included from /usr/include/c++/5/string:38:0,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h:196:26: note:   ‘std::size_t’
+   typedef __SIZE_TYPE__  size_t;
+                          ^
+/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h:196:26: note:   ‘std::size_t’
+In file included from /usr/include/unistd.h:1151:0,
+                 from ../include/mico/os-net.h:264,
+                 from orb.cc:43:
+/usr/include/x86_64-linux-gnu/bits/unistd.h: At global scope:
+/usr/include/x86_64-linux-gnu/bits/unistd.h:360:46: error: ‘size_t’ has not been declared
+ extern int __getdomainname_chk (char *__buf, size_t __buflen, size_t __nreal)
+                                              ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h:360:63: error: ‘size_t’ has not been declared
+ extern int __getdomainname_chk (char *__buf, size_t __buflen, size_t __nreal)
+                                                               ^
+In file included from /usr/include/features.h:367:0,
+                 from /usr/include/stdlib.h:24,
+                 from ../include/mico/assert.h:28,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/unistd.h:362:12: error: ‘size_t’ has not been declared
+ extern int __REDIRECT_NTH (__getdomainname_alias, (char *__buf,
+            ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h:365:12: error: ‘size_t’ has not been declared
+ extern int __REDIRECT_NTH (__getdomainname_chk_warn,
+            ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h:365:12: error: ‘size_t’ has not been declared
+ extern int __REDIRECT_NTH (__getdomainname_chk_warn,
+            ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h:373:1: error: ‘size_t’ has not been declared
+ __NTH (getdomainname (char *__buf, size_t __buflen))
+ ^
+In file included from /usr/include/unistd.h:1151:0,
+                 from ../include/mico/os-net.h:264,
+                 from orb.cc:43:
+/usr/include/x86_64-linux-gnu/bits/unistd.h: In function ‘int getdomainname(char*, int)’:
+/usr/include/x86_64-linux-gnu/bits/unistd.h:375:25: error: ‘size_t’ was not declared in this scope
+   if (__bos (__buf) != (size_t) -1)
+                         ^
+/usr/include/x86_64-linux-gnu/bits/unistd.h:375:25: note: suggested alternatives:
+In file included from /usr/include/c++/5/string:38:0,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h:196:26: note:   ‘std::size_t’
+   typedef __SIZE_TYPE__  size_t;
+                          ^
+/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h:196:26: note:   ‘std::size_t’
+In file included from /usr/include/x86_64-linux-gnu/sys/socket.h:38:0,
+                 from ../include/mico/os-net.h:268,
+                 from orb.cc:43:
+/usr/include/x86_64-linux-gnu/bits/socket.h: At global scope:
+/usr/include/x86_64-linux-gnu/bits/socket.h:234:5: error: ‘size_t’ does not name a type
+     size_t msg_iovlen;  /* Number of elements in the vector.  */
+     ^
+/usr/include/x86_64-linux-gnu/bits/socket.h:237:5: error: ‘size_t’ does not name a type
+     size_t msg_controllen; /* Ancillary data buffer length.
+     ^
+/usr/include/x86_64-linux-gnu/bits/socket.h:248:5: error: ‘size_t’ does not name a type
+     size_t cmsg_len;  /* Length of data in cmsg_data plus length
+     ^
+/usr/include/x86_64-linux-gnu/bits/socket.h: In function ‘cmsghdr* __cmsg_nxthdr(msghdr*, cmsghdr*)’:
+/usr/include/x86_64-linux-gnu/bits/socket.h:285:8: error: ‘size_t’ was not declared in this scope
+   if ((size_t) __cmsg->cmsg_len < sizeof (struct cmsghdr))
+        ^
+/usr/include/x86_64-linux-gnu/bits/socket.h:285:8: note: suggested alternatives:
+In file included from /usr/include/c++/5/string:38:0,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h:196:26: note:   ‘std::size_t’
+   typedef __SIZE_TYPE__  size_t;
+                          ^
+/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h:196:26: note:   ‘std::size_t’
+In file included from /usr/include/x86_64-linux-gnu/sys/socket.h:38:0,
+                 from ../include/mico/os-net.h:268,
+                 from orb.cc:43:
+/usr/include/x86_64-linux-gnu/bits/socket.h:285:16: error: expected ‘)’ before ‘__cmsg’
+   if ((size_t) __cmsg->cmsg_len < sizeof (struct cmsghdr))
+                ^
+/usr/include/x86_64-linux-gnu/bits/socket.h:290:13: error: ‘struct cmsghdr’ has no member named ‘cmsg_len’
+           + CMSG_ALIGN (__cmsg->cmsg_len));
+             ^
+/usr/include/x86_64-linux-gnu/bits/socket.h:290:13: error: ‘size_t’ was not declared in this scope
+           + CMSG_ALIGN (__cmsg->cmsg_len));
+             ^
+/usr/include/x86_64-linux-gnu/bits/socket.h:290:13: note: suggested alternatives:
+In file included from /usr/include/c++/5/string:38:0,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h:196:26: note:   ‘std::size_t’
+   typedef __SIZE_TYPE__  size_t;
+                          ^
+/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h:196:26: note:   ‘std::size_t’
+In file included from /usr/include/x86_64-linux-gnu/sys/socket.h:38:0,
+                 from ../include/mico/os-net.h:268,
+                 from orb.cc:43:
+/usr/include/x86_64-linux-gnu/bits/socket.h:290:13: error: expected ‘)’ before ‘~’ token
+           + CMSG_ALIGN (__cmsg->cmsg_len));
+             ^
+/usr/include/x86_64-linux-gnu/bits/socket.h:290:43: error: expected ‘)’ before ‘;’ token
+           + CMSG_ALIGN (__cmsg->cmsg_len));
+                                           ^
+/usr/include/x86_64-linux-gnu/bits/socket.h:292:16: error: ‘struct msghdr’ has no member named ‘msg_controllen’
+      + __mhdr->msg_controllen)
+                ^
+/usr/include/x86_64-linux-gnu/bits/socket.h:293:38: error: ‘struct cmsghdr’ has no member named ‘cmsg_len’
+       || ((unsigned char *) __cmsg + CMSG_ALIGN (__cmsg->cmsg_len)
+                                      ^
+/usr/include/x86_64-linux-gnu/bits/socket.h:293:38: error: expected ‘)’ before ‘~’ token
+       || ((unsigned char *) __cmsg + CMSG_ALIGN (__cmsg->cmsg_len)
+                                      ^
+/usr/include/x86_64-linux-gnu/bits/socket.h:296:32: error: expected ‘)’ before ‘;’ token
+     return (struct cmsghdr *) 0;
+                                ^
+/usr/include/x86_64-linux-gnu/bits/socket.h:296:32: error: expected ‘)’ before ‘;’ token
+In file included from ../include/mico/os-net.h:268:0,
+                 from orb.cc:43:
+/usr/include/x86_64-linux-gnu/sys/socket.h: At global scope:
+/usr/include/x86_64-linux-gnu/sys/socket.h:149:51: error: ‘size_t’ has not been declared
+ extern ssize_t send (int __fd, const void *__buf, size_t __n, int __flags);
+                                                   ^
+/usr/include/x86_64-linux-gnu/sys/socket.h:156:45: error: ‘size_t’ has not been declared
+ extern ssize_t recv (int __fd, void *__buf, size_t __n, int __flags);
+                                             ^
+/usr/include/x86_64-linux-gnu/sys/socket.h:163:53: error: ‘size_t’ has not been declared
+ extern ssize_t sendto (int __fd, const void *__buf, size_t __n,
+                                                     ^
+/usr/include/x86_64-linux-gnu/sys/socket.h:174:60: error: ‘size_t’ has not been declared
+ extern ssize_t recvfrom (int __fd, void *__restrict __buf, size_t __n,
+                                                            ^
+In file included from /usr/include/x86_64-linux-gnu/sys/socket.h:280:0,
+                 from ../include/mico/os-net.h:268,
+                 from orb.cc:43:
+/usr/include/x86_64-linux-gnu/bits/socket2.h:23:51: error: ‘size_t’ has not been declared
+ extern ssize_t __recv_chk (int __fd, void *__buf, size_t __n, size_t __buflen,
+                                                   ^
+/usr/include/x86_64-linux-gnu/bits/socket2.h:23:63: error: ‘size_t’ has not been declared
+ extern ssize_t __recv_chk (int __fd, void *__buf, size_t __n, size_t __buflen,
+                                                               ^
+In file included from /usr/include/features.h:367:0,
+                 from /usr/include/stdlib.h:24,
+                 from ../include/mico/assert.h:28,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/socket2.h:25:16: error: ‘size_t’ has not been declared
+ extern ssize_t __REDIRECT (__recv_alias, (int __fd, void *__buf, size_t __n,
+                ^
+/usr/include/x86_64-linux-gnu/bits/socket2.h:27:16: error: ‘size_t’ has not been declared
+ extern ssize_t __REDIRECT (__recv_chk_warn,
+                ^
+/usr/include/x86_64-linux-gnu/bits/socket2.h:27:16: error: ‘size_t’ has not been declared
+ extern ssize_t __REDIRECT (__recv_chk_warn,
+                ^
+In file included from /usr/include/x86_64-linux-gnu/sys/socket.h:280:0,
+                 from ../include/mico/os-net.h:268,
+                 from orb.cc:43:
+/usr/include/x86_64-linux-gnu/bits/socket2.h:34:30: error: ‘size_t’ has not been declared
+ recv (int __fd, void *__buf, size_t __n, int __flags)
+                              ^
+/usr/include/x86_64-linux-gnu/bits/socket2.h: In function ‘ssize_t recv(int, void*, int, int)’:
+/usr/include/x86_64-linux-gnu/bits/socket2.h:36:26: error: ‘size_t’ was not declared in this scope
+   if (__bos0 (__buf) != (size_t) -1)
+                          ^
+/usr/include/x86_64-linux-gnu/bits/socket2.h:36:26: note: suggested alternatives:
+In file included from /usr/include/c++/5/string:38:0,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h:196:26: note:   ‘std::size_t’
+   typedef __SIZE_TYPE__  size_t;
+                          ^
+/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h:196:26: note:   ‘std::size_t’
+In file included from /usr/include/x86_64-linux-gnu/sys/socket.h:280:0,
+                 from ../include/mico/os-net.h:268,
+                 from orb.cc:43:
+/usr/include/x86_64-linux-gnu/bits/socket2.h: At global scope:
+/usr/include/x86_64-linux-gnu/bits/socket2.h:47:66: error: ‘size_t’ has not been declared
+ extern ssize_t __recvfrom_chk (int __fd, void *__restrict __buf, size_t __n,
+                                                                  ^
+/usr/include/x86_64-linux-gnu/bits/socket2.h:48:11: error: ‘size_t’ has not been declared
+           size_t __buflen, int __flags,
+           ^
+In file included from /usr/include/features.h:367:0,
+                 from /usr/include/stdlib.h:24,
+                 from ../include/mico/assert.h:28,
+                 from ../include/CORBA.h:30,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/bits/socket2.h:51:16: error: ‘size_t’ has not been declared
+ extern ssize_t __REDIRECT (__recvfrom_alias,
+                ^
+/usr/include/x86_64-linux-gnu/bits/socket2.h:55:16: error: ‘size_t’ has not been declared
+ extern ssize_t __REDIRECT (__recvfrom_chk_warn,
+                ^
+/usr/include/x86_64-linux-gnu/bits/socket2.h:55:16: error: ‘size_t’ has not been declared
+ extern ssize_t __REDIRECT (__recvfrom_chk_warn,
+                ^
+In file included from /usr/include/x86_64-linux-gnu/sys/socket.h:280:0,
+                 from ../include/mico/os-net.h:268,
+                 from orb.cc:43:
+/usr/include/x86_64-linux-gnu/bits/socket2.h:64:45: error: ‘size_t’ has not been declared
+ recvfrom (int __fd, void *__restrict __buf, size_t __n, int __flags,
+                                             ^
+/usr/include/x86_64-linux-gnu/bits/socket2.h: In function ‘ssize_t recvfrom(int, void*, int, int, sockaddr*, socklen_t*)’:
+/usr/include/x86_64-linux-gnu/bits/socket2.h:67:26: error: ‘size_t’ was not declared in this scope
+   if (__bos0 (__buf) != (size_t) -1)
+                          ^
+/usr/include/x86_64-linux-gnu/bits/socket2.h:67:26: note: suggested alternatives:
+In file included from /usr/include/c++/5/string:38:0,
+                 from ../include/CORBA.h:123,
+                 from orb.cc:32:
+/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h:196:26: note:   ‘std::size_t’
+   typedef __SIZE_TYPE__  size_t;
+                          ^
+/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h:196:26: note:   ‘std::size_t’
+In file included from ../include/mico/os-net.h:273:0,
+                 from orb.cc:43:
+/usr/include/arpa/inet.h: At global scope:
+/usr/include/arpa/inet.h:77:55: error: ‘size_t’ has not been declared
+ extern char *inet_neta (in_addr_t __net, char *__buf, size_t __len) __THROW;
+                                                       ^
+/usr/include/arpa/inet.h:83:21: error: ‘size_t’ has not been declared
+        char *__buf, size_t __len) __THROW;
+                     ^
+/usr/include/arpa/inet.h:89:19: error: ‘size_t’ has not been declared
+      void *__buf, size_t __len) __THROW;
+                   ^
+In file included from /usr/include/netdb.h:32:0,
+                 from ../include/mico/os-net.h:277,
+                 from orb.cc:43:
+/usr/include/rpc/netdb.h:61:23: error: ‘size_t’ has not been declared
+       char *__buffer, size_t __buflen,
+                       ^
+/usr/include/rpc/netdb.h:65:25: error: ‘size_t’ has not been declared
+         char *__buffer, size_t __buflen,
+                         ^
+/usr/include/rpc/netdb.h:69:4: error: ‘size_t’ has not been declared
+    size_t __buflen, struct rpcent **__result) __THROW;
+    ^
+In file included from ../include/mico/os-net.h:277:0,
+                 from orb.cc:43:
+/usr/include/netdb.h:168:29: error: ‘size_t’ has not been declared
+     char *__restrict __buf, size_t __buflen,
+                             ^
+/usr/include/netdb.h:175:32: error: ‘size_t’ has not been declared
+        char *__restrict __buf, size_t __buflen,
+                                ^
+/usr/include/netdb.h:181:32: error: ‘size_t’ has not been declared
+        char *__restrict __buf, size_t __buflen,
+                                ^
+/usr/include/netdb.h:187:33: error: ‘size_t’ has not been declared
+         char *__restrict __buf, size_t __buflen,
+                                 ^
+/usr/include/netdb.h:238:28: error: ‘size_t’ has not been declared
+    char *__restrict __buf, size_t __buflen,
+                            ^
+/usr/include/netdb.h:244:31: error: ‘size_t’ has not been declared
+       char *__restrict __buf, size_t __buflen,
+                               ^
+/usr/include/netdb.h:250:31: error: ‘size_t’ has not been declared
+       char *__restrict __buf, size_t __buflen,
+                               ^
+/usr/include/netdb.h:309:29: error: ‘size_t’ has not been declared
+     char *__restrict __buf, size_t __buflen,
+                             ^
+/usr/include/netdb.h:315:32: error: ‘size_t’ has not been declared
+        char *__restrict __buf, size_t __buflen,
+                                ^
+/usr/include/netdb.h:320:32: error: ‘size_t’ has not been declared
+        char *__restrict __buf, size_t __buflen,
+                                ^
+/usr/include/netdb.h:375:30: error: ‘size_t’ has not been declared
+      char *__restrict __buf, size_t __buflen,
+                              ^
+/usr/include/netdb.h:380:33: error: ‘size_t’ has not been declared
+         char *__restrict __buf, size_t __buflen,
+                                 ^
+/usr/include/netdb.h:385:35: error: ‘size_t’ has not been declared
+           char *__restrict __buf, size_t __buflen,
+                                   ^
+/usr/include/netdb.h:435:33: error: ‘size_t’ has not been declared
+      char *__restrict __buffer, size_t __buflen);
+                                 ^
+In file included from /usr/include/signal.h:323:0,
+                 from ../include/mico/os-net.h:278,
+                 from orb.cc:43:
+/usr/include/x86_64-linux-gnu/bits/sigstack.h:53:5: error: ‘size_t’ does not name a type
+     size_t ss_size;
+     ^
+In file included from ../include/mico/impl.h:37:0,
+                 from orb.cc:44:
+../include/mico/util.h:203:8: error: ‘size_t’ does not name a type
+ extern size_t xwcslen (const wchar_t *);
+        ^
+../include/mico/util.h:206:55: error: ‘size_t’ has not been declared
+ extern wchar_t *xwcsncpy (wchar_t *, const wchar_t *, size_t);
+                                                       ^
+In file included from ../include/mico/transport/sharedMemory.h:29:0,
+                 from ../include/mico/impl.h:84,
+                 from orb.cc:44:
+/usr/include/x86_64-linux-gnu/sys/mman.h:57:34: error: ‘size_t’ has not been declared
+ extern void *mmap (void *__addr, size_t __len, int __prot,
+                                  ^
+/usr/include/x86_64-linux-gnu/sys/mman.h:70:36: error: ‘size_t’ has not been declared
+ extern void *mmap64 (void *__addr, size_t __len, int __prot,
+                                    ^
+/usr/include/x86_64-linux-gnu/sys/mman.h:76:34: error: ‘size_t’ has not been declared
+ extern int munmap (void *__addr, size_t __len) __THROW;
+                                  ^
+/usr/include/x86_64-linux-gnu/sys/mman.h:81:36: error: ‘size_t’ has not been declared
+ extern int mprotect (void *__addr, size_t __len, int __prot) __THROW;
+                                    ^
+/usr/include/x86_64-linux-gnu/sys/mman.h:89:33: error: ‘size_t’ has not been declared
+ extern int msync (void *__addr, size_t __len, int __flags);
+                                 ^
+/usr/include/x86_64-linux-gnu/sys/mman.h:94:35: error: ‘size_t’ has not been declared
+ extern int madvise (void *__addr, size_t __len, int __advice) __THROW;
+                                   ^
+/usr/include/x86_64-linux-gnu/sys/mman.h:98:41: error: ‘size_t’ has not been declared
+ extern int posix_madvise (void *__addr, size_t __len, int __advice) __THROW;
+                                         ^
+/usr/include/x86_64-linux-gnu/sys/mman.h:103:39: error: ‘size_t’ has not been declared
+ extern int mlock (const void *__addr, size_t __len) __THROW;
+                                       ^
+/usr/include/x86_64-linux-gnu/sys/mman.h:106:41: error: ‘size_t’ has not been declared
+ extern int munlock (const void *__addr, size_t __len) __THROW;
+                                         ^
+/usr/include/x86_64-linux-gnu/sys/mman.h:123:36: error: ‘size_t’ has not been declared
+ extern int mincore (void *__start, size_t __len, unsigned char *__vec)
+                                    ^
+/usr/include/x86_64-linux-gnu/sys/mman.h:133:36: error: ‘size_t’ has not been declared
+ extern void *mremap (void *__addr, size_t __old_len, size_t __new_len,
+                                    ^
+/usr/include/x86_64-linux-gnu/sys/mman.h:133:54: error: ‘size_t’ has not been declared
+ extern void *mremap (void *__addr, size_t __old_len, size_t __new_len,
+                                                      ^
+/usr/include/x86_64-linux-gnu/sys/mman.h:138:45: error: ‘size_t’ has not been declared
+ extern int remap_file_pages (void *__start, size_t __size, int __prot,
+                                             ^
+/usr/include/x86_64-linux-gnu/sys/mman.h:139:9: error: ‘size_t’ has not been declared
+         size_t __pgoff, int __flags) __THROW;
+         ^
+In file included from ../include/mico/impl.h:84:0,
+                 from orb.cc:44:
+../include/mico/transport/sharedMemory.h:91:16: error: ‘size_t’ has not been declared
+    bool Create(size_t nSize, int mode = C_READ_WRITE);
+                ^
+../include/mico/transport/sharedMemory.h:105:4: error: ‘size_t’ does not name a type
+    size_t m_nSize;
+    ^
+In file included from /usr/include/c++/5/bits/stl_algo.h:59:0,
+                 from /usr/include/c++/5/algorithm:62,
+                 from orb.cc:84:
+/usr/include/c++/5/cstdlib:143:11: error: ‘::mbstowcs’ has not been declared
+   using ::mbstowcs;
+           ^
+/usr/include/c++/5/cstdlib:160:11: error: ‘::wcstombs’ has not been declared
+   using ::wcstombs;
+           ^
+orb.cc: In static member function ‘static CORBA::ORB::ObjectTag* CORBA::ORB::string_to_tag(const char*)’:
+orb.cc:1449:33: error: ‘strlen’ was not declared in this scope
+     CORBA::ULong len = strlen (s);
+                                 ^
+../MakeVars:208: recipe for target 'orb.pic.o' failed
+make: *** [orb.pic.o] Error 1
