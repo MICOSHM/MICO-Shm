@@ -839,7 +839,7 @@ MICO::SharedMemoryProfile::SharedMemoryProfile (CORBA::Octet *o, CORBA::ULong l,
     objkey = new CORBA::Octet[length = l];
     memcpy (objkey, o, length);
 
-    //addr = shma;
+    addr = shma;
 }
 
 MICO::SharedMemoryProfile::ProfileId
