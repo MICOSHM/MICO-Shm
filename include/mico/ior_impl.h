@@ -82,17 +82,19 @@ public:
 class SharedMemoryProfile : public CORBA::IORProfile {
   CORBA::Octet *objkey;
   CORBA::ULong length;
-  MICO::SharedMemoryAddress myaddr;
+  MICO::SharedMemoryAddress addr;
   CORBA::MultiComponent comps;
   ProfileId tagid;
   CORBA::UShort version;
 
 public:
   SharedMemoryProfile (CORBA::Octet *objkey, CORBA::ULong length,
-   const SharedMemoryAddress &,
+   SharedMemoryAddress &,
    const CORBA::MultiComponent & = CORBA::MultiComponent(),
    CORBA::UShort version = 0x0100,
-   ProfileId = TAG_INTERNET_IOP);
+   ProfileId = TAG_SHM_IOP);
+
+   ProfileId id () const;
 
 };
 

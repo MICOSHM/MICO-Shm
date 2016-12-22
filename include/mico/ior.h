@@ -127,7 +127,8 @@ public:
 	TAG_SSL_INTERNET_IOP = 20002, // mico-extension
         TAG_SSL_UNIX_IOP = 20003, // mico-extension
 	TAG_UDP_IOP = 20004, // mico-extension
-	TAG_SSL_UDP_IOP = 20005 // mico-extension
+	TAG_SSL_UDP_IOP = 20005, // mico-extension
+  TAG_SHM_IOP = 20006
     };
 
     static IORProfile *decode (DataDecoder &);
@@ -221,4 +222,3 @@ public:
 }
 
 #endif // __mico_ior_h__
-

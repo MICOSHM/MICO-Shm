@@ -56,14 +56,14 @@ public:
     CORBA::Boolean has_proto (const char *) const;
 };
 
-class SharedMemoryAddress: public CORBA::Address {
+class SharedMemoryAddress {
 private:
   std::string _address;
   std::string _semName;
   int _length;
 
 public:
-  SharedMemoryAddress (std::string address, std::string semName, int length);
+  SharedMemoryAddress (std::string address = NULL, std::string semName = NULL, int length = 0);
   std::string address();
   std::string semName();
   int length();

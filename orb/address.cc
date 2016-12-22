@@ -280,32 +280,32 @@ MICO::SharedMemoryAddress::length() {
 }
 
 CORBA::IORProfile *
-MICO::InetAddress::make_ior_profile (CORBA::Octet *key,
+MICO::SharedMemoryAddress::make_ior_profile (CORBA::Octet *key,
 				     CORBA::ULong len,
 				     const CORBA::MultiComponent &mc,
                                      CORBA::UShort version) const
 {
-    struct sockaddr_in sin = sockaddr();
-    switch (_family) {
-    case STREAM:
-	if (sin.sin_addr.s_addr == htonl (INADDR_ANY)) {
-	    InetAddress ia (InetAddress::hostname().c_str(), port());
-	    return new IIOPProfile (key, len, ia, mc, version);
-	}
-	return new IIOPProfile (key, len, *this, mc, version);
-    case DGRAM:
-	if (sin.sin_addr.s_addr == htonl (INADDR_ANY)) {
-	    InetAddress ia (InetAddress::hostname().c_str(), port(),
-			    InetAddress::DGRAM);
-	    return new IIOPProfile (key, len, ia, mc, version,
-				    CORBA::IORProfile::TAG_UDP_IOP);
-	}
-	return new IIOPProfile (key, len, *this, mc, version,
-				CORBA::IORProfile::TAG_UDP_IOP);
-    default:
-	assert (0);
-	return 0;
-    }
+    //struct sockaddr_in sin = sockaddr();
+    //switch (_family) {
+    //case STREAM:
+	//if (sin.sin_addr.s_addr == htonl (INADDR_ANY)) {
+	  //  InetAddress ia (InetAddress::hostname().c_str(), port());
+	    //return new IIOPProfile (key, len, ia, mc, version);
+//	}
+	//return new IIOPProfile (key, len, *this, mc, version);
+    //case DGRAM:
+	//if (sin.sin_addr.s_addr == htonl (INADDR_ANY)) {
+	  //  InetAddress ia (InetAddress::hostname().c_str(), port(),
+			//    InetAddress::DGRAM);
+	    //return new IIOPProfile (key, len, ia, mc, version,
+				//    CORBA::IORProfile::TAG_UDP_IOP);
+	//}
+	//return new IIOPProfile (key, len, *this, mc, version,
+		//		CORBA::IORProfile::TAG_UDP_IOP);
+    //default:
+	//assert (0);
+	//return 0;
+    //}
 }
 
 /****************************** InetAddress *****************************/
