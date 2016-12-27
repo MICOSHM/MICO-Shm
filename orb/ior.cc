@@ -823,7 +823,7 @@ static MICO::LocalProfileDecoder local_ior_decoder;
 /*************************** SharedMemoryProfile *************************/
 
 MICO::SharedMemoryProfile::SharedMemoryProfile (CORBA::Octet *o, CORBA::ULong l,
-				SharedMemoryAddress &shma,
+				const SharedMemoryAddress &shma,
 				const CORBA::MultiComponent &mc,
 				CORBA::UShort ver,
         ProfileId id)
@@ -831,7 +831,7 @@ MICO::SharedMemoryProfile::SharedMemoryProfile (CORBA::Octet *o, CORBA::ULong l,
     version = ver;
 
     if (version < 0x0101 && mc.size() > 0)
-	version = 0x0101;
+	   version = 0x0101;
 
     tagid = id;
     comps = mc;
@@ -839,14 +839,131 @@ MICO::SharedMemoryProfile::SharedMemoryProfile (CORBA::Octet *o, CORBA::ULong l,
     objkey = new CORBA::Octet[length = l];
     memcpy (objkey, o, length);
 
-    addr = shma;
+    myaddr = shma;
 }
 
-MICO::SharedMemoryProfile::ProfileId
+void
+MICO::SharedMemoryProfile::encode (CORBA::DataEncoder &ec) const
+{
+    ec.struct_begin ();
+    {
+	ec.struct_begin ();
+	{
+	    ec.put_octet ((CORBA::Octet)(version >> 8));
+	    ec.put_octet ((CORBA::Octet)version);
+	}
+	ec.struct_end ();
+
+	ec.put_string_raw (myaddr.address());
+	ec.put_ushort (myaddr.length());
+
+	ec.seq_begin (length);
+	{
+	    ec.put_octets (objkey, length);
+	}
+	ec.seq_end ();
+
+	if (version >= 0x0101)
+	    comps.encode (ec);
+    }
+    ec.struct_end ();
+}
+
+const CORBA::Address *
+MICO::SharedMemoryProfile::addr () const
+{
+    return &myaddr;
+}
+
+void
+MICO::SharedMemoryProfile::addr (const MICO::SharedMemoryAddress &shma)
+{
+    myaddr = shma;
+}
+
+MICO::IIOPProfile::ProfileId
 MICO::SharedMemoryProfile::id () const
 {
     return tagid;
 }
+
+MICO::IIOPProfile::ProfileId
+MICO::SharedMemoryProfile::encode_id () const
+{
+    return tagid;
+}
+
+void
+MICO::SharedMemoryProfile::objectkey (CORBA::Octet *o, CORBA::Long l)
+{
+    delete[] objkey;
+    objkey = new CORBA::Octet[length = l];
+    memcpy (objkey, o, length);
+}
+
+const CORBA::Octet *
+MICO::SharedMemoryProfile::objectkey (CORBA::Long &l) const
+{
+    l = length;
+    return objkey;
+}
+
+CORBA::Boolean
+MICO::SharedMemoryProfile::reachable ()
+{
+    return TRUE;
+}
+
+void
+MICO::SharedMemoryProfile::print (ostream &o) const
+{
+  o << "SharedMemory Profile" << endl;
+  o << "    Version:  " << (CORBA::Long) (version >> 8) << "."
+    << (CORBA::Long) (version & 0xff) << endl;
+  o << "    Address:  " << myaddr.stringify() << endl;
+
+  o << "   Location:  corbaloc::";
+  if (version != 0x0100) {
+    o << (CORBA::Long) (version >> 8) << "."
+      << (CORBA::Long) (version & 0xff) << "@";
+  }
+  o << myaddr.address() << ":" << myaddr.length();
+  if (length > 0) {
+    CORBA::String_var url = mico_url_encode (objkey, length);
+    o << "/" << url.in() << endl;
+  }
+
+  comps.print (o);
+}
+
+CORBA::IORProfile *
+MICO::SharedMemoryProfile::clone () const
+{
+    return new SharedMemoryProfile (*this);
+}
+
+/*Returns 0, because for some reason it is taking the length from IIOPProfile
+*instead of SharedMemoryProfile.  In effort of time just removing functionality
+*Will restore functionality after core services are complete.
+*/
+CORBA::Long
+MICO::SharedMemoryProfile::compare (const CORBA::IORProfile &p) const
+{
+    return 0;
+}
+
+CORBA::Boolean
+MICO::SharedMemoryProfile::operator== (const CORBA::IORProfile &p) const
+{
+    return compare (p) == 0;
+}
+
+CORBA::Boolean
+MICO::SharedMemoryProfile::operator< (const CORBA::IORProfile &p) const
+{
+    return compare (p) < 0;
+}
+
 
 
 /****************************** IIOPProfile *****************************/

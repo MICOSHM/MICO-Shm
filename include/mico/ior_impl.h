@@ -82,20 +82,32 @@ public:
 class SharedMemoryProfile : public CORBA::IORProfile {
   CORBA::Octet *objkey;
   CORBA::ULong length;
-  MICO::SharedMemoryAddress addr;
+  MICO::SharedMemoryAddress myaddr;
   CORBA::MultiComponent comps;
   ProfileId tagid;
   CORBA::UShort version;
 
 public:
   SharedMemoryProfile (CORBA::Octet *objkey, CORBA::ULong length,
-   SharedMemoryAddress &,
+   const SharedMemoryAddress &,
    const CORBA::MultiComponent & = CORBA::MultiComponent(),
    CORBA::UShort version = 0x0100,
    ProfileId = TAG_SHM_IOP);
 
+   void encode (CORBA::DataEncoder &) const;
+   const CORBA::Address *addr () const;
+   void addr (const SharedMemoryAddress &);
    ProfileId id () const;
+   ProfileId encode_id () const;
+   void objectkey (CORBA::Octet *, CORBA::Long length);
+   const CORBA::Octet *objectkey (CORBA::Long &length) const;
+   CORBA::Boolean reachable ();
+   void print (std::ostream &) const;
 
+   CORBA::IORProfile *clone () const;
+   CORBA::Long compare (const CORBA::IORProfile &) const;
+   CORBA::Boolean operator== (const CORBA::IORProfile &) const;
+   CORBA::Boolean operator< (const CORBA::IORProfile &) const;
 };
 
 class IIOPProfile : public CORBA::IORProfile,

@@ -3210,22 +3210,21 @@ MICO::SharedMemory::listen (vector<std::string>& addr)
 		}
 
 		//replace with shm ior creation
-  //
-	//	prof = tserv->addr()->make_ior_profile ((CORBA::Octet *)"", 1,CORBA::MultiComponent(),_iiop_ver);
-  //
+
+		//prof = tserv->addr()->make_ior_profile ((CORBA::Octet *)"", 1,CORBA::MultiComponent(),_iiop_ver);
+
 
 
     //bound_addr = tserv->addr();
     //if (MICO::Logger::IsLogged (MICO::Logger::IIOP)) {
       //MICOMT::AutoDebugLock __lock;
       //MICO::Logger::Stream (MICO::Logger::IIOP)
-//	<< "IIOP: server listening on "
-//	<< tserv->addr()->stringify()
-//	<< " IIOP version "
-//	<< (_iiop_ver >> 8) << "." << (_iiop_ver & 255)
-//	<< endl;
-//    }
-
+	//<< "IIOP: server listening on "
+	//<< tserv->addr()->stringify()
+	//<< " IIOP version "
+	//<< (_iiop_ver >> 8) << "." << (_iiop_ver & 255)
+	//<< endl;
+    //}
     /*
      * install an IIOP profile tag in the ORB's object template.
      * object adapters will use this template to generate new object
@@ -3233,13 +3232,13 @@ MICO::SharedMemory::listen (vector<std::string>& addr)
      */
 
     //if (MICO::Logger::IsLogged (MICO::Logger::GIOP)) {
-//	MICOMT::AutoDebugLock __lock;
-//	MICO::Logger::Stream (MICO::Logger::GIOP)
-//	    << "binding to " << prof->addr()->stringify() << endl;
-//    }
-//    _orb->ior_template()->add_profile (prof);
+	//MICOMT::AutoDebugLock __lock;
+	//MICO::Logger::Stream (MICO::Logger::GIOP)
+	    //<< "binding to " << prof->addr()->stringify() << endl;
+    //}
+    //_orb->ior_template()->add_profile (prof);
 
-//    _tservers.push_back(tserv);
+    //_tservers.push_back(tserv);
 //#ifdef HAVE_THREADS
     //if (!MICO::MTManager::thread_pool())
 	//tserv->start();

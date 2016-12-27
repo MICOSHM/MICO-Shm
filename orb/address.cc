@@ -259,23 +259,30 @@ static MICO::LocalAddressParser local_address_parser;
 
 /**************************** SharedMemoryAddress ***********************/
 
+/*Many of these methods were inherited from Address, for now they have been
+*gutted in an effort to get core functionality working.  In time they could
+*be reworked to offer more fucntionality for teh SharedMemoryAddress class.
+*SharedMemoryAddress now inherites from address class because some funcitons
+*in IOR.cc require private members fo teh address class in teh SharedMemoryProfile.
+*/
+
 MICO::SharedMemoryAddress::SharedMemoryAddress(std::string address, std::string semName, int length)
   : _address(address), _semName(semName), _length(length)
 {
 }
 
 std::string
-MICO::SharedMemoryAddress::address() {
+MICO::SharedMemoryAddress::address() const {
   return _address;
 }
 
 std::string
-MICO::SharedMemoryAddress::semName() {
+MICO::SharedMemoryAddress::semName() const {
   return _semName;
 }
 
 int
-MICO::SharedMemoryAddress::length() {
+MICO::SharedMemoryAddress::length() const {
   return _length;
 }
 
@@ -285,27 +292,90 @@ MICO::SharedMemoryAddress::make_ior_profile (CORBA::Octet *key,
 				     const CORBA::MultiComponent &mc,
                                      CORBA::UShort version) const
 {
-    //struct sockaddr_in sin = sockaddr();
-    //switch (_family) {
-    //case STREAM:
-	//if (sin.sin_addr.s_addr == htonl (INADDR_ANY)) {
-	  //  InetAddress ia (InetAddress::hostname().c_str(), port());
-	    //return new IIOPProfile (key, len, ia, mc, version);
-//	}
-	//return new IIOPProfile (key, len, *this, mc, version);
-    //case DGRAM:
-	//if (sin.sin_addr.s_addr == htonl (INADDR_ANY)) {
-	  //  InetAddress ia (InetAddress::hostname().c_str(), port(),
-			//    InetAddress::DGRAM);
-	    //return new IIOPProfile (key, len, ia, mc, version,
-				//    CORBA::IORProfile::TAG_UDP_IOP);
-	//}
-	//return new IIOPProfile (key, len, *this, mc, version,
-		//		CORBA::IORProfile::TAG_UDP_IOP);
-    //default:
-	//assert (0);
-	//return 0;
-    //}
+	  SharedMemoryAddress shma (address(), semName(), length());
+	  return new SharedMemoryProfile (key, len, shma, mc, version);
+}
+
+string
+MICO::SharedMemoryAddress::stringify () const
+{
+    string s = proto();
+    s += ":";
+    //CORBA::Boolean r = resolve_host ();
+
+      s += _address;
+
+    s += ":";
+    s += xdec (_length);
+    return s;
+}
+
+const char *
+MICO::SharedMemoryAddress::proto () const
+{
+
+    return "shared memory";
+}
+
+CORBA::Transport *
+MICO::SharedMemoryAddress::make_transport () const
+{
+	return 0;
+}
+
+CORBA::TransportServer *
+MICO::SharedMemoryAddress::make_transport_server () const
+{
+	return 0;
+
+}
+
+CORBA::Boolean
+MICO::SharedMemoryAddress::is_local () const
+{
+    return FALSE;
+}
+
+CORBA::Boolean
+MICO::SharedMemoryAddress::is_here () const
+{
+    /*
+     * This test is not necessarily correct, since hostid() could give
+     * a different interface from what ipaddr() gives, fooling the
+     * determination to incorrectly assume an address to be remote.
+     */
+    return FALSE;
+}
+
+CORBA::Address *
+MICO::SharedMemoryAddress::clone () const
+{
+    return new SharedMemoryAddress (*this);
+}
+
+CORBA::Long
+MICO::SharedMemoryAddress::compare (const CORBA::Address &a) const
+{
+      return 0;
+}
+
+CORBA::Boolean
+MICO::SharedMemoryAddress::operator== (const CORBA::Address &a) const
+{
+    return compare (a) == 0;
+}
+
+CORBA::Boolean
+MICO::SharedMemoryAddress::operator< (const CORBA::Address &a) const
+{
+    return compare (a) < 0;
+}
+
+CORBA::Boolean
+MICO::SharedMemoryAddress::resolve_host () const
+{
+
+    return TRUE;
 }
 
 /****************************** InetAddress *****************************/

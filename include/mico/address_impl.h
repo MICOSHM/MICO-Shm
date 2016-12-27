@@ -56,7 +56,7 @@ public:
     CORBA::Boolean has_proto (const char *) const;
 };
 
-class SharedMemoryAddress {
+class SharedMemoryAddress : public CORBA::Address {
 private:
   std::string _address;
   std::string _semName;
@@ -64,12 +64,28 @@ private:
 
 public:
   SharedMemoryAddress (std::string address = NULL, std::string semName = NULL, int length = 0);
-  std::string address();
-  std::string semName();
-  int length();
+  std::string address() const;
+  std::string semName() const;
+  int length() const;
+
   CORBA::IORProfile *make_ior_profile (
   CORBA::Octet *, CORBA::ULong, const CORBA::MultiComponent &,
       CORBA::UShort version = 0x0100) const;
+  std::string stringify () const;
+  const char *proto () const;
+  CORBA::Transport *make_transport () const;
+  CORBA::TransportServer *make_transport_server () const;
+  CORBA::Boolean is_local () const;
+  CORBA::Boolean is_here () const;
+
+  CORBA::Address *clone () const;
+
+  CORBA::Long compare (const CORBA::Address &) const;
+  CORBA::Boolean operator== (const CORBA::Address &) const;
+  CORBA::Boolean operator< (const CORBA::Address &) const;
+
+  CORBA::Boolean resolve_host () const;
+
 };
 
 class InetAddress : public CORBA::Address {
