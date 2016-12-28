@@ -710,9 +710,13 @@ public:
     { return _msgid; }
 };
 
-class SharedMemory {
+class SharedMemoryServer {
+  CORBA::UShort _iiop_ver = 0x0100;
+  CORBA::ORB_ptr _orb;
 public:
-    CORBA::Boolean listen(std::vector<std::string>& addr);
+  SharedMemoryServer (CORBA::ORB_ptr, CORBA::UShort iiop_ver = 0x0100,
+  CORBA::ULong max_size = 0);
+  CORBA::Boolean listen(std::vector<std::string>& addr);
 };
 
 class IIOPProxy : public CORBA::ObjectAdapter, public GIOPConnCallback, public GIOPConnMgr {

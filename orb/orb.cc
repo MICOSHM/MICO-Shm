@@ -4010,6 +4010,8 @@ CORBA::ORB_init (int &argc, char **argv, const char *_id)
 
 		// create Shared Memory Segment
 	if (run_shm) {
+		MICO::SharedMemoryServer* shm_server_instance
+		= new MICO::SharedMemoryServer (orb_instance, iiop_ver, max_message_size);
 			for (mico_vec_size_type i = 0; i < shmaddr.size(); ++i) {
 		vector<string> addr = Address::sharedMemoryParse (shmaddr[i].c_str());
 		if (addr.empty()) {

@@ -3195,9 +3195,10 @@ MICO::GIOPConnCallback::send_orb_msg (GIOPConn *conn, ORBMsg::Event ev) {
 /*******************************Shared Memory****************************/
 
 CORBA::Boolean
-MICO::SharedMemory::listen (vector<std::string>& addr)
+MICO::SharedMemoryServer::listen (vector<std::string>& addr)
 {
     CORBA::IORProfile *prof;
+		MICO::SharedMemoryAddress shma =  SharedMemoryAddress(addr[0],addr[1], atoi(addr[2].c_str()));
 		//replace this with shm segment creation
 		if(!addr.empty()){
 			try{
@@ -3211,7 +3212,7 @@ MICO::SharedMemory::listen (vector<std::string>& addr)
 
 		//replace with shm ior creation
 
-		//prof = tserv->addr()->make_ior_profile ((CORBA::Octet *)"", 1,CORBA::MultiComponent(),_iiop_ver);
+		prof = shma.make_ior_profile ((CORBA::Octet *)"", 1,CORBA::MultiComponent(),_iiop_ver);
 
 
 
@@ -3236,7 +3237,7 @@ MICO::SharedMemory::listen (vector<std::string>& addr)
 	//MICO::Logger::Stream (MICO::Logger::GIOP)
 	    //<< "binding to " << prof->addr()->stringify() << endl;
     //}
-    //_orb->ior_template()->add_profile (prof);
+    _orb->ior_template()->add_profile (prof);
 
     //_tservers.push_back(tserv);
 //#ifdef HAVE_THREADS
