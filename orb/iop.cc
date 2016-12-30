@@ -3194,6 +3194,17 @@ MICO::GIOPConnCallback::send_orb_msg (GIOPConn *conn, ORBMsg::Event ev) {
 
 /*******************************Shared Memory****************************/
 
+MICO::SharedMemoryServer::SharedMemoryServer(CORBA::ORB_ptr orb,
+                            CORBA::UShort iiop_ver,
+			    CORBA::ULong max_size)
+{
+	_orb = orb;
+
+	_max_message_size = max_size;
+	_iiop_ver = iiop_ver;
+	//_orb->register_oa (this);
+}
+
 CORBA::Boolean
 MICO::SharedMemoryServer::listen (vector<std::string>& addr)
 {

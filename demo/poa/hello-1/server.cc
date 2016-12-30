@@ -49,7 +49,7 @@ main (int argc, char *argv[])
    * Create a Hello World object
    */
 
-   HelloWorld_impl * hello = new HelloWorld_impl;
+  HelloWorld_impl * hello = new HelloWorld_impl;
 
   /*
    * Activate the Servant

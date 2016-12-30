@@ -713,6 +713,8 @@ public:
 class SharedMemoryServer {
   CORBA::UShort _iiop_ver = 0x0100;
   CORBA::ORB_ptr _orb;
+  CORBA::ULong _max_message_size;
+
 public:
   SharedMemoryServer (CORBA::ORB_ptr, CORBA::UShort iiop_ver = 0x0100,
   CORBA::ULong max_size = 0);

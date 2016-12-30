@@ -3518,7 +3518,7 @@ CORBA::ORB_init (int &argc, char **argv, const char *_id)
 		//string length = s.substr(lastIndex+1, s.length());
 		//sharedMemory(address, semName, atoi(length.c_str()));
 		shmaddr.push_back (val);
-		run_shm = FALSE;
+		run_shm = TRUE;
 	} else if (arg == "-ORBInitRef") {
 	    InitRefs.push_back (val);
 	} else if (arg == "-ORBDefaultInitRef") {
