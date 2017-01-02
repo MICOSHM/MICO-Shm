@@ -3214,20 +3214,6 @@ CORBA::ORB::validate_connection
     return oa->validate_connection(obj, inconsistent_policies);
 }
 
-/**********************SharedMemoryInitialization**********************/
-
-//void sharedMemory(string address, string sem, int length){
-	//try{
-	//MICO::CSharedMemory shmMemory(address);
-	//shmMemory.Create(length);
-	//at = shmMemory.Attach();
-//	se = shmMemory.openSem(sem);
-//} catch(std::exception& e){
-	//cout << "Exception:" <<e.what();
-//}
-
-//}
-
 /************************** PrincipalCurrent *************************/
 
 
@@ -3304,7 +3290,7 @@ CORBA::ORB_init (int &argc, char **argv, const char *_id)
 #endif
     PInterceptor::PI::_init();
 		Boolean run_shm = FALSE;
-    Boolean run_iiop_server = TRUE;
+    Boolean run_iiop_server = FALSE;
     Boolean run_iiop_proxy = TRUE;
     Boolean iiop_blocking = FALSE;
     Boolean plugged = TRUE;
@@ -3510,13 +3496,6 @@ CORBA::ORB_init (int &argc, char **argv, const char *_id)
 	} else if (arg == "-ORBBindAddr") {
 	    bindaddrs.push_back (val);
 	} else if (arg == "-ORBShm"){
-		//string s = val;
-		//int firstIndex = s.find_first_of(':');
-		//int lastIndex = s.find_last_of(':');
-		//string address = s.substr(0, firstIndex);
-		//string semName = s.substr(firstIndex+1, lastIndex-1);
-		//string length = s.substr(lastIndex+1, s.length());
-		//sharedMemory(address, semName, atoi(length.c_str()));
 		shmaddr.push_back (val);
 		run_shm = TRUE;
 	} else if (arg == "-ORBInitRef") {
@@ -4010,6 +3989,8 @@ CORBA::ORB_init (int &argc, char **argv, const char *_id)
 
 		// create Shared Memory Segment
 	if (run_shm) {
+		cout << run_shm << " run_shm";
+		cout << run_iiop_server << " run_iiop_server";
 		MICO::SharedMemoryServer* shm_server_instance
 		= new MICO::SharedMemoryServer (orb_instance, iiop_ver, max_message_size);
 			for (mico_vec_size_type i = 0; i < shmaddr.size(); ++i) {
@@ -4023,14 +4004,16 @@ CORBA::ORB_init (int &argc, char **argv, const char *_id)
 				}
 				mico_throw (CORBA::INITIALIZE());
 		}
-		//if (!iiop_server_instance->listen (addr, fwproxyaddr))
-				//mico_throw (CORBA::INITIALIZE();
+		if (!shm_server_instance->listen (addr))
+				mico_throw (CORBA::INITIALIZE());
+				//delete *addr;
 			}
 		}
-
+		cout << "\n Past run_shm";
     // create IIOP server
     if (!use_sl3) {
 	if (run_iiop_server) {
+		cout << "\nIn run_iiop_server" << run_iiop_server;
 	    MICO::IIOPServer* iiop_server_instance
 		= new MICO::IIOPServer (orb_instance,
 					iiop_ver,

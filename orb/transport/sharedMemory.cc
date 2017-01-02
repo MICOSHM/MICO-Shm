@@ -54,8 +54,7 @@ MICO::CSharedMemory::Create( size_t nSize, int mode /*= READ_WRITE*/ )
 {
    m_nSize = nSize;
    m_iD = shm_open(m_sName.c_str(), O_CREAT | O_RDWR, 0777);
-   cout << "\nIn Create:" << m_sName;
-   cout << "\nmID  " << m_iD;
+
    if(m_iD < 0)
    {
       switch(errno)
