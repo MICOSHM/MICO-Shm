@@ -292,7 +292,10 @@ MICO::SharedMemoryAddress::make_ior_profile (CORBA::Octet *key,
 				     const CORBA::MultiComponent &mc,
                                      CORBA::UShort version) const
 {
+  cout << "\n Inside make_ior_profile, before creation";
 	  SharedMemoryAddress shma (address(), semName(), length());
+    cout << "\nAfter SharedMemoryAddress creation";
+
 	  return new SharedMemoryProfile (key, len, shma, mc, version);
 }
 

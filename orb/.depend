@@ -66,22 +66,22 @@ address.o address.pic.o: ../include/mico/sysexc.h ../include/mico/tcconst.h
 address.o address.pic.o: ../include/mico/tckind.h ../include/mico/template.h
 address.o address.pic.o: ../include/mico/template_impl.h ../include/mico/throw.h
 address.o address.pic.o: ../include/mico/timebase.h ../include/mico/transport.h
-address.o address.pic.o: ../include/mico/transport/tcp.h ../include/mico/transport/udp.h
-address.o address.pic.o: ../include/mico/transport/unix.h ../include/mico/transport_impl.h
-address.o address.pic.o: ../include/mico/typecode.h ../include/mico/typecode_seq.h
-address.o address.pic.o: ../include/mico/types.h ../include/mico/util.h
-address.o address.pic.o: ../include/mico/value.h ../include/mico/valuetype.h
-address.o address.pic.o: ../include/mico/valuetype_impl.h ../include/mico/version.h
-address.o address.pic.o: ../include/ministl/bool.h ../include/ministl/bstring.h
-address.o address.pic.o: ../include/ministl/defalloc.h ../include/ministl/function
-address.o address.pic.o: ../include/ministl/function.h ../include/ministl/list
-address.o address.pic.o: ../include/ministl/list.h ../include/ministl/map
-address.o address.pic.o: ../include/ministl/map.h ../include/ministl/ministl.h
-address.o address.pic.o: ../include/ministl/pair ../include/ministl/pair.h
-address.o address.pic.o: ../include/ministl/set ../include/ministl/set.h
-address.o address.pic.o: ../include/ministl/simplevec.h ../include/ministl/string
-address.o address.pic.o: ../include/ministl/vector ../include/ministl/vector.h
-address.o address.pic.o: address.cc orb_pch.h
+address.o address.pic.o: ../include/mico/transport/sharedMemory.h ../include/mico/transport/tcp.h
+address.o address.pic.o: ../include/mico/transport/udp.h ../include/mico/transport/unix.h
+address.o address.pic.o: ../include/mico/transport_impl.h ../include/mico/typecode.h
+address.o address.pic.o: ../include/mico/typecode_seq.h ../include/mico/types.h
+address.o address.pic.o: ../include/mico/util.h ../include/mico/value.h
+address.o address.pic.o: ../include/mico/valuetype.h ../include/mico/valuetype_impl.h
+address.o address.pic.o: ../include/mico/version.h ../include/ministl/bool.h
+address.o address.pic.o: ../include/ministl/bstring.h ../include/ministl/defalloc.h
+address.o address.pic.o: ../include/ministl/function ../include/ministl/function.h
+address.o address.pic.o: ../include/ministl/list ../include/ministl/list.h
+address.o address.pic.o: ../include/ministl/map ../include/ministl/map.h
+address.o address.pic.o: ../include/ministl/ministl.h ../include/ministl/pair
+address.o address.pic.o: ../include/ministl/pair.h ../include/ministl/set
+address.o address.pic.o: ../include/ministl/set.h ../include/ministl/simplevec.h
+address.o address.pic.o: ../include/ministl/string ../include/ministl/vector
+address.o address.pic.o: ../include/ministl/vector.h address.cc orb_pch.h
 any.o any.pic.o: ../include/CORBA-SMALL.h ../include/CORBA.h ../include/mico/address.h
 any.o any.pic.o: ../include/mico/address_impl.h ../include/mico/any.h ../include/mico/array.h
 any.o any.pic.o: ../include/mico/assert.h ../include/mico/basic.h ../include/mico/basic_seq.h
@@ -139,12 +139,13 @@ any.o any.pic.o: ../include/mico/ssliop.h ../include/mico/static.h ../include/mi
 any.o any.pic.o: ../include/mico/sysexc.h ../include/mico/tcconst.h ../include/mico/tckind.h
 any.o any.pic.o: ../include/mico/template.h ../include/mico/template_impl.h
 any.o any.pic.o: ../include/mico/throw.h ../include/mico/timebase.h ../include/mico/transport.h
-any.o any.pic.o: ../include/mico/transport/tcp.h ../include/mico/transport/udp.h
-any.o any.pic.o: ../include/mico/transport/unix.h ../include/mico/transport_impl.h
-any.o any.pic.o: ../include/mico/typecode.h ../include/mico/typecode_seq.h
-any.o any.pic.o: ../include/mico/types.h ../include/mico/util.h ../include/mico/value.h
-any.o any.pic.o: ../include/mico/valuetype.h ../include/mico/valuetype_impl.h
-any.o any.pic.o: ../include/mico/version.h ../include/ministl/bool.h ../include/ministl/bstring.h
+any.o any.pic.o: ../include/mico/transport/sharedMemory.h ../include/mico/transport/tcp.h
+any.o any.pic.o: ../include/mico/transport/udp.h ../include/mico/transport/unix.h
+any.o any.pic.o: ../include/mico/transport_impl.h ../include/mico/typecode.h
+any.o any.pic.o: ../include/mico/typecode_seq.h ../include/mico/types.h
+any.o any.pic.o: ../include/mico/util.h ../include/mico/value.h ../include/mico/valuetype.h
+any.o any.pic.o: ../include/mico/valuetype_impl.h ../include/mico/version.h
+any.o any.pic.o: ../include/ministl/bool.h ../include/ministl/bstring.h
 any.o any.pic.o: ../include/ministl/defalloc.h ../include/ministl/function
 any.o any.pic.o: ../include/ministl/function.h ../include/ministl/list ../include/ministl/list.h
 any.o any.pic.o: ../include/ministl/map ../include/ministl/map.h ../include/ministl/ministl.h
@@ -222,22 +223,22 @@ basic_seq.o basic_seq.pic.o: ../include/mico/sysexc.h ../include/mico/tcconst.h
 basic_seq.o basic_seq.pic.o: ../include/mico/tckind.h ../include/mico/template.h
 basic_seq.o basic_seq.pic.o: ../include/mico/template_impl.h ../include/mico/throw.h
 basic_seq.o basic_seq.pic.o: ../include/mico/timebase.h ../include/mico/transport.h
-basic_seq.o basic_seq.pic.o: ../include/mico/transport/tcp.h ../include/mico/transport/udp.h
-basic_seq.o basic_seq.pic.o: ../include/mico/transport/unix.h ../include/mico/transport_impl.h
-basic_seq.o basic_seq.pic.o: ../include/mico/typecode.h ../include/mico/typecode_seq.h
-basic_seq.o basic_seq.pic.o: ../include/mico/types.h ../include/mico/util.h
-basic_seq.o basic_seq.pic.o: ../include/mico/value.h ../include/mico/valuetype.h
-basic_seq.o basic_seq.pic.o: ../include/mico/valuetype_impl.h ../include/mico/version.h
-basic_seq.o basic_seq.pic.o: ../include/ministl/bool.h ../include/ministl/bstring.h
-basic_seq.o basic_seq.pic.o: ../include/ministl/defalloc.h ../include/ministl/function
-basic_seq.o basic_seq.pic.o: ../include/ministl/function.h ../include/ministl/list
-basic_seq.o basic_seq.pic.o: ../include/ministl/list.h ../include/ministl/map
-basic_seq.o basic_seq.pic.o: ../include/ministl/map.h ../include/ministl/ministl.h
-basic_seq.o basic_seq.pic.o: ../include/ministl/pair ../include/ministl/pair.h
-basic_seq.o basic_seq.pic.o: ../include/ministl/set ../include/ministl/set.h
-basic_seq.o basic_seq.pic.o: ../include/ministl/simplevec.h ../include/ministl/string
-basic_seq.o basic_seq.pic.o: ../include/ministl/vector ../include/ministl/vector.h
-basic_seq.o basic_seq.pic.o: basic_seq.cc orb_pch.h
+basic_seq.o basic_seq.pic.o: ../include/mico/transport/sharedMemory.h ../include/mico/transport/tcp.h
+basic_seq.o basic_seq.pic.o: ../include/mico/transport/udp.h ../include/mico/transport/unix.h
+basic_seq.o basic_seq.pic.o: ../include/mico/transport_impl.h ../include/mico/typecode.h
+basic_seq.o basic_seq.pic.o: ../include/mico/typecode_seq.h ../include/mico/types.h
+basic_seq.o basic_seq.pic.o: ../include/mico/util.h ../include/mico/value.h
+basic_seq.o basic_seq.pic.o: ../include/mico/valuetype.h ../include/mico/valuetype_impl.h
+basic_seq.o basic_seq.pic.o: ../include/mico/version.h ../include/ministl/bool.h
+basic_seq.o basic_seq.pic.o: ../include/ministl/bstring.h ../include/ministl/defalloc.h
+basic_seq.o basic_seq.pic.o: ../include/ministl/function ../include/ministl/function.h
+basic_seq.o basic_seq.pic.o: ../include/ministl/list ../include/ministl/list.h
+basic_seq.o basic_seq.pic.o: ../include/ministl/map ../include/ministl/map.h
+basic_seq.o basic_seq.pic.o: ../include/ministl/ministl.h ../include/ministl/pair
+basic_seq.o basic_seq.pic.o: ../include/ministl/pair.h ../include/ministl/set
+basic_seq.o basic_seq.pic.o: ../include/ministl/set.h ../include/ministl/simplevec.h
+basic_seq.o basic_seq.pic.o: ../include/ministl/string ../include/ministl/vector
+basic_seq.o basic_seq.pic.o: ../include/ministl/vector.h basic_seq.cc orb_pch.h
 buffer.o buffer.pic.o: ../include/CORBA-SMALL.h ../include/CORBA.h ../include/mico/address.h
 buffer.o buffer.pic.o: ../include/mico/address_impl.h ../include/mico/any.h
 buffer.o buffer.pic.o: ../include/mico/array.h ../include/mico/assert.h
@@ -303,17 +304,17 @@ buffer.o buffer.pic.o: ../include/mico/string.h ../include/mico/sysexc.h
 buffer.o buffer.pic.o: ../include/mico/tcconst.h ../include/mico/tckind.h
 buffer.o buffer.pic.o: ../include/mico/template.h ../include/mico/template_impl.h
 buffer.o buffer.pic.o: ../include/mico/throw.h ../include/mico/timebase.h
-buffer.o buffer.pic.o: ../include/mico/transport.h ../include/mico/transport/tcp.h
-buffer.o buffer.pic.o: ../include/mico/transport/udp.h ../include/mico/transport/unix.h
-buffer.o buffer.pic.o: ../include/mico/transport_impl.h ../include/mico/typecode.h
-buffer.o buffer.pic.o: ../include/mico/typecode_seq.h ../include/mico/types.h
-buffer.o buffer.pic.o: ../include/mico/util.h ../include/mico/value.h ../include/mico/valuetype.h
-buffer.o buffer.pic.o: ../include/mico/valuetype_impl.h ../include/mico/version.h
-buffer.o buffer.pic.o: ../include/ministl/bool.h ../include/ministl/bstring.h
-buffer.o buffer.pic.o: ../include/ministl/defalloc.h ../include/ministl/function
-buffer.o buffer.pic.o: ../include/ministl/function.h ../include/ministl/list
-buffer.o buffer.pic.o: ../include/ministl/list.h ../include/ministl/map
-buffer.o buffer.pic.o: ../include/ministl/map.h ../include/ministl/ministl.h
+buffer.o buffer.pic.o: ../include/mico/transport.h ../include/mico/transport/sharedMemory.h
+buffer.o buffer.pic.o: ../include/mico/transport/tcp.h ../include/mico/transport/udp.h
+buffer.o buffer.pic.o: ../include/mico/transport/unix.h ../include/mico/transport_impl.h
+buffer.o buffer.pic.o: ../include/mico/typecode.h ../include/mico/typecode_seq.h
+buffer.o buffer.pic.o: ../include/mico/types.h ../include/mico/util.h ../include/mico/value.h
+buffer.o buffer.pic.o: ../include/mico/valuetype.h ../include/mico/valuetype_impl.h
+buffer.o buffer.pic.o: ../include/mico/version.h ../include/ministl/bool.h
+buffer.o buffer.pic.o: ../include/ministl/bstring.h ../include/ministl/defalloc.h
+buffer.o buffer.pic.o: ../include/ministl/function ../include/ministl/function.h
+buffer.o buffer.pic.o: ../include/ministl/list ../include/ministl/list.h
+buffer.o buffer.pic.o: ../include/ministl/map ../include/ministl/map.h ../include/ministl/ministl.h
 buffer.o buffer.pic.o: ../include/ministl/pair ../include/ministl/pair.h
 buffer.o buffer.pic.o: ../include/ministl/set ../include/ministl/set.h ../include/ministl/simplevec.h
 buffer.o buffer.pic.o: ../include/ministl/string ../include/ministl/vector
@@ -381,20 +382,21 @@ codec.o codec.pic.o: ../include/mico/string.h ../include/mico/sysexc.h ../includ
 codec.o codec.pic.o: ../include/mico/tckind.h ../include/mico/template.h
 codec.o codec.pic.o: ../include/mico/template_impl.h ../include/mico/throw.h
 codec.o codec.pic.o: ../include/mico/timebase.h ../include/mico/transport.h
-codec.o codec.pic.o: ../include/mico/transport/tcp.h ../include/mico/transport/udp.h
-codec.o codec.pic.o: ../include/mico/transport/unix.h ../include/mico/transport_impl.h
-codec.o codec.pic.o: ../include/mico/typecode.h ../include/mico/typecode_seq.h
-codec.o codec.pic.o: ../include/mico/types.h ../include/mico/util.h ../include/mico/value.h
-codec.o codec.pic.o: ../include/mico/valuetype.h ../include/mico/valuetype_impl.h
-codec.o codec.pic.o: ../include/mico/version.h ../include/ministl/bool.h
-codec.o codec.pic.o: ../include/ministl/bstring.h ../include/ministl/defalloc.h
-codec.o codec.pic.o: ../include/ministl/function ../include/ministl/function.h
-codec.o codec.pic.o: ../include/ministl/list ../include/ministl/list.h ../include/ministl/map
-codec.o codec.pic.o: ../include/ministl/map.h ../include/ministl/ministl.h
-codec.o codec.pic.o: ../include/ministl/pair ../include/ministl/pair.h ../include/ministl/set
-codec.o codec.pic.o: ../include/ministl/set.h ../include/ministl/simplevec.h
-codec.o codec.pic.o: ../include/ministl/string ../include/ministl/vector
-codec.o codec.pic.o: ../include/ministl/vector.h codec.cc orb_pch.h
+codec.o codec.pic.o: ../include/mico/transport/sharedMemory.h ../include/mico/transport/tcp.h
+codec.o codec.pic.o: ../include/mico/transport/udp.h ../include/mico/transport/unix.h
+codec.o codec.pic.o: ../include/mico/transport_impl.h ../include/mico/typecode.h
+codec.o codec.pic.o: ../include/mico/typecode_seq.h ../include/mico/types.h
+codec.o codec.pic.o: ../include/mico/util.h ../include/mico/value.h ../include/mico/valuetype.h
+codec.o codec.pic.o: ../include/mico/valuetype_impl.h ../include/mico/version.h
+codec.o codec.pic.o: ../include/ministl/bool.h ../include/ministl/bstring.h
+codec.o codec.pic.o: ../include/ministl/defalloc.h ../include/ministl/function
+codec.o codec.pic.o: ../include/ministl/function.h ../include/ministl/list
+codec.o codec.pic.o: ../include/ministl/list.h ../include/ministl/map ../include/ministl/map.h
+codec.o codec.pic.o: ../include/ministl/ministl.h ../include/ministl/pair
+codec.o codec.pic.o: ../include/ministl/pair.h ../include/ministl/set ../include/ministl/set.h
+codec.o codec.pic.o: ../include/ministl/simplevec.h ../include/ministl/string
+codec.o codec.pic.o: ../include/ministl/vector ../include/ministl/vector.h
+codec.o codec.pic.o: codec.cc orb_pch.h
 codeset.o codeset.pic.o: ../include/CORBA-SMALL.h ../include/CORBA.h ../include/mico/address.h
 codeset.o codeset.pic.o: ../include/mico/address_impl.h ../include/mico/any.h
 codeset.o codeset.pic.o: ../include/mico/array.h ../include/mico/assert.h
@@ -462,23 +464,23 @@ codeset.o codeset.pic.o: ../include/mico/sysexc.h ../include/mico/tcconst.h
 codeset.o codeset.pic.o: ../include/mico/tckind.h ../include/mico/template.h
 codeset.o codeset.pic.o: ../include/mico/template_impl.h ../include/mico/throw.h
 codeset.o codeset.pic.o: ../include/mico/timebase.h ../include/mico/transport.h
-codeset.o codeset.pic.o: ../include/mico/transport/tcp.h ../include/mico/transport/udp.h
-codeset.o codeset.pic.o: ../include/mico/transport/unix.h ../include/mico/transport_impl.h
-codeset.o codeset.pic.o: ../include/mico/typecode.h ../include/mico/typecode_seq.h
-codeset.o codeset.pic.o: ../include/mico/types.h ../include/mico/util.h
-codeset.o codeset.pic.o: ../include/mico/value.h ../include/mico/valuetype.h
-codeset.o codeset.pic.o: ../include/mico/valuetype_impl.h ../include/mico/version.h
-codeset.o codeset.pic.o: ../include/ministl/bool.h ../include/ministl/bstring.h
-codeset.o codeset.pic.o: ../include/ministl/defalloc.h ../include/ministl/function
-codeset.o codeset.pic.o: ../include/ministl/function.h ../include/ministl/list
-codeset.o codeset.pic.o: ../include/ministl/list.h ../include/ministl/map
-codeset.o codeset.pic.o: ../include/ministl/map.h ../include/ministl/ministl.h
-codeset.o codeset.pic.o: ../include/ministl/pair ../include/ministl/pair.h
-codeset.o codeset.pic.o: ../include/ministl/set ../include/ministl/set.h
-codeset.o codeset.pic.o: ../include/ministl/simplevec.h ../include/ministl/string
-codeset.o codeset.pic.o: ../include/ministl/vector ../include/ministl/vector.h
-codeset.o codeset.pic.o: codeset.cc orb_pch.h uni_conversion.h uni_errors.h
-codeset.o codeset.pic.o: uni_strtypes.h uni_types.h
+codeset.o codeset.pic.o: ../include/mico/transport/sharedMemory.h ../include/mico/transport/tcp.h
+codeset.o codeset.pic.o: ../include/mico/transport/udp.h ../include/mico/transport/unix.h
+codeset.o codeset.pic.o: ../include/mico/transport_impl.h ../include/mico/typecode.h
+codeset.o codeset.pic.o: ../include/mico/typecode_seq.h ../include/mico/types.h
+codeset.o codeset.pic.o: ../include/mico/util.h ../include/mico/value.h
+codeset.o codeset.pic.o: ../include/mico/valuetype.h ../include/mico/valuetype_impl.h
+codeset.o codeset.pic.o: ../include/mico/version.h ../include/ministl/bool.h
+codeset.o codeset.pic.o: ../include/ministl/bstring.h ../include/ministl/defalloc.h
+codeset.o codeset.pic.o: ../include/ministl/function ../include/ministl/function.h
+codeset.o codeset.pic.o: ../include/ministl/list ../include/ministl/list.h
+codeset.o codeset.pic.o: ../include/ministl/map ../include/ministl/map.h
+codeset.o codeset.pic.o: ../include/ministl/ministl.h ../include/ministl/pair
+codeset.o codeset.pic.o: ../include/ministl/pair.h ../include/ministl/set
+codeset.o codeset.pic.o: ../include/ministl/set.h ../include/ministl/simplevec.h
+codeset.o codeset.pic.o: ../include/ministl/string ../include/ministl/vector
+codeset.o codeset.pic.o: ../include/ministl/vector.h codeset.cc orb_pch.h
+codeset.o codeset.pic.o: uni_conversion.h uni_errors.h uni_strtypes.h uni_types.h
 context.o context.pic.o: ../include/CORBA-SMALL.h ../include/CORBA.h ../include/mico/address.h
 context.o context.pic.o: ../include/mico/address_impl.h ../include/mico/any.h
 context.o context.pic.o: ../include/mico/array.h ../include/mico/assert.h
@@ -546,22 +548,22 @@ context.o context.pic.o: ../include/mico/sysexc.h ../include/mico/tcconst.h
 context.o context.pic.o: ../include/mico/tckind.h ../include/mico/template.h
 context.o context.pic.o: ../include/mico/template_impl.h ../include/mico/throw.h
 context.o context.pic.o: ../include/mico/timebase.h ../include/mico/transport.h
-context.o context.pic.o: ../include/mico/transport/tcp.h ../include/mico/transport/udp.h
-context.o context.pic.o: ../include/mico/transport/unix.h ../include/mico/transport_impl.h
-context.o context.pic.o: ../include/mico/typecode.h ../include/mico/typecode_seq.h
-context.o context.pic.o: ../include/mico/types.h ../include/mico/util.h
-context.o context.pic.o: ../include/mico/value.h ../include/mico/valuetype.h
-context.o context.pic.o: ../include/mico/valuetype_impl.h ../include/mico/version.h
-context.o context.pic.o: ../include/ministl/bool.h ../include/ministl/bstring.h
-context.o context.pic.o: ../include/ministl/defalloc.h ../include/ministl/function
-context.o context.pic.o: ../include/ministl/function.h ../include/ministl/list
-context.o context.pic.o: ../include/ministl/list.h ../include/ministl/map
-context.o context.pic.o: ../include/ministl/map.h ../include/ministl/ministl.h
-context.o context.pic.o: ../include/ministl/pair ../include/ministl/pair.h
-context.o context.pic.o: ../include/ministl/set ../include/ministl/set.h
-context.o context.pic.o: ../include/ministl/simplevec.h ../include/ministl/string
-context.o context.pic.o: ../include/ministl/vector ../include/ministl/vector.h
-context.o context.pic.o: context.cc orb_pch.h
+context.o context.pic.o: ../include/mico/transport/sharedMemory.h ../include/mico/transport/tcp.h
+context.o context.pic.o: ../include/mico/transport/udp.h ../include/mico/transport/unix.h
+context.o context.pic.o: ../include/mico/transport_impl.h ../include/mico/typecode.h
+context.o context.pic.o: ../include/mico/typecode_seq.h ../include/mico/types.h
+context.o context.pic.o: ../include/mico/util.h ../include/mico/value.h
+context.o context.pic.o: ../include/mico/valuetype.h ../include/mico/valuetype_impl.h
+context.o context.pic.o: ../include/mico/version.h ../include/ministl/bool.h
+context.o context.pic.o: ../include/ministl/bstring.h ../include/ministl/defalloc.h
+context.o context.pic.o: ../include/ministl/function ../include/ministl/function.h
+context.o context.pic.o: ../include/ministl/list ../include/ministl/list.h
+context.o context.pic.o: ../include/ministl/map ../include/ministl/map.h
+context.o context.pic.o: ../include/ministl/ministl.h ../include/ministl/pair
+context.o context.pic.o: ../include/ministl/pair.h ../include/ministl/set
+context.o context.pic.o: ../include/ministl/set.h ../include/ministl/simplevec.h
+context.o context.pic.o: ../include/ministl/string ../include/ministl/vector
+context.o context.pic.o: ../include/ministl/vector.h context.cc orb_pch.h
 current.o current.pic.o: ../include/CORBA.h ../include/mico/address.h ../include/mico/any.h
 current.o current.pic.o: ../include/mico/array.h ../include/mico/assert.h
 current.o current.pic.o: ../include/mico/basic.h ../include/mico/basic_seq.h
@@ -675,12 +677,13 @@ dii.o dii.pic.o: ../include/mico/ssliop.h ../include/mico/static.h ../include/mi
 dii.o dii.pic.o: ../include/mico/sysexc.h ../include/mico/tcconst.h ../include/mico/tckind.h
 dii.o dii.pic.o: ../include/mico/template.h ../include/mico/template_impl.h
 dii.o dii.pic.o: ../include/mico/throw.h ../include/mico/timebase.h ../include/mico/transport.h
-dii.o dii.pic.o: ../include/mico/transport/tcp.h ../include/mico/transport/udp.h
-dii.o dii.pic.o: ../include/mico/transport/unix.h ../include/mico/transport_impl.h
-dii.o dii.pic.o: ../include/mico/typecode.h ../include/mico/typecode_seq.h
-dii.o dii.pic.o: ../include/mico/types.h ../include/mico/util.h ../include/mico/value.h
-dii.o dii.pic.o: ../include/mico/valuetype.h ../include/mico/valuetype_impl.h
-dii.o dii.pic.o: ../include/mico/version.h ../include/ministl/bool.h ../include/ministl/bstring.h
+dii.o dii.pic.o: ../include/mico/transport/sharedMemory.h ../include/mico/transport/tcp.h
+dii.o dii.pic.o: ../include/mico/transport/udp.h ../include/mico/transport/unix.h
+dii.o dii.pic.o: ../include/mico/transport_impl.h ../include/mico/typecode.h
+dii.o dii.pic.o: ../include/mico/typecode_seq.h ../include/mico/types.h
+dii.o dii.pic.o: ../include/mico/util.h ../include/mico/value.h ../include/mico/valuetype.h
+dii.o dii.pic.o: ../include/mico/valuetype_impl.h ../include/mico/version.h
+dii.o dii.pic.o: ../include/ministl/bool.h ../include/ministl/bstring.h
 dii.o dii.pic.o: ../include/ministl/defalloc.h ../include/ministl/function
 dii.o dii.pic.o: ../include/ministl/function.h ../include/ministl/list ../include/ministl/list.h
 dii.o dii.pic.o: ../include/ministl/map ../include/ministl/map.h ../include/ministl/ministl.h
@@ -757,22 +760,22 @@ dispatch.o dispatch.pic.o: ../include/mico/sysexc.h ../include/mico/tcconst.h
 dispatch.o dispatch.pic.o: ../include/mico/tckind.h ../include/mico/template.h
 dispatch.o dispatch.pic.o: ../include/mico/template_impl.h ../include/mico/throw.h
 dispatch.o dispatch.pic.o: ../include/mico/timebase.h ../include/mico/transport.h
-dispatch.o dispatch.pic.o: ../include/mico/transport/tcp.h ../include/mico/transport/udp.h
-dispatch.o dispatch.pic.o: ../include/mico/transport/unix.h ../include/mico/transport_impl.h
-dispatch.o dispatch.pic.o: ../include/mico/typecode.h ../include/mico/typecode_seq.h
-dispatch.o dispatch.pic.o: ../include/mico/types.h ../include/mico/util.h
-dispatch.o dispatch.pic.o: ../include/mico/value.h ../include/mico/valuetype.h
-dispatch.o dispatch.pic.o: ../include/mico/valuetype_impl.h ../include/mico/version.h
-dispatch.o dispatch.pic.o: ../include/ministl/bool.h ../include/ministl/bstring.h
-dispatch.o dispatch.pic.o: ../include/ministl/defalloc.h ../include/ministl/function
-dispatch.o dispatch.pic.o: ../include/ministl/function.h ../include/ministl/list
-dispatch.o dispatch.pic.o: ../include/ministl/list.h ../include/ministl/map
-dispatch.o dispatch.pic.o: ../include/ministl/map.h ../include/ministl/ministl.h
-dispatch.o dispatch.pic.o: ../include/ministl/pair ../include/ministl/pair.h
-dispatch.o dispatch.pic.o: ../include/ministl/set ../include/ministl/set.h
-dispatch.o dispatch.pic.o: ../include/ministl/simplevec.h ../include/ministl/string
-dispatch.o dispatch.pic.o: ../include/ministl/vector ../include/ministl/vector.h
-dispatch.o dispatch.pic.o: dispatch.cc orb_pch.h
+dispatch.o dispatch.pic.o: ../include/mico/transport/sharedMemory.h ../include/mico/transport/tcp.h
+dispatch.o dispatch.pic.o: ../include/mico/transport/udp.h ../include/mico/transport/unix.h
+dispatch.o dispatch.pic.o: ../include/mico/transport_impl.h ../include/mico/typecode.h
+dispatch.o dispatch.pic.o: ../include/mico/typecode_seq.h ../include/mico/types.h
+dispatch.o dispatch.pic.o: ../include/mico/util.h ../include/mico/value.h
+dispatch.o dispatch.pic.o: ../include/mico/valuetype.h ../include/mico/valuetype_impl.h
+dispatch.o dispatch.pic.o: ../include/mico/version.h ../include/ministl/bool.h
+dispatch.o dispatch.pic.o: ../include/ministl/bstring.h ../include/ministl/defalloc.h
+dispatch.o dispatch.pic.o: ../include/ministl/function ../include/ministl/function.h
+dispatch.o dispatch.pic.o: ../include/ministl/list ../include/ministl/list.h
+dispatch.o dispatch.pic.o: ../include/ministl/map ../include/ministl/map.h
+dispatch.o dispatch.pic.o: ../include/ministl/ministl.h ../include/ministl/pair
+dispatch.o dispatch.pic.o: ../include/ministl/pair.h ../include/ministl/set
+dispatch.o dispatch.pic.o: ../include/ministl/set.h ../include/ministl/simplevec.h
+dispatch.o dispatch.pic.o: ../include/ministl/string ../include/ministl/vector
+dispatch.o dispatch.pic.o: ../include/ministl/vector.h dispatch.cc orb_pch.h
 dsi.o dsi.pic.o: ../include/CORBA-SMALL.h ../include/CORBA.h ../include/mico/address.h
 dsi.o dsi.pic.o: ../include/mico/address_impl.h ../include/mico/any.h ../include/mico/array.h
 dsi.o dsi.pic.o: ../include/mico/assert.h ../include/mico/basic.h ../include/mico/basic_seq.h
@@ -830,12 +833,13 @@ dsi.o dsi.pic.o: ../include/mico/ssliop.h ../include/mico/static.h ../include/mi
 dsi.o dsi.pic.o: ../include/mico/sysexc.h ../include/mico/tcconst.h ../include/mico/tckind.h
 dsi.o dsi.pic.o: ../include/mico/template.h ../include/mico/template_impl.h
 dsi.o dsi.pic.o: ../include/mico/throw.h ../include/mico/timebase.h ../include/mico/transport.h
-dsi.o dsi.pic.o: ../include/mico/transport/tcp.h ../include/mico/transport/udp.h
-dsi.o dsi.pic.o: ../include/mico/transport/unix.h ../include/mico/transport_impl.h
-dsi.o dsi.pic.o: ../include/mico/typecode.h ../include/mico/typecode_seq.h
-dsi.o dsi.pic.o: ../include/mico/types.h ../include/mico/util.h ../include/mico/value.h
-dsi.o dsi.pic.o: ../include/mico/valuetype.h ../include/mico/valuetype_impl.h
-dsi.o dsi.pic.o: ../include/mico/version.h ../include/ministl/bool.h ../include/ministl/bstring.h
+dsi.o dsi.pic.o: ../include/mico/transport/sharedMemory.h ../include/mico/transport/tcp.h
+dsi.o dsi.pic.o: ../include/mico/transport/udp.h ../include/mico/transport/unix.h
+dsi.o dsi.pic.o: ../include/mico/transport_impl.h ../include/mico/typecode.h
+dsi.o dsi.pic.o: ../include/mico/typecode_seq.h ../include/mico/types.h
+dsi.o dsi.pic.o: ../include/mico/util.h ../include/mico/value.h ../include/mico/valuetype.h
+dsi.o dsi.pic.o: ../include/mico/valuetype_impl.h ../include/mico/version.h
+dsi.o dsi.pic.o: ../include/ministl/bool.h ../include/ministl/bstring.h
 dsi.o dsi.pic.o: ../include/ministl/defalloc.h ../include/ministl/function
 dsi.o dsi.pic.o: ../include/ministl/function.h ../include/ministl/list ../include/ministl/list.h
 dsi.o dsi.pic.o: ../include/ministl/map ../include/ministl/map.h ../include/ministl/ministl.h
@@ -974,6 +978,7 @@ dynany_impl.o dynany_impl.pic.o: ../include/mico/sysexc.h ../include/mico/tccons
 dynany_impl.o dynany_impl.pic.o: ../include/mico/tckind.h ../include/mico/template.h
 dynany_impl.o dynany_impl.pic.o: ../include/mico/template_impl.h ../include/mico/throw.h
 dynany_impl.o dynany_impl.pic.o: ../include/mico/timebase.h ../include/mico/transport.h
+dynany_impl.o dynany_impl.pic.o: ../include/mico/transport/sharedMemory.h
 dynany_impl.o dynany_impl.pic.o: ../include/mico/transport/tcp.h ../include/mico/transport/udp.h
 dynany_impl.o dynany_impl.pic.o: ../include/mico/transport/unix.h ../include/mico/transport_impl.h
 dynany_impl.o dynany_impl.pic.o: ../include/mico/typecode.h ../include/mico/typecode_seq.h
@@ -1055,17 +1060,17 @@ except.o except.pic.o: ../include/mico/string.h ../include/mico/sysexc.h
 except.o except.pic.o: ../include/mico/tcconst.h ../include/mico/tckind.h
 except.o except.pic.o: ../include/mico/template.h ../include/mico/template_impl.h
 except.o except.pic.o: ../include/mico/throw.h ../include/mico/timebase.h
-except.o except.pic.o: ../include/mico/transport.h ../include/mico/transport/tcp.h
-except.o except.pic.o: ../include/mico/transport/udp.h ../include/mico/transport/unix.h
-except.o except.pic.o: ../include/mico/transport_impl.h ../include/mico/typecode.h
-except.o except.pic.o: ../include/mico/typecode_seq.h ../include/mico/types.h
-except.o except.pic.o: ../include/mico/util.h ../include/mico/value.h ../include/mico/valuetype.h
-except.o except.pic.o: ../include/mico/valuetype_impl.h ../include/mico/version.h
-except.o except.pic.o: ../include/ministl/bool.h ../include/ministl/bstring.h
-except.o except.pic.o: ../include/ministl/defalloc.h ../include/ministl/function
-except.o except.pic.o: ../include/ministl/function.h ../include/ministl/list
-except.o except.pic.o: ../include/ministl/list.h ../include/ministl/map
-except.o except.pic.o: ../include/ministl/map.h ../include/ministl/ministl.h
+except.o except.pic.o: ../include/mico/transport.h ../include/mico/transport/sharedMemory.h
+except.o except.pic.o: ../include/mico/transport/tcp.h ../include/mico/transport/udp.h
+except.o except.pic.o: ../include/mico/transport/unix.h ../include/mico/transport_impl.h
+except.o except.pic.o: ../include/mico/typecode.h ../include/mico/typecode_seq.h
+except.o except.pic.o: ../include/mico/types.h ../include/mico/util.h ../include/mico/value.h
+except.o except.pic.o: ../include/mico/valuetype.h ../include/mico/valuetype_impl.h
+except.o except.pic.o: ../include/mico/version.h ../include/ministl/bool.h
+except.o except.pic.o: ../include/ministl/bstring.h ../include/ministl/defalloc.h
+except.o except.pic.o: ../include/ministl/function ../include/ministl/function.h
+except.o except.pic.o: ../include/ministl/list ../include/ministl/list.h
+except.o except.pic.o: ../include/ministl/map ../include/ministl/map.h ../include/ministl/ministl.h
 except.o except.pic.o: ../include/ministl/pair ../include/ministl/pair.h
 except.o except.pic.o: ../include/ministl/set ../include/ministl/set.h ../include/ministl/simplevec.h
 except.o except.pic.o: ../include/ministl/string ../include/ministl/vector
@@ -1137,22 +1142,22 @@ except2.o except2.pic.o: ../include/mico/sysexc.h ../include/mico/tcconst.h
 except2.o except2.pic.o: ../include/mico/tckind.h ../include/mico/template.h
 except2.o except2.pic.o: ../include/mico/template_impl.h ../include/mico/throw.h
 except2.o except2.pic.o: ../include/mico/timebase.h ../include/mico/transport.h
-except2.o except2.pic.o: ../include/mico/transport/tcp.h ../include/mico/transport/udp.h
-except2.o except2.pic.o: ../include/mico/transport/unix.h ../include/mico/transport_impl.h
-except2.o except2.pic.o: ../include/mico/typecode.h ../include/mico/typecode_seq.h
-except2.o except2.pic.o: ../include/mico/types.h ../include/mico/util.h
-except2.o except2.pic.o: ../include/mico/value.h ../include/mico/valuetype.h
-except2.o except2.pic.o: ../include/mico/valuetype_impl.h ../include/mico/version.h
-except2.o except2.pic.o: ../include/ministl/bool.h ../include/ministl/bstring.h
-except2.o except2.pic.o: ../include/ministl/defalloc.h ../include/ministl/function
-except2.o except2.pic.o: ../include/ministl/function.h ../include/ministl/list
-except2.o except2.pic.o: ../include/ministl/list.h ../include/ministl/map
-except2.o except2.pic.o: ../include/ministl/map.h ../include/ministl/ministl.h
-except2.o except2.pic.o: ../include/ministl/pair ../include/ministl/pair.h
-except2.o except2.pic.o: ../include/ministl/set ../include/ministl/set.h
-except2.o except2.pic.o: ../include/ministl/simplevec.h ../include/ministl/string
-except2.o except2.pic.o: ../include/ministl/vector ../include/ministl/vector.h
-except2.o except2.pic.o: except2.cc orb_pch.h
+except2.o except2.pic.o: ../include/mico/transport/sharedMemory.h ../include/mico/transport/tcp.h
+except2.o except2.pic.o: ../include/mico/transport/udp.h ../include/mico/transport/unix.h
+except2.o except2.pic.o: ../include/mico/transport_impl.h ../include/mico/typecode.h
+except2.o except2.pic.o: ../include/mico/typecode_seq.h ../include/mico/types.h
+except2.o except2.pic.o: ../include/mico/util.h ../include/mico/value.h
+except2.o except2.pic.o: ../include/mico/valuetype.h ../include/mico/valuetype_impl.h
+except2.o except2.pic.o: ../include/mico/version.h ../include/ministl/bool.h
+except2.o except2.pic.o: ../include/ministl/bstring.h ../include/ministl/defalloc.h
+except2.o except2.pic.o: ../include/ministl/function ../include/ministl/function.h
+except2.o except2.pic.o: ../include/ministl/list ../include/ministl/list.h
+except2.o except2.pic.o: ../include/ministl/map ../include/ministl/map.h
+except2.o except2.pic.o: ../include/ministl/ministl.h ../include/ministl/pair
+except2.o except2.pic.o: ../include/ministl/pair.h ../include/ministl/set
+except2.o except2.pic.o: ../include/ministl/set.h ../include/ministl/simplevec.h
+except2.o except2.pic.o: ../include/ministl/string ../include/ministl/vector
+except2.o except2.pic.o: ../include/ministl/vector.h except2.cc orb_pch.h
 fast_array.o fast_array.pic.o: ../include/CORBA-SMALL.h ../include/CORBA.h
 fast_array.o fast_array.pic.o: ../include/mico/address.h ../include/mico/address_impl.h
 fast_array.o fast_array.pic.o: ../include/mico/any.h ../include/mico/array.h
@@ -1227,6 +1232,7 @@ fast_array.o fast_array.pic.o: ../include/mico/sysexc.h ../include/mico/tcconst.
 fast_array.o fast_array.pic.o: ../include/mico/tckind.h ../include/mico/template.h
 fast_array.o fast_array.pic.o: ../include/mico/template_impl.h ../include/mico/throw.h
 fast_array.o fast_array.pic.o: ../include/mico/timebase.h ../include/mico/transport.h
+fast_array.o fast_array.pic.o: ../include/mico/transport/sharedMemory.h
 fast_array.o fast_array.pic.o: ../include/mico/transport/tcp.h ../include/mico/transport/udp.h
 fast_array.o fast_array.pic.o: ../include/mico/transport/unix.h ../include/mico/transport_impl.h
 fast_array.o fast_array.pic.o: ../include/mico/typecode.h ../include/mico/typecode_seq.h
@@ -1306,20 +1312,21 @@ fixed.o fixed.pic.o: ../include/mico/string.h ../include/mico/sysexc.h ../includ
 fixed.o fixed.pic.o: ../include/mico/tckind.h ../include/mico/template.h
 fixed.o fixed.pic.o: ../include/mico/template_impl.h ../include/mico/throw.h
 fixed.o fixed.pic.o: ../include/mico/timebase.h ../include/mico/transport.h
-fixed.o fixed.pic.o: ../include/mico/transport/tcp.h ../include/mico/transport/udp.h
-fixed.o fixed.pic.o: ../include/mico/transport/unix.h ../include/mico/transport_impl.h
-fixed.o fixed.pic.o: ../include/mico/typecode.h ../include/mico/typecode_seq.h
-fixed.o fixed.pic.o: ../include/mico/types.h ../include/mico/util.h ../include/mico/value.h
-fixed.o fixed.pic.o: ../include/mico/valuetype.h ../include/mico/valuetype_impl.h
-fixed.o fixed.pic.o: ../include/mico/version.h ../include/ministl/bool.h
-fixed.o fixed.pic.o: ../include/ministl/bstring.h ../include/ministl/defalloc.h
-fixed.o fixed.pic.o: ../include/ministl/function ../include/ministl/function.h
-fixed.o fixed.pic.o: ../include/ministl/list ../include/ministl/list.h ../include/ministl/map
-fixed.o fixed.pic.o: ../include/ministl/map.h ../include/ministl/ministl.h
-fixed.o fixed.pic.o: ../include/ministl/pair ../include/ministl/pair.h ../include/ministl/set
-fixed.o fixed.pic.o: ../include/ministl/set.h ../include/ministl/simplevec.h
-fixed.o fixed.pic.o: ../include/ministl/string ../include/ministl/vector
-fixed.o fixed.pic.o: ../include/ministl/vector.h fixed.cc orb_pch.h
+fixed.o fixed.pic.o: ../include/mico/transport/sharedMemory.h ../include/mico/transport/tcp.h
+fixed.o fixed.pic.o: ../include/mico/transport/udp.h ../include/mico/transport/unix.h
+fixed.o fixed.pic.o: ../include/mico/transport_impl.h ../include/mico/typecode.h
+fixed.o fixed.pic.o: ../include/mico/typecode_seq.h ../include/mico/types.h
+fixed.o fixed.pic.o: ../include/mico/util.h ../include/mico/value.h ../include/mico/valuetype.h
+fixed.o fixed.pic.o: ../include/mico/valuetype_impl.h ../include/mico/version.h
+fixed.o fixed.pic.o: ../include/ministl/bool.h ../include/ministl/bstring.h
+fixed.o fixed.pic.o: ../include/ministl/defalloc.h ../include/ministl/function
+fixed.o fixed.pic.o: ../include/ministl/function.h ../include/ministl/list
+fixed.o fixed.pic.o: ../include/ministl/list.h ../include/ministl/map ../include/ministl/map.h
+fixed.o fixed.pic.o: ../include/ministl/ministl.h ../include/ministl/pair
+fixed.o fixed.pic.o: ../include/ministl/pair.h ../include/ministl/set ../include/ministl/set.h
+fixed.o fixed.pic.o: ../include/ministl/simplevec.h ../include/ministl/string
+fixed.o fixed.pic.o: ../include/ministl/vector ../include/ministl/vector.h
+fixed.o fixed.pic.o: fixed.cc orb_pch.h
 gendef.o gendef.pic.o: gendef.cc
 imr.o imr.pic.o: ../include/CORBA.h ../include/mico/address.h ../include/mico/any.h
 imr.o imr.pic.o: ../include/mico/array.h ../include/mico/assert.h ../include/mico/basic.h
@@ -1427,12 +1434,13 @@ iop.o iop.pic.o: ../include/mico/static.h ../include/mico/string.h ../include/mi
 iop.o iop.pic.o: ../include/mico/tcconst.h ../include/mico/tckind.h ../include/mico/template.h
 iop.o iop.pic.o: ../include/mico/template_impl.h ../include/mico/throw.h
 iop.o iop.pic.o: ../include/mico/timebase.h ../include/mico/transport.h
-iop.o iop.pic.o: ../include/mico/transport/tcp.h ../include/mico/transport/udp.h
-iop.o iop.pic.o: ../include/mico/transport/unix.h ../include/mico/transport_impl.h
-iop.o iop.pic.o: ../include/mico/typecode.h ../include/mico/typecode_seq.h
-iop.o iop.pic.o: ../include/mico/types.h ../include/mico/util.h ../include/mico/value.h
-iop.o iop.pic.o: ../include/mico/valuetype.h ../include/mico/valuetype_impl.h
-iop.o iop.pic.o: ../include/mico/version.h ../include/ministl/bool.h ../include/ministl/bstring.h
+iop.o iop.pic.o: ../include/mico/transport/sharedMemory.h ../include/mico/transport/tcp.h
+iop.o iop.pic.o: ../include/mico/transport/udp.h ../include/mico/transport/unix.h
+iop.o iop.pic.o: ../include/mico/transport_impl.h ../include/mico/typecode.h
+iop.o iop.pic.o: ../include/mico/typecode_seq.h ../include/mico/types.h
+iop.o iop.pic.o: ../include/mico/util.h ../include/mico/value.h ../include/mico/valuetype.h
+iop.o iop.pic.o: ../include/mico/valuetype_impl.h ../include/mico/version.h
+iop.o iop.pic.o: ../include/ministl/bool.h ../include/ministl/bstring.h
 iop.o iop.pic.o: ../include/ministl/defalloc.h ../include/ministl/function
 iop.o iop.pic.o: ../include/ministl/function.h ../include/ministl/list ../include/ministl/list.h
 iop.o iop.pic.o: ../include/ministl/map ../include/ministl/map.h ../include/ministl/ministl.h
@@ -1555,12 +1563,13 @@ ior.o ior.pic.o: ../include/mico/ssliop.h ../include/mico/static.h ../include/mi
 ior.o ior.pic.o: ../include/mico/sysexc.h ../include/mico/tcconst.h ../include/mico/tckind.h
 ior.o ior.pic.o: ../include/mico/template.h ../include/mico/template_impl.h
 ior.o ior.pic.o: ../include/mico/throw.h ../include/mico/timebase.h ../include/mico/transport.h
-ior.o ior.pic.o: ../include/mico/transport/tcp.h ../include/mico/transport/udp.h
-ior.o ior.pic.o: ../include/mico/transport/unix.h ../include/mico/transport_impl.h
-ior.o ior.pic.o: ../include/mico/typecode.h ../include/mico/typecode_seq.h
-ior.o ior.pic.o: ../include/mico/types.h ../include/mico/util.h ../include/mico/value.h
-ior.o ior.pic.o: ../include/mico/valuetype.h ../include/mico/valuetype_impl.h
-ior.o ior.pic.o: ../include/mico/version.h ../include/ministl/bool.h ../include/ministl/bstring.h
+ior.o ior.pic.o: ../include/mico/transport/sharedMemory.h ../include/mico/transport/tcp.h
+ior.o ior.pic.o: ../include/mico/transport/udp.h ../include/mico/transport/unix.h
+ior.o ior.pic.o: ../include/mico/transport_impl.h ../include/mico/typecode.h
+ior.o ior.pic.o: ../include/mico/typecode_seq.h ../include/mico/types.h
+ior.o ior.pic.o: ../include/mico/util.h ../include/mico/value.h ../include/mico/valuetype.h
+ior.o ior.pic.o: ../include/mico/valuetype_impl.h ../include/mico/version.h
+ior.o ior.pic.o: ../include/ministl/bool.h ../include/ministl/bstring.h
 ior.o ior.pic.o: ../include/ministl/defalloc.h ../include/ministl/function
 ior.o ior.pic.o: ../include/ministl/function.h ../include/ministl/list ../include/ministl/list.h
 ior.o ior.pic.o: ../include/ministl/map ../include/ministl/map.h ../include/ministl/ministl.h
@@ -1730,6 +1739,7 @@ ltp_address.o ltp_address.pic.o: ../include/mico/sysexc.h ../include/mico/tccons
 ltp_address.o ltp_address.pic.o: ../include/mico/tckind.h ../include/mico/template.h
 ltp_address.o ltp_address.pic.o: ../include/mico/template_impl.h ../include/mico/throw.h
 ltp_address.o ltp_address.pic.o: ../include/mico/timebase.h ../include/mico/transport.h
+ltp_address.o ltp_address.pic.o: ../include/mico/transport/sharedMemory.h
 ltp_address.o ltp_address.pic.o: ../include/mico/transport/tcp.h ../include/mico/transport/udp.h
 ltp_address.o ltp_address.pic.o: ../include/mico/transport/unix.h ../include/mico/transport_impl.h
 ltp_address.o ltp_address.pic.o: ../include/mico/typecode.h ../include/mico/typecode_seq.h
@@ -1813,22 +1823,22 @@ ltp_ior.o ltp_ior.pic.o: ../include/mico/sysexc.h ../include/mico/tcconst.h
 ltp_ior.o ltp_ior.pic.o: ../include/mico/tckind.h ../include/mico/template.h
 ltp_ior.o ltp_ior.pic.o: ../include/mico/template_impl.h ../include/mico/throw.h
 ltp_ior.o ltp_ior.pic.o: ../include/mico/timebase.h ../include/mico/transport.h
-ltp_ior.o ltp_ior.pic.o: ../include/mico/transport/tcp.h ../include/mico/transport/udp.h
-ltp_ior.o ltp_ior.pic.o: ../include/mico/transport/unix.h ../include/mico/transport_impl.h
-ltp_ior.o ltp_ior.pic.o: ../include/mico/typecode.h ../include/mico/typecode_seq.h
-ltp_ior.o ltp_ior.pic.o: ../include/mico/types.h ../include/mico/util.h
-ltp_ior.o ltp_ior.pic.o: ../include/mico/value.h ../include/mico/valuetype.h
-ltp_ior.o ltp_ior.pic.o: ../include/mico/valuetype_impl.h ../include/mico/version.h
-ltp_ior.o ltp_ior.pic.o: ../include/ministl/bool.h ../include/ministl/bstring.h
-ltp_ior.o ltp_ior.pic.o: ../include/ministl/defalloc.h ../include/ministl/function
-ltp_ior.o ltp_ior.pic.o: ../include/ministl/function.h ../include/ministl/list
-ltp_ior.o ltp_ior.pic.o: ../include/ministl/list.h ../include/ministl/map
-ltp_ior.o ltp_ior.pic.o: ../include/ministl/map.h ../include/ministl/ministl.h
-ltp_ior.o ltp_ior.pic.o: ../include/ministl/pair ../include/ministl/pair.h
-ltp_ior.o ltp_ior.pic.o: ../include/ministl/set ../include/ministl/set.h
-ltp_ior.o ltp_ior.pic.o: ../include/ministl/simplevec.h ../include/ministl/string
-ltp_ior.o ltp_ior.pic.o: ../include/ministl/vector ../include/ministl/vector.h
-ltp_ior.o ltp_ior.pic.o: ltp_ior.cc orb_pch.h
+ltp_ior.o ltp_ior.pic.o: ../include/mico/transport/sharedMemory.h ../include/mico/transport/tcp.h
+ltp_ior.o ltp_ior.pic.o: ../include/mico/transport/udp.h ../include/mico/transport/unix.h
+ltp_ior.o ltp_ior.pic.o: ../include/mico/transport_impl.h ../include/mico/typecode.h
+ltp_ior.o ltp_ior.pic.o: ../include/mico/typecode_seq.h ../include/mico/types.h
+ltp_ior.o ltp_ior.pic.o: ../include/mico/util.h ../include/mico/value.h
+ltp_ior.o ltp_ior.pic.o: ../include/mico/valuetype.h ../include/mico/valuetype_impl.h
+ltp_ior.o ltp_ior.pic.o: ../include/mico/version.h ../include/ministl/bool.h
+ltp_ior.o ltp_ior.pic.o: ../include/ministl/bstring.h ../include/ministl/defalloc.h
+ltp_ior.o ltp_ior.pic.o: ../include/ministl/function ../include/ministl/function.h
+ltp_ior.o ltp_ior.pic.o: ../include/ministl/list ../include/ministl/list.h
+ltp_ior.o ltp_ior.pic.o: ../include/ministl/map ../include/ministl/map.h
+ltp_ior.o ltp_ior.pic.o: ../include/ministl/ministl.h ../include/ministl/pair
+ltp_ior.o ltp_ior.pic.o: ../include/ministl/pair.h ../include/ministl/set
+ltp_ior.o ltp_ior.pic.o: ../include/ministl/set.h ../include/ministl/simplevec.h
+ltp_ior.o ltp_ior.pic.o: ../include/ministl/string ../include/ministl/vector
+ltp_ior.o ltp_ior.pic.o: ../include/ministl/vector.h ltp_ior.cc orb_pch.h
 memcheck.o memcheck.pic.o: ../include/CORBA.h ../include/mico/address.h
 memcheck.o memcheck.pic.o: ../include/mico/any.h ../include/mico/array.h
 memcheck.o memcheck.pic.o: ../include/mico/assert.h ../include/mico/basic.h
@@ -1956,22 +1966,22 @@ message.o message.pic.o: ../include/mico/sysexc.h ../include/mico/tcconst.h
 message.o message.pic.o: ../include/mico/tckind.h ../include/mico/template.h
 message.o message.pic.o: ../include/mico/template_impl.h ../include/mico/throw.h
 message.o message.pic.o: ../include/mico/timebase.h ../include/mico/transport.h
-message.o message.pic.o: ../include/mico/transport/tcp.h ../include/mico/transport/udp.h
-message.o message.pic.o: ../include/mico/transport/unix.h ../include/mico/transport_impl.h
-message.o message.pic.o: ../include/mico/typecode.h ../include/mico/typecode_seq.h
-message.o message.pic.o: ../include/mico/types.h ../include/mico/util.h
-message.o message.pic.o: ../include/mico/value.h ../include/mico/valuetype.h
-message.o message.pic.o: ../include/mico/valuetype_impl.h ../include/mico/version.h
-message.o message.pic.o: ../include/ministl/bool.h ../include/ministl/bstring.h
-message.o message.pic.o: ../include/ministl/defalloc.h ../include/ministl/function
-message.o message.pic.o: ../include/ministl/function.h ../include/ministl/list
-message.o message.pic.o: ../include/ministl/list.h ../include/ministl/map
-message.o message.pic.o: ../include/ministl/map.h ../include/ministl/ministl.h
-message.o message.pic.o: ../include/ministl/pair ../include/ministl/pair.h
-message.o message.pic.o: ../include/ministl/set ../include/ministl/set.h
-message.o message.pic.o: ../include/ministl/simplevec.h ../include/ministl/string
-message.o message.pic.o: ../include/ministl/vector ../include/ministl/vector.h
-message.o message.pic.o: message.cc orb_pch.h
+message.o message.pic.o: ../include/mico/transport/sharedMemory.h ../include/mico/transport/tcp.h
+message.o message.pic.o: ../include/mico/transport/udp.h ../include/mico/transport/unix.h
+message.o message.pic.o: ../include/mico/transport_impl.h ../include/mico/typecode.h
+message.o message.pic.o: ../include/mico/typecode_seq.h ../include/mico/types.h
+message.o message.pic.o: ../include/mico/util.h ../include/mico/value.h
+message.o message.pic.o: ../include/mico/valuetype.h ../include/mico/valuetype_impl.h
+message.o message.pic.o: ../include/mico/version.h ../include/ministl/bool.h
+message.o message.pic.o: ../include/ministl/bstring.h ../include/ministl/defalloc.h
+message.o message.pic.o: ../include/ministl/function ../include/ministl/function.h
+message.o message.pic.o: ../include/ministl/list ../include/ministl/list.h
+message.o message.pic.o: ../include/ministl/map ../include/ministl/map.h
+message.o message.pic.o: ../include/ministl/ministl.h ../include/ministl/pair
+message.o message.pic.o: ../include/ministl/pair.h ../include/ministl/set
+message.o message.pic.o: ../include/ministl/set.h ../include/ministl/simplevec.h
+message.o message.pic.o: ../include/ministl/string ../include/ministl/vector
+message.o message.pic.o: ../include/ministl/vector.h message.cc orb_pch.h
 messaging.o messaging.pic.o: ../include/CORBA.h ../include/mico/address.h
 messaging.o messaging.pic.o: ../include/mico/any.h ../include/mico/array.h
 messaging.o messaging.pic.o: ../include/mico/assert.h ../include/mico/basic.h
@@ -2121,8 +2131,9 @@ messaging_impl.o messaging_impl.pic.o: ../include/mico/string.h ../include/mico/
 messaging_impl.o messaging_impl.pic.o: ../include/mico/tcconst.h ../include/mico/tckind.h
 messaging_impl.o messaging_impl.pic.o: ../include/mico/template.h ../include/mico/template_impl.h
 messaging_impl.o messaging_impl.pic.o: ../include/mico/throw.h ../include/mico/timebase.h
-messaging_impl.o messaging_impl.pic.o: ../include/mico/transport.h ../include/mico/transport/tcp.h
-messaging_impl.o messaging_impl.pic.o: ../include/mico/transport/udp.h ../include/mico/transport/unix.h
+messaging_impl.o messaging_impl.pic.o: ../include/mico/transport.h ../include/mico/transport/sharedMemory.h
+messaging_impl.o messaging_impl.pic.o: ../include/mico/transport/tcp.h ../include/mico/transport/udp.h
+messaging_impl.o messaging_impl.pic.o: ../include/mico/transport/unix.h
 messaging_impl.o messaging_impl.pic.o: ../include/mico/transport_impl.h
 messaging_impl.o messaging_impl.pic.o: ../include/mico/typecode.h ../include/mico/typecode_seq.h
 messaging_impl.o messaging_impl.pic.o: ../include/mico/types.h ../include/mico/util.h
@@ -2220,23 +2231,23 @@ mt_dispatcher.o mt_dispatcher.pic.o: ../include/mico/string.h ../include/mico/sy
 mt_dispatcher.o mt_dispatcher.pic.o: ../include/mico/tcconst.h ../include/mico/tckind.h
 mt_dispatcher.o mt_dispatcher.pic.o: ../include/mico/template.h ../include/mico/template_impl.h
 mt_dispatcher.o mt_dispatcher.pic.o: ../include/mico/throw.h ../include/mico/timebase.h
-mt_dispatcher.o mt_dispatcher.pic.o: ../include/mico/transport.h ../include/mico/transport/tcp.h
-mt_dispatcher.o mt_dispatcher.pic.o: ../include/mico/transport/udp.h ../include/mico/transport/unix.h
-mt_dispatcher.o mt_dispatcher.pic.o: ../include/mico/transport_impl.h ../include/mico/typecode.h
-mt_dispatcher.o mt_dispatcher.pic.o: ../include/mico/typecode_seq.h ../include/mico/types.h
-mt_dispatcher.o mt_dispatcher.pic.o: ../include/mico/util.h ../include/mico/value.h
-mt_dispatcher.o mt_dispatcher.pic.o: ../include/mico/valuetype.h ../include/mico/valuetype_impl.h
-mt_dispatcher.o mt_dispatcher.pic.o: ../include/mico/version.h ../include/ministl/bool.h
-mt_dispatcher.o mt_dispatcher.pic.o: ../include/ministl/bstring.h ../include/ministl/defalloc.h
-mt_dispatcher.o mt_dispatcher.pic.o: ../include/ministl/function ../include/ministl/function.h
-mt_dispatcher.o mt_dispatcher.pic.o: ../include/ministl/list ../include/ministl/list.h
-mt_dispatcher.o mt_dispatcher.pic.o: ../include/ministl/map ../include/ministl/map.h
-mt_dispatcher.o mt_dispatcher.pic.o: ../include/ministl/ministl.h ../include/ministl/pair
-mt_dispatcher.o mt_dispatcher.pic.o: ../include/ministl/pair.h ../include/ministl/set
-mt_dispatcher.o mt_dispatcher.pic.o: ../include/ministl/set.h ../include/ministl/simplevec.h
-mt_dispatcher.o mt_dispatcher.pic.o: ../include/ministl/string ../include/ministl/vector
-mt_dispatcher.o mt_dispatcher.pic.o: ../include/ministl/vector.h mt_dispatcher.cc
-mt_dispatcher.o mt_dispatcher.pic.o: orb_pch.h
+mt_dispatcher.o mt_dispatcher.pic.o: ../include/mico/transport.h ../include/mico/transport/sharedMemory.h
+mt_dispatcher.o mt_dispatcher.pic.o: ../include/mico/transport/tcp.h ../include/mico/transport/udp.h
+mt_dispatcher.o mt_dispatcher.pic.o: ../include/mico/transport/unix.h ../include/mico/transport_impl.h
+mt_dispatcher.o mt_dispatcher.pic.o: ../include/mico/typecode.h ../include/mico/typecode_seq.h
+mt_dispatcher.o mt_dispatcher.pic.o: ../include/mico/types.h ../include/mico/util.h
+mt_dispatcher.o mt_dispatcher.pic.o: ../include/mico/value.h ../include/mico/valuetype.h
+mt_dispatcher.o mt_dispatcher.pic.o: ../include/mico/valuetype_impl.h ../include/mico/version.h
+mt_dispatcher.o mt_dispatcher.pic.o: ../include/ministl/bool.h ../include/ministl/bstring.h
+mt_dispatcher.o mt_dispatcher.pic.o: ../include/ministl/defalloc.h ../include/ministl/function
+mt_dispatcher.o mt_dispatcher.pic.o: ../include/ministl/function.h ../include/ministl/list
+mt_dispatcher.o mt_dispatcher.pic.o: ../include/ministl/list.h ../include/ministl/map
+mt_dispatcher.o mt_dispatcher.pic.o: ../include/ministl/map.h ../include/ministl/ministl.h
+mt_dispatcher.o mt_dispatcher.pic.o: ../include/ministl/pair ../include/ministl/pair.h
+mt_dispatcher.o mt_dispatcher.pic.o: ../include/ministl/set ../include/ministl/set.h
+mt_dispatcher.o mt_dispatcher.pic.o: ../include/ministl/simplevec.h ../include/ministl/string
+mt_dispatcher.o mt_dispatcher.pic.o: ../include/ministl/vector ../include/ministl/vector.h
+mt_dispatcher.o mt_dispatcher.pic.o: mt_dispatcher.cc orb_pch.h
 mt_manager.o mt_manager.pic.o: ../include/CORBA-SMALL.h ../include/CORBA.h
 mt_manager.o mt_manager.pic.o: ../include/mico/address.h ../include/mico/address_impl.h
 mt_manager.o mt_manager.pic.o: ../include/mico/any.h ../include/mico/array.h
@@ -2311,6 +2322,7 @@ mt_manager.o mt_manager.pic.o: ../include/mico/sysexc.h ../include/mico/tcconst.
 mt_manager.o mt_manager.pic.o: ../include/mico/tckind.h ../include/mico/template.h
 mt_manager.o mt_manager.pic.o: ../include/mico/template_impl.h ../include/mico/throw.h
 mt_manager.o mt_manager.pic.o: ../include/mico/timebase.h ../include/mico/transport.h
+mt_manager.o mt_manager.pic.o: ../include/mico/transport/sharedMemory.h
 mt_manager.o mt_manager.pic.o: ../include/mico/transport/tcp.h ../include/mico/transport/udp.h
 mt_manager.o mt_manager.pic.o: ../include/mico/transport/unix.h ../include/mico/transport_impl.h
 mt_manager.o mt_manager.pic.o: ../include/mico/typecode.h ../include/mico/typecode_seq.h
@@ -2394,22 +2406,22 @@ mtdebug.o mtdebug.pic.o: ../include/mico/sysexc.h ../include/mico/tcconst.h
 mtdebug.o mtdebug.pic.o: ../include/mico/tckind.h ../include/mico/template.h
 mtdebug.o mtdebug.pic.o: ../include/mico/template_impl.h ../include/mico/throw.h
 mtdebug.o mtdebug.pic.o: ../include/mico/timebase.h ../include/mico/transport.h
-mtdebug.o mtdebug.pic.o: ../include/mico/transport/tcp.h ../include/mico/transport/udp.h
-mtdebug.o mtdebug.pic.o: ../include/mico/transport/unix.h ../include/mico/transport_impl.h
-mtdebug.o mtdebug.pic.o: ../include/mico/typecode.h ../include/mico/typecode_seq.h
-mtdebug.o mtdebug.pic.o: ../include/mico/types.h ../include/mico/util.h
-mtdebug.o mtdebug.pic.o: ../include/mico/value.h ../include/mico/valuetype.h
-mtdebug.o mtdebug.pic.o: ../include/mico/valuetype_impl.h ../include/mico/version.h
-mtdebug.o mtdebug.pic.o: ../include/ministl/bool.h ../include/ministl/bstring.h
-mtdebug.o mtdebug.pic.o: ../include/ministl/defalloc.h ../include/ministl/function
-mtdebug.o mtdebug.pic.o: ../include/ministl/function.h ../include/ministl/list
-mtdebug.o mtdebug.pic.o: ../include/ministl/list.h ../include/ministl/map
-mtdebug.o mtdebug.pic.o: ../include/ministl/map.h ../include/ministl/ministl.h
-mtdebug.o mtdebug.pic.o: ../include/ministl/pair ../include/ministl/pair.h
-mtdebug.o mtdebug.pic.o: ../include/ministl/set ../include/ministl/set.h
-mtdebug.o mtdebug.pic.o: ../include/ministl/simplevec.h ../include/ministl/string
-mtdebug.o mtdebug.pic.o: ../include/ministl/vector ../include/ministl/vector.h
-mtdebug.o mtdebug.pic.o: mtdebug.cc orb_pch.h
+mtdebug.o mtdebug.pic.o: ../include/mico/transport/sharedMemory.h ../include/mico/transport/tcp.h
+mtdebug.o mtdebug.pic.o: ../include/mico/transport/udp.h ../include/mico/transport/unix.h
+mtdebug.o mtdebug.pic.o: ../include/mico/transport_impl.h ../include/mico/typecode.h
+mtdebug.o mtdebug.pic.o: ../include/mico/typecode_seq.h ../include/mico/types.h
+mtdebug.o mtdebug.pic.o: ../include/mico/util.h ../include/mico/value.h
+mtdebug.o mtdebug.pic.o: ../include/mico/valuetype.h ../include/mico/valuetype_impl.h
+mtdebug.o mtdebug.pic.o: ../include/mico/version.h ../include/ministl/bool.h
+mtdebug.o mtdebug.pic.o: ../include/ministl/bstring.h ../include/ministl/defalloc.h
+mtdebug.o mtdebug.pic.o: ../include/ministl/function ../include/ministl/function.h
+mtdebug.o mtdebug.pic.o: ../include/ministl/list ../include/ministl/list.h
+mtdebug.o mtdebug.pic.o: ../include/ministl/map ../include/ministl/map.h
+mtdebug.o mtdebug.pic.o: ../include/ministl/ministl.h ../include/ministl/pair
+mtdebug.o mtdebug.pic.o: ../include/ministl/pair.h ../include/ministl/set
+mtdebug.o mtdebug.pic.o: ../include/ministl/set.h ../include/ministl/simplevec.h
+mtdebug.o mtdebug.pic.o: ../include/ministl/string ../include/ministl/vector
+mtdebug.o mtdebug.pic.o: ../include/ministl/vector.h mtdebug.cc orb_pch.h
 mtpolicy.o mtpolicy.pic.o: ../include/CORBA.h ../include/mico/address.h
 mtpolicy.o mtpolicy.pic.o: ../include/mico/any.h ../include/mico/array.h
 mtpolicy.o mtpolicy.pic.o: ../include/mico/assert.h ../include/mico/basic.h
@@ -2549,23 +2561,23 @@ mtpolicy_impl.o mtpolicy_impl.pic.o: ../include/mico/string.h ../include/mico/sy
 mtpolicy_impl.o mtpolicy_impl.pic.o: ../include/mico/tcconst.h ../include/mico/tckind.h
 mtpolicy_impl.o mtpolicy_impl.pic.o: ../include/mico/template.h ../include/mico/template_impl.h
 mtpolicy_impl.o mtpolicy_impl.pic.o: ../include/mico/throw.h ../include/mico/timebase.h
-mtpolicy_impl.o mtpolicy_impl.pic.o: ../include/mico/transport.h ../include/mico/transport/tcp.h
-mtpolicy_impl.o mtpolicy_impl.pic.o: ../include/mico/transport/udp.h ../include/mico/transport/unix.h
-mtpolicy_impl.o mtpolicy_impl.pic.o: ../include/mico/transport_impl.h ../include/mico/typecode.h
-mtpolicy_impl.o mtpolicy_impl.pic.o: ../include/mico/typecode_seq.h ../include/mico/types.h
-mtpolicy_impl.o mtpolicy_impl.pic.o: ../include/mico/util.h ../include/mico/value.h
-mtpolicy_impl.o mtpolicy_impl.pic.o: ../include/mico/valuetype.h ../include/mico/valuetype_impl.h
-mtpolicy_impl.o mtpolicy_impl.pic.o: ../include/mico/version.h ../include/ministl/bool.h
-mtpolicy_impl.o mtpolicy_impl.pic.o: ../include/ministl/bstring.h ../include/ministl/defalloc.h
-mtpolicy_impl.o mtpolicy_impl.pic.o: ../include/ministl/function ../include/ministl/function.h
-mtpolicy_impl.o mtpolicy_impl.pic.o: ../include/ministl/list ../include/ministl/list.h
-mtpolicy_impl.o mtpolicy_impl.pic.o: ../include/ministl/map ../include/ministl/map.h
-mtpolicy_impl.o mtpolicy_impl.pic.o: ../include/ministl/ministl.h ../include/ministl/pair
-mtpolicy_impl.o mtpolicy_impl.pic.o: ../include/ministl/pair.h ../include/ministl/set
-mtpolicy_impl.o mtpolicy_impl.pic.o: ../include/ministl/set.h ../include/ministl/simplevec.h
-mtpolicy_impl.o mtpolicy_impl.pic.o: ../include/ministl/string ../include/ministl/vector
-mtpolicy_impl.o mtpolicy_impl.pic.o: ../include/ministl/vector.h mtpolicy_impl.cc
-mtpolicy_impl.o mtpolicy_impl.pic.o: orb_pch.h
+mtpolicy_impl.o mtpolicy_impl.pic.o: ../include/mico/transport.h ../include/mico/transport/sharedMemory.h
+mtpolicy_impl.o mtpolicy_impl.pic.o: ../include/mico/transport/tcp.h ../include/mico/transport/udp.h
+mtpolicy_impl.o mtpolicy_impl.pic.o: ../include/mico/transport/unix.h ../include/mico/transport_impl.h
+mtpolicy_impl.o mtpolicy_impl.pic.o: ../include/mico/typecode.h ../include/mico/typecode_seq.h
+mtpolicy_impl.o mtpolicy_impl.pic.o: ../include/mico/types.h ../include/mico/util.h
+mtpolicy_impl.o mtpolicy_impl.pic.o: ../include/mico/value.h ../include/mico/valuetype.h
+mtpolicy_impl.o mtpolicy_impl.pic.o: ../include/mico/valuetype_impl.h ../include/mico/version.h
+mtpolicy_impl.o mtpolicy_impl.pic.o: ../include/ministl/bool.h ../include/ministl/bstring.h
+mtpolicy_impl.o mtpolicy_impl.pic.o: ../include/ministl/defalloc.h ../include/ministl/function
+mtpolicy_impl.o mtpolicy_impl.pic.o: ../include/ministl/function.h ../include/ministl/list
+mtpolicy_impl.o mtpolicy_impl.pic.o: ../include/ministl/list.h ../include/ministl/map
+mtpolicy_impl.o mtpolicy_impl.pic.o: ../include/ministl/map.h ../include/ministl/ministl.h
+mtpolicy_impl.o mtpolicy_impl.pic.o: ../include/ministl/pair ../include/ministl/pair.h
+mtpolicy_impl.o mtpolicy_impl.pic.o: ../include/ministl/set ../include/ministl/set.h
+mtpolicy_impl.o mtpolicy_impl.pic.o: ../include/ministl/simplevec.h ../include/ministl/string
+mtpolicy_impl.o mtpolicy_impl.pic.o: ../include/ministl/vector ../include/ministl/vector.h
+mtpolicy_impl.o mtpolicy_impl.pic.o: mtpolicy_impl.cc orb_pch.h
 mttypes.o mttypes.pic.o: ../include/CORBA.h ../include/mico/address.h ../include/mico/any.h
 mttypes.o mttypes.pic.o: ../include/mico/array.h ../include/mico/assert.h
 mttypes.o mttypes.pic.o: ../include/mico/basic.h ../include/mico/basic_seq.h
@@ -2687,17 +2699,17 @@ object.o object.pic.o: ../include/mico/string.h ../include/mico/sysexc.h
 object.o object.pic.o: ../include/mico/tcconst.h ../include/mico/tckind.h
 object.o object.pic.o: ../include/mico/template.h ../include/mico/template_impl.h
 object.o object.pic.o: ../include/mico/throw.h ../include/mico/timebase.h
-object.o object.pic.o: ../include/mico/transport.h ../include/mico/transport/tcp.h
-object.o object.pic.o: ../include/mico/transport/udp.h ../include/mico/transport/unix.h
-object.o object.pic.o: ../include/mico/transport_impl.h ../include/mico/typecode.h
-object.o object.pic.o: ../include/mico/typecode_seq.h ../include/mico/types.h
-object.o object.pic.o: ../include/mico/util.h ../include/mico/value.h ../include/mico/valuetype.h
-object.o object.pic.o: ../include/mico/valuetype_impl.h ../include/mico/version.h
-object.o object.pic.o: ../include/ministl/bool.h ../include/ministl/bstring.h
-object.o object.pic.o: ../include/ministl/defalloc.h ../include/ministl/function
-object.o object.pic.o: ../include/ministl/function.h ../include/ministl/list
-object.o object.pic.o: ../include/ministl/list.h ../include/ministl/map
-object.o object.pic.o: ../include/ministl/map.h ../include/ministl/ministl.h
+object.o object.pic.o: ../include/mico/transport.h ../include/mico/transport/sharedMemory.h
+object.o object.pic.o: ../include/mico/transport/tcp.h ../include/mico/transport/udp.h
+object.o object.pic.o: ../include/mico/transport/unix.h ../include/mico/transport_impl.h
+object.o object.pic.o: ../include/mico/typecode.h ../include/mico/typecode_seq.h
+object.o object.pic.o: ../include/mico/types.h ../include/mico/util.h ../include/mico/value.h
+object.o object.pic.o: ../include/mico/valuetype.h ../include/mico/valuetype_impl.h
+object.o object.pic.o: ../include/mico/version.h ../include/ministl/bool.h
+object.o object.pic.o: ../include/ministl/bstring.h ../include/ministl/defalloc.h
+object.o object.pic.o: ../include/ministl/function ../include/ministl/function.h
+object.o object.pic.o: ../include/ministl/list ../include/ministl/list.h
+object.o object.pic.o: ../include/ministl/map ../include/ministl/map.h ../include/ministl/ministl.h
 object.o object.pic.o: ../include/ministl/pair ../include/ministl/pair.h
 object.o object.pic.o: ../include/ministl/set ../include/ministl/set.h ../include/ministl/simplevec.h
 object.o object.pic.o: ../include/ministl/string ../include/ministl/vector
@@ -2772,22 +2784,22 @@ operation.o operation.pic.o: ../include/mico/sysexc.h ../include/mico/tcconst.h
 operation.o operation.pic.o: ../include/mico/tckind.h ../include/mico/template.h
 operation.o operation.pic.o: ../include/mico/template_impl.h ../include/mico/throw.h
 operation.o operation.pic.o: ../include/mico/timebase.h ../include/mico/transport.h
-operation.o operation.pic.o: ../include/mico/transport/tcp.h ../include/mico/transport/udp.h
-operation.o operation.pic.o: ../include/mico/transport/unix.h ../include/mico/transport_impl.h
-operation.o operation.pic.o: ../include/mico/typecode.h ../include/mico/typecode_seq.h
-operation.o operation.pic.o: ../include/mico/types.h ../include/mico/util.h
-operation.o operation.pic.o: ../include/mico/value.h ../include/mico/valuetype.h
-operation.o operation.pic.o: ../include/mico/valuetype_impl.h ../include/mico/version.h
-operation.o operation.pic.o: ../include/ministl/bool.h ../include/ministl/bstring.h
-operation.o operation.pic.o: ../include/ministl/defalloc.h ../include/ministl/function
-operation.o operation.pic.o: ../include/ministl/function.h ../include/ministl/list
-operation.o operation.pic.o: ../include/ministl/list.h ../include/ministl/map
-operation.o operation.pic.o: ../include/ministl/map.h ../include/ministl/ministl.h
-operation.o operation.pic.o: ../include/ministl/pair ../include/ministl/pair.h
-operation.o operation.pic.o: ../include/ministl/set ../include/ministl/set.h
-operation.o operation.pic.o: ../include/ministl/simplevec.h ../include/ministl/string
-operation.o operation.pic.o: ../include/ministl/vector ../include/ministl/vector.h
-operation.o operation.pic.o: operation.cc orb_pch.h
+operation.o operation.pic.o: ../include/mico/transport/sharedMemory.h ../include/mico/transport/tcp.h
+operation.o operation.pic.o: ../include/mico/transport/udp.h ../include/mico/transport/unix.h
+operation.o operation.pic.o: ../include/mico/transport_impl.h ../include/mico/typecode.h
+operation.o operation.pic.o: ../include/mico/typecode_seq.h ../include/mico/types.h
+operation.o operation.pic.o: ../include/mico/util.h ../include/mico/value.h
+operation.o operation.pic.o: ../include/mico/valuetype.h ../include/mico/valuetype_impl.h
+operation.o operation.pic.o: ../include/mico/version.h ../include/ministl/bool.h
+operation.o operation.pic.o: ../include/ministl/bstring.h ../include/ministl/defalloc.h
+operation.o operation.pic.o: ../include/ministl/function ../include/ministl/function.h
+operation.o operation.pic.o: ../include/ministl/list ../include/ministl/list.h
+operation.o operation.pic.o: ../include/ministl/map ../include/ministl/map.h
+operation.o operation.pic.o: ../include/ministl/ministl.h ../include/ministl/pair
+operation.o operation.pic.o: ../include/ministl/pair.h ../include/ministl/set
+operation.o operation.pic.o: ../include/ministl/set.h ../include/ministl/simplevec.h
+operation.o operation.pic.o: ../include/ministl/string ../include/ministl/vector
+operation.o operation.pic.o: ../include/ministl/vector.h operation.cc orb_pch.h
 orb.o orb.pic.o: ../include/CORBA.h ../include/mico/address.h ../include/mico/address_impl.h
 orb.o orb.pic.o: ../include/mico/any.h ../include/mico/array.h ../include/mico/assert.h
 orb.o orb.pic.o: ../include/mico/basic.h ../include/mico/basic_seq.h ../include/mico/buffer.h
@@ -2845,20 +2857,20 @@ orb.o orb.pic.o: ../include/mico/ssliop.h ../include/mico/static.h ../include/mi
 orb.o orb.pic.o: ../include/mico/sysexc.h ../include/mico/tcconst.h ../include/mico/tckind.h
 orb.o orb.pic.o: ../include/mico/template.h ../include/mico/template_impl.h
 orb.o orb.pic.o: ../include/mico/throw.h ../include/mico/timebase.h ../include/mico/transport.h
-orb.o orb.pic.o: ../include/mico/transport/tcp.h ../include/mico/transport/udp.h ../include/mico/transport/sharedMemory.h
-orb.o orb.pic.o: ../include/mico/transport/unix.h ../include/mico/transport_impl.h
-orb.o orb.pic.o: ../include/mico/typecode.h ../include/mico/typecode_seq.h
-orb.o orb.pic.o: ../include/mico/types.h ../include/mico/util.h ../include/mico/value.h
-orb.o orb.pic.o: ../include/mico/valuetype.h ../include/mico/valuetype_impl.h
-orb.o orb.pic.o: ../include/mico/version.h ../include/mico/watm.h ../include/ministl/bool.h
-orb.o orb.pic.o: ../include/ministl/bstring.h ../include/ministl/defalloc.h
-orb.o orb.pic.o: ../include/ministl/function ../include/ministl/function.h
-orb.o orb.pic.o: ../include/ministl/list ../include/ministl/list.h ../include/ministl/map
-orb.o orb.pic.o: ../include/ministl/map.h ../include/ministl/ministl.h ../include/ministl/pair
-orb.o orb.pic.o: ../include/ministl/pair.h ../include/ministl/set ../include/ministl/set.h
-orb.o orb.pic.o: ../include/ministl/simplevec.h ../include/ministl/string
-orb.o orb.pic.o: ../include/ministl/vector ../include/ministl/vector.h orb.cc
-orb.o orb.pic.o: orb_pch.h
+orb.o orb.pic.o: ../include/mico/transport/sharedMemory.h ../include/mico/transport/tcp.h
+orb.o orb.pic.o: ../include/mico/transport/udp.h ../include/mico/transport/unix.h
+orb.o orb.pic.o: ../include/mico/transport_impl.h ../include/mico/typecode.h
+orb.o orb.pic.o: ../include/mico/typecode_seq.h ../include/mico/types.h
+orb.o orb.pic.o: ../include/mico/util.h ../include/mico/value.h ../include/mico/valuetype.h
+orb.o orb.pic.o: ../include/mico/valuetype_impl.h ../include/mico/version.h
+orb.o orb.pic.o: ../include/mico/watm.h ../include/ministl/bool.h ../include/ministl/bstring.h
+orb.o orb.pic.o: ../include/ministl/defalloc.h ../include/ministl/function
+orb.o orb.pic.o: ../include/ministl/function.h ../include/ministl/list ../include/ministl/list.h
+orb.o orb.pic.o: ../include/ministl/map ../include/ministl/map.h ../include/ministl/ministl.h
+orb.o orb.pic.o: ../include/ministl/pair ../include/ministl/pair.h ../include/ministl/set
+orb.o orb.pic.o: ../include/ministl/set.h ../include/ministl/simplevec.h
+orb.o orb.pic.o: ../include/ministl/string ../include/ministl/vector ../include/ministl/vector.h
+orb.o orb.pic.o: orb.cc orb_pch.h
 orb_all.o orb_all.pic.o: ../include/CORBA-SMALL.h ../include/CORBA.h ../include/mico/address.h
 orb_all.o orb_all.pic.o: ../include/mico/address_impl.h ../include/mico/any.h
 orb_all.o orb_all.pic.o: ../include/mico/array.h ../include/mico/assert.h
@@ -2929,30 +2941,31 @@ orb_all.o orb_all.pic.o: ../include/mico/sysexc.h ../include/mico/tcconst.h
 orb_all.o orb_all.pic.o: ../include/mico/tckind.h ../include/mico/template.h
 orb_all.o orb_all.pic.o: ../include/mico/template_impl.h ../include/mico/throw.h
 orb_all.o orb_all.pic.o: ../include/mico/timebase.h ../include/mico/transport.h
-orb_all.o orb_all.pic.o: ../include/mico/transport/tcp.h ../include/mico/transport/udp.h
-orb_all.o orb_all.pic.o: ../include/mico/transport/unix.h ../include/mico/transport_impl.h
-orb_all.o orb_all.pic.o: ../include/mico/typecode.h ../include/mico/typecode_seq.h
-orb_all.o orb_all.pic.o: ../include/mico/types.h ../include/mico/util.h
-orb_all.o orb_all.pic.o: ../include/mico/value.h ../include/mico/valuetype.h
-orb_all.o orb_all.pic.o: ../include/mico/valuetype_impl.h ../include/mico/version.h
-orb_all.o orb_all.pic.o: ../include/mico/watm.h ../include/ministl/bool.h
-orb_all.o orb_all.pic.o: ../include/ministl/bstring.h ../include/ministl/defalloc.h
-orb_all.o orb_all.pic.o: ../include/ministl/function ../include/ministl/function.h
-orb_all.o orb_all.pic.o: ../include/ministl/list ../include/ministl/list.h
-orb_all.o orb_all.pic.o: ../include/ministl/map ../include/ministl/map.h
-orb_all.o orb_all.pic.o: ../include/ministl/ministl.h ../include/ministl/pair
-orb_all.o orb_all.pic.o: ../include/ministl/pair.h ../include/ministl/set
-orb_all.o orb_all.pic.o: ../include/ministl/set.h ../include/ministl/simplevec.h
-orb_all.o orb_all.pic.o: ../include/ministl/string ../include/ministl/vector
-orb_all.o orb_all.pic.o: ../include/ministl/vector.h address.cc any.cc basic_seq.cc
-orb_all.o orb_all.pic.o: buffer.cc codec.cc codeset.cc context.cc current.cc
-orb_all.o orb_all.pic.o: dii.cc dispatch.cc dsi.cc dynany.cc dynany_impl.cc
-orb_all.o orb_all.pic.o: except.cc fast_array.cc fixed.cc imr.cc iop.cc
-orb_all.o orb_all.pic.o: ioptypes.cc ior.cc ir.cc ir_base.cc ltp_address.cc
-orb_all.o orb_all.pic.o: ltp_ior.cc message.cc mt_dispatcher.cc mt_manager.cc
-orb_all.o orb_all.pic.o: mtdebug.cc object.cc operation.cc orb.cc orb_all.cc
-orb_all.o orb_all.pic.o: orb_excepts.cc orb_pch.h os-thread.cc os-thread/dcethreads.cc
-orb_all.o orb_all.pic.o: os-thread/pthreads.cc os-thread/pththreads.cc os-thread/solaris-threads.cc
+orb_all.o orb_all.pic.o: ../include/mico/transport/sharedMemory.h ../include/mico/transport/tcp.h
+orb_all.o orb_all.pic.o: ../include/mico/transport/udp.h ../include/mico/transport/unix.h
+orb_all.o orb_all.pic.o: ../include/mico/transport_impl.h ../include/mico/typecode.h
+orb_all.o orb_all.pic.o: ../include/mico/typecode_seq.h ../include/mico/types.h
+orb_all.o orb_all.pic.o: ../include/mico/util.h ../include/mico/value.h
+orb_all.o orb_all.pic.o: ../include/mico/valuetype.h ../include/mico/valuetype_impl.h
+orb_all.o orb_all.pic.o: ../include/mico/version.h ../include/mico/watm.h
+orb_all.o orb_all.pic.o: ../include/ministl/bool.h ../include/ministl/bstring.h
+orb_all.o orb_all.pic.o: ../include/ministl/defalloc.h ../include/ministl/function
+orb_all.o orb_all.pic.o: ../include/ministl/function.h ../include/ministl/list
+orb_all.o orb_all.pic.o: ../include/ministl/list.h ../include/ministl/map
+orb_all.o orb_all.pic.o: ../include/ministl/map.h ../include/ministl/ministl.h
+orb_all.o orb_all.pic.o: ../include/ministl/pair ../include/ministl/pair.h
+orb_all.o orb_all.pic.o: ../include/ministl/set ../include/ministl/set.h
+orb_all.o orb_all.pic.o: ../include/ministl/simplevec.h ../include/ministl/string
+orb_all.o orb_all.pic.o: ../include/ministl/vector ../include/ministl/vector.h
+orb_all.o orb_all.pic.o: address.cc any.cc basic_seq.cc buffer.cc codec.cc
+orb_all.o orb_all.pic.o: codeset.cc context.cc current.cc dii.cc dispatch.cc
+orb_all.o orb_all.pic.o: dsi.cc dynany.cc dynany_impl.cc except.cc fast_array.cc
+orb_all.o orb_all.pic.o: fixed.cc imr.cc iop.cc ioptypes.cc ior.cc ir.cc
+orb_all.o orb_all.pic.o: ir_base.cc ltp_address.cc ltp_ior.cc message.cc
+orb_all.o orb_all.pic.o: mt_dispatcher.cc mt_manager.cc mtdebug.cc object.cc
+orb_all.o orb_all.pic.o: operation.cc orb.cc orb_all.cc orb_excepts.cc orb_pch.h
+orb_all.o orb_all.pic.o: os-thread.cc os-thread/dcethreads.cc os-thread/pthreads.cc
+orb_all.o orb_all.pic.o: os-thread/pththreads.cc os-thread/solaris-threads.cc
 orb_all.o orb_all.pic.o: os-unix.cc pi.cc pi_impl.cc poa.cc poa_base.cc
 orb_all.o orb_all.pic.o: poa_impl.cc policy.cc policy2.cc policy_impl.cc
 orb_all.o orb_all.pic.o: queue.cc security/AuditClientIntercept.cc security/AuditOptions.cc
@@ -2963,12 +2976,13 @@ orb_all.o orb_all.pic.o: security/csi_base.cc security/csiiop.cc security/csiv2.
 orb_all.o orb_all.pic.o: security/csiv2_impl.cc security/gssup.cc security/odm.cc
 orb_all.o orb_all.pic.o: security/security.cc security/securitylevel1.cc
 orb_all.o orb_all.pic.o: security/securitylevel1_impl.cc security/securitylevel2.cc
-orb_all.o orb_all.pic.o: service_info.cc ssl.cc ssliop.cc static.cc string.cc
-orb_all.o orb_all.pic.o: tckind.cc timebase.cc transport.cc transport/ltp.cc
-orb_all.o orb_all.pic.o: transport/tcp.cc transport/udp.cc transport/unix.cc
-orb_all.o orb_all.pic.o: typecode.cc typecode_seq.cc uni_conversion.h uni_errors.h
-orb_all.o orb_all.pic.o: uni_strtypes.h uni_types.h util.cc value.cc valuetype.cc
-orb_all.o orb_all.pic.o: valuetype_impl.cc watm.cc
+orb_all.o orb_all.pic.o: service_info.cc sharedMemory.h ssl.cc ssliop.cc
+orb_all.o orb_all.pic.o: static.cc string.cc tckind.cc timebase.cc transport.cc
+orb_all.o orb_all.pic.o: transport/ltp.cc transport/sharedMemory.cc transport/tcp.cc
+orb_all.o orb_all.pic.o: transport/udp.cc transport/unix.cc typecode.cc
+orb_all.o orb_all.pic.o: typecode_seq.cc uni_conversion.h uni_errors.h uni_strtypes.h
+orb_all.o orb_all.pic.o: uni_types.h util.cc value.cc valuetype.cc valuetype_impl.cc
+orb_all.o orb_all.pic.o: watm.cc
 orb_excepts.o orb_excepts.pic.o: ../include/CORBA.h ../include/mico/address.h
 orb_excepts.o orb_excepts.pic.o: ../include/mico/any.h ../include/mico/array.h
 orb_excepts.o orb_excepts.pic.o: ../include/mico/assert.h ../include/mico/basic.h
@@ -3097,22 +3111,22 @@ orb_pch.o orb_pch.pic.o: ../include/mico/sysexc.h ../include/mico/tcconst.h
 orb_pch.o orb_pch.pic.o: ../include/mico/tckind.h ../include/mico/template.h
 orb_pch.o orb_pch.pic.o: ../include/mico/template_impl.h ../include/mico/throw.h
 orb_pch.o orb_pch.pic.o: ../include/mico/timebase.h ../include/mico/transport.h
-orb_pch.o orb_pch.pic.o: ../include/mico/transport/tcp.h ../include/mico/transport/udp.h
-orb_pch.o orb_pch.pic.o: ../include/mico/transport/unix.h ../include/mico/transport_impl.h
-orb_pch.o orb_pch.pic.o: ../include/mico/typecode.h ../include/mico/typecode_seq.h
-orb_pch.o orb_pch.pic.o: ../include/mico/types.h ../include/mico/util.h
-orb_pch.o orb_pch.pic.o: ../include/mico/value.h ../include/mico/valuetype.h
-orb_pch.o orb_pch.pic.o: ../include/mico/valuetype_impl.h ../include/mico/version.h
-orb_pch.o orb_pch.pic.o: ../include/ministl/bool.h ../include/ministl/bstring.h
-orb_pch.o orb_pch.pic.o: ../include/ministl/defalloc.h ../include/ministl/function
-orb_pch.o orb_pch.pic.o: ../include/ministl/function.h ../include/ministl/list
-orb_pch.o orb_pch.pic.o: ../include/ministl/list.h ../include/ministl/map
-orb_pch.o orb_pch.pic.o: ../include/ministl/map.h ../include/ministl/ministl.h
-orb_pch.o orb_pch.pic.o: ../include/ministl/pair ../include/ministl/pair.h
-orb_pch.o orb_pch.pic.o: ../include/ministl/set ../include/ministl/set.h
-orb_pch.o orb_pch.pic.o: ../include/ministl/simplevec.h ../include/ministl/string
-orb_pch.o orb_pch.pic.o: ../include/ministl/vector ../include/ministl/vector.h
-orb_pch.o orb_pch.pic.o: orb_pch.cc orb_pch.h
+orb_pch.o orb_pch.pic.o: ../include/mico/transport/sharedMemory.h ../include/mico/transport/tcp.h
+orb_pch.o orb_pch.pic.o: ../include/mico/transport/udp.h ../include/mico/transport/unix.h
+orb_pch.o orb_pch.pic.o: ../include/mico/transport_impl.h ../include/mico/typecode.h
+orb_pch.o orb_pch.pic.o: ../include/mico/typecode_seq.h ../include/mico/types.h
+orb_pch.o orb_pch.pic.o: ../include/mico/util.h ../include/mico/value.h
+orb_pch.o orb_pch.pic.o: ../include/mico/valuetype.h ../include/mico/valuetype_impl.h
+orb_pch.o orb_pch.pic.o: ../include/mico/version.h ../include/ministl/bool.h
+orb_pch.o orb_pch.pic.o: ../include/ministl/bstring.h ../include/ministl/defalloc.h
+orb_pch.o orb_pch.pic.o: ../include/ministl/function ../include/ministl/function.h
+orb_pch.o orb_pch.pic.o: ../include/ministl/list ../include/ministl/list.h
+orb_pch.o orb_pch.pic.o: ../include/ministl/map ../include/ministl/map.h
+orb_pch.o orb_pch.pic.o: ../include/ministl/ministl.h ../include/ministl/pair
+orb_pch.o orb_pch.pic.o: ../include/ministl/pair.h ../include/ministl/set
+orb_pch.o orb_pch.pic.o: ../include/ministl/set.h ../include/ministl/simplevec.h
+orb_pch.o orb_pch.pic.o: ../include/ministl/string ../include/ministl/vector
+orb_pch.o orb_pch.pic.o: ../include/ministl/vector.h orb_pch.cc orb_pch.h
 os-thread.o os-thread.pic.o: ../include/CORBA-SMALL.h ../include/CORBA.h
 os-thread.o os-thread.pic.o: ../include/mico/address.h ../include/mico/address_impl.h
 os-thread.o os-thread.pic.o: ../include/mico/any.h ../include/mico/array.h
@@ -3183,24 +3197,24 @@ os-thread.o os-thread.pic.o: ../include/mico/sysexc.h ../include/mico/tcconst.h
 os-thread.o os-thread.pic.o: ../include/mico/tckind.h ../include/mico/template.h
 os-thread.o os-thread.pic.o: ../include/mico/template_impl.h ../include/mico/throw.h
 os-thread.o os-thread.pic.o: ../include/mico/timebase.h ../include/mico/transport.h
-os-thread.o os-thread.pic.o: ../include/mico/transport/tcp.h ../include/mico/transport/udp.h
-os-thread.o os-thread.pic.o: ../include/mico/transport/unix.h ../include/mico/transport_impl.h
-os-thread.o os-thread.pic.o: ../include/mico/typecode.h ../include/mico/typecode_seq.h
-os-thread.o os-thread.pic.o: ../include/mico/types.h ../include/mico/util.h
-os-thread.o os-thread.pic.o: ../include/mico/value.h ../include/mico/valuetype.h
-os-thread.o os-thread.pic.o: ../include/mico/valuetype_impl.h ../include/mico/version.h
-os-thread.o os-thread.pic.o: ../include/ministl/bool.h ../include/ministl/bstring.h
-os-thread.o os-thread.pic.o: ../include/ministl/defalloc.h ../include/ministl/function
-os-thread.o os-thread.pic.o: ../include/ministl/function.h ../include/ministl/list
-os-thread.o os-thread.pic.o: ../include/ministl/list.h ../include/ministl/map
-os-thread.o os-thread.pic.o: ../include/ministl/map.h ../include/ministl/ministl.h
-os-thread.o os-thread.pic.o: ../include/ministl/pair ../include/ministl/pair.h
-os-thread.o os-thread.pic.o: ../include/ministl/set ../include/ministl/set.h
-os-thread.o os-thread.pic.o: ../include/ministl/simplevec.h ../include/ministl/string
-os-thread.o os-thread.pic.o: ../include/ministl/vector ../include/ministl/vector.h
-os-thread.o os-thread.pic.o: orb_pch.h os-thread.cc os-thread/dcethreads.cc
-os-thread.o os-thread.pic.o: os-thread/pthreads.cc os-thread/pththreads.cc
-os-thread.o os-thread.pic.o: os-thread/solaris-threads.cc
+os-thread.o os-thread.pic.o: ../include/mico/transport/sharedMemory.h ../include/mico/transport/tcp.h
+os-thread.o os-thread.pic.o: ../include/mico/transport/udp.h ../include/mico/transport/unix.h
+os-thread.o os-thread.pic.o: ../include/mico/transport_impl.h ../include/mico/typecode.h
+os-thread.o os-thread.pic.o: ../include/mico/typecode_seq.h ../include/mico/types.h
+os-thread.o os-thread.pic.o: ../include/mico/util.h ../include/mico/value.h
+os-thread.o os-thread.pic.o: ../include/mico/valuetype.h ../include/mico/valuetype_impl.h
+os-thread.o os-thread.pic.o: ../include/mico/version.h ../include/ministl/bool.h
+os-thread.o os-thread.pic.o: ../include/ministl/bstring.h ../include/ministl/defalloc.h
+os-thread.o os-thread.pic.o: ../include/ministl/function ../include/ministl/function.h
+os-thread.o os-thread.pic.o: ../include/ministl/list ../include/ministl/list.h
+os-thread.o os-thread.pic.o: ../include/ministl/map ../include/ministl/map.h
+os-thread.o os-thread.pic.o: ../include/ministl/ministl.h ../include/ministl/pair
+os-thread.o os-thread.pic.o: ../include/ministl/pair.h ../include/ministl/set
+os-thread.o os-thread.pic.o: ../include/ministl/set.h ../include/ministl/simplevec.h
+os-thread.o os-thread.pic.o: ../include/ministl/string ../include/ministl/vector
+os-thread.o os-thread.pic.o: ../include/ministl/vector.h orb_pch.h os-thread.cc
+os-thread.o os-thread.pic.o: os-thread/dcethreads.cc os-thread/pthreads.cc
+os-thread.o os-thread.pic.o: os-thread/pththreads.cc os-thread/solaris-threads.cc
 os-unix.o os-unix.pic.o: ../include/CORBA-SMALL.h ../include/CORBA.h ../include/mico/address.h
 os-unix.o os-unix.pic.o: ../include/mico/address_impl.h ../include/mico/any.h
 os-unix.o os-unix.pic.o: ../include/mico/array.h ../include/mico/assert.h
@@ -3268,22 +3282,22 @@ os-unix.o os-unix.pic.o: ../include/mico/sysexc.h ../include/mico/tcconst.h
 os-unix.o os-unix.pic.o: ../include/mico/tckind.h ../include/mico/template.h
 os-unix.o os-unix.pic.o: ../include/mico/template_impl.h ../include/mico/throw.h
 os-unix.o os-unix.pic.o: ../include/mico/timebase.h ../include/mico/transport.h
-os-unix.o os-unix.pic.o: ../include/mico/transport/tcp.h ../include/mico/transport/udp.h
-os-unix.o os-unix.pic.o: ../include/mico/transport/unix.h ../include/mico/transport_impl.h
-os-unix.o os-unix.pic.o: ../include/mico/typecode.h ../include/mico/typecode_seq.h
-os-unix.o os-unix.pic.o: ../include/mico/types.h ../include/mico/util.h
-os-unix.o os-unix.pic.o: ../include/mico/value.h ../include/mico/valuetype.h
-os-unix.o os-unix.pic.o: ../include/mico/valuetype_impl.h ../include/mico/version.h
-os-unix.o os-unix.pic.o: ../include/ministl/bool.h ../include/ministl/bstring.h
-os-unix.o os-unix.pic.o: ../include/ministl/defalloc.h ../include/ministl/function
-os-unix.o os-unix.pic.o: ../include/ministl/function.h ../include/ministl/list
-os-unix.o os-unix.pic.o: ../include/ministl/list.h ../include/ministl/map
-os-unix.o os-unix.pic.o: ../include/ministl/map.h ../include/ministl/ministl.h
-os-unix.o os-unix.pic.o: ../include/ministl/pair ../include/ministl/pair.h
-os-unix.o os-unix.pic.o: ../include/ministl/set ../include/ministl/set.h
-os-unix.o os-unix.pic.o: ../include/ministl/simplevec.h ../include/ministl/string
-os-unix.o os-unix.pic.o: ../include/ministl/vector ../include/ministl/vector.h
-os-unix.o os-unix.pic.o: orb_pch.h os-unix.cc
+os-unix.o os-unix.pic.o: ../include/mico/transport/sharedMemory.h ../include/mico/transport/tcp.h
+os-unix.o os-unix.pic.o: ../include/mico/transport/udp.h ../include/mico/transport/unix.h
+os-unix.o os-unix.pic.o: ../include/mico/transport_impl.h ../include/mico/typecode.h
+os-unix.o os-unix.pic.o: ../include/mico/typecode_seq.h ../include/mico/types.h
+os-unix.o os-unix.pic.o: ../include/mico/util.h ../include/mico/value.h
+os-unix.o os-unix.pic.o: ../include/mico/valuetype.h ../include/mico/valuetype_impl.h
+os-unix.o os-unix.pic.o: ../include/mico/version.h ../include/ministl/bool.h
+os-unix.o os-unix.pic.o: ../include/ministl/bstring.h ../include/ministl/defalloc.h
+os-unix.o os-unix.pic.o: ../include/ministl/function ../include/ministl/function.h
+os-unix.o os-unix.pic.o: ../include/ministl/list ../include/ministl/list.h
+os-unix.o os-unix.pic.o: ../include/ministl/map ../include/ministl/map.h
+os-unix.o os-unix.pic.o: ../include/ministl/ministl.h ../include/ministl/pair
+os-unix.o os-unix.pic.o: ../include/ministl/pair.h ../include/ministl/set
+os-unix.o os-unix.pic.o: ../include/ministl/set.h ../include/ministl/simplevec.h
+os-unix.o os-unix.pic.o: ../include/ministl/string ../include/ministl/vector
+os-unix.o os-unix.pic.o: ../include/ministl/vector.h orb_pch.h os-unix.cc
 os-windows.o os-windows.pic.o: ../include/CORBA-SMALL.h ../include/CORBA.h
 os-windows.o os-windows.pic.o: ../include/mico/address.h ../include/mico/address_impl.h
 os-windows.o os-windows.pic.o: ../include/mico/any.h ../include/mico/array.h
@@ -3343,6 +3357,7 @@ os-windows.o os-windows.pic.o: ../include/mico/sysexc.h ../include/mico/tcconst.
 os-windows.o os-windows.pic.o: ../include/mico/tckind.h ../include/mico/template.h
 os-windows.o os-windows.pic.o: ../include/mico/template_impl.h ../include/mico/throw.h
 os-windows.o os-windows.pic.o: ../include/mico/timebase.h ../include/mico/transport.h
+os-windows.o os-windows.pic.o: ../include/mico/transport/sharedMemory.h
 os-windows.o os-windows.pic.o: ../include/mico/transport/tcp.h ../include/mico/transport/udp.h
 os-windows.o os-windows.pic.o: ../include/mico/transport/unix.h ../include/mico/transport_impl.h
 os-windows.o os-windows.pic.o: ../include/mico/typecode.h ../include/mico/typecode_seq.h
@@ -3471,22 +3486,22 @@ pi_impl.o pi_impl.pic.o: ../include/mico/sysexc.h ../include/mico/tcconst.h
 pi_impl.o pi_impl.pic.o: ../include/mico/tckind.h ../include/mico/template.h
 pi_impl.o pi_impl.pic.o: ../include/mico/template_impl.h ../include/mico/throw.h
 pi_impl.o pi_impl.pic.o: ../include/mico/timebase.h ../include/mico/transport.h
-pi_impl.o pi_impl.pic.o: ../include/mico/transport/tcp.h ../include/mico/transport/udp.h
-pi_impl.o pi_impl.pic.o: ../include/mico/transport/unix.h ../include/mico/transport_impl.h
-pi_impl.o pi_impl.pic.o: ../include/mico/typecode.h ../include/mico/typecode_seq.h
-pi_impl.o pi_impl.pic.o: ../include/mico/types.h ../include/mico/util.h
-pi_impl.o pi_impl.pic.o: ../include/mico/value.h ../include/mico/valuetype.h
-pi_impl.o pi_impl.pic.o: ../include/mico/valuetype_impl.h ../include/mico/version.h
-pi_impl.o pi_impl.pic.o: ../include/ministl/bool.h ../include/ministl/bstring.h
-pi_impl.o pi_impl.pic.o: ../include/ministl/defalloc.h ../include/ministl/function
-pi_impl.o pi_impl.pic.o: ../include/ministl/function.h ../include/ministl/list
-pi_impl.o pi_impl.pic.o: ../include/ministl/list.h ../include/ministl/map
-pi_impl.o pi_impl.pic.o: ../include/ministl/map.h ../include/ministl/ministl.h
-pi_impl.o pi_impl.pic.o: ../include/ministl/pair ../include/ministl/pair.h
-pi_impl.o pi_impl.pic.o: ../include/ministl/set ../include/ministl/set.h
-pi_impl.o pi_impl.pic.o: ../include/ministl/simplevec.h ../include/ministl/string
-pi_impl.o pi_impl.pic.o: ../include/ministl/vector ../include/ministl/vector.h
-pi_impl.o pi_impl.pic.o: orb_pch.h pi_impl.cc
+pi_impl.o pi_impl.pic.o: ../include/mico/transport/sharedMemory.h ../include/mico/transport/tcp.h
+pi_impl.o pi_impl.pic.o: ../include/mico/transport/udp.h ../include/mico/transport/unix.h
+pi_impl.o pi_impl.pic.o: ../include/mico/transport_impl.h ../include/mico/typecode.h
+pi_impl.o pi_impl.pic.o: ../include/mico/typecode_seq.h ../include/mico/types.h
+pi_impl.o pi_impl.pic.o: ../include/mico/util.h ../include/mico/value.h
+pi_impl.o pi_impl.pic.o: ../include/mico/valuetype.h ../include/mico/valuetype_impl.h
+pi_impl.o pi_impl.pic.o: ../include/mico/version.h ../include/ministl/bool.h
+pi_impl.o pi_impl.pic.o: ../include/ministl/bstring.h ../include/ministl/defalloc.h
+pi_impl.o pi_impl.pic.o: ../include/ministl/function ../include/ministl/function.h
+pi_impl.o pi_impl.pic.o: ../include/ministl/list ../include/ministl/list.h
+pi_impl.o pi_impl.pic.o: ../include/ministl/map ../include/ministl/map.h
+pi_impl.o pi_impl.pic.o: ../include/ministl/ministl.h ../include/ministl/pair
+pi_impl.o pi_impl.pic.o: ../include/ministl/pair.h ../include/ministl/set
+pi_impl.o pi_impl.pic.o: ../include/ministl/set.h ../include/ministl/simplevec.h
+pi_impl.o pi_impl.pic.o: ../include/ministl/string ../include/ministl/vector
+pi_impl.o pi_impl.pic.o: ../include/ministl/vector.h orb_pch.h pi_impl.cc
 poa.o poa.pic.o: ../include/CORBA.h ../include/mico/address.h ../include/mico/any.h
 poa.o poa.pic.o: ../include/mico/array.h ../include/mico/assert.h ../include/mico/basic.h
 poa.o poa.pic.o: ../include/mico/basic_seq.h ../include/mico/buffer.h ../include/mico/codec.h
@@ -3662,22 +3677,22 @@ poa_impl.o poa_impl.pic.o: ../include/mico/sysexc.h ../include/mico/tcconst.h
 poa_impl.o poa_impl.pic.o: ../include/mico/tckind.h ../include/mico/template.h
 poa_impl.o poa_impl.pic.o: ../include/mico/template_impl.h ../include/mico/throw.h
 poa_impl.o poa_impl.pic.o: ../include/mico/timebase.h ../include/mico/transport.h
-poa_impl.o poa_impl.pic.o: ../include/mico/transport/tcp.h ../include/mico/transport/udp.h
-poa_impl.o poa_impl.pic.o: ../include/mico/transport/unix.h ../include/mico/transport_impl.h
-poa_impl.o poa_impl.pic.o: ../include/mico/typecode.h ../include/mico/typecode_seq.h
-poa_impl.o poa_impl.pic.o: ../include/mico/types.h ../include/mico/util.h
-poa_impl.o poa_impl.pic.o: ../include/mico/value.h ../include/mico/valuetype.h
-poa_impl.o poa_impl.pic.o: ../include/mico/valuetype_impl.h ../include/mico/version.h
-poa_impl.o poa_impl.pic.o: ../include/ministl/bool.h ../include/ministl/bstring.h
-poa_impl.o poa_impl.pic.o: ../include/ministl/defalloc.h ../include/ministl/function
-poa_impl.o poa_impl.pic.o: ../include/ministl/function.h ../include/ministl/list
-poa_impl.o poa_impl.pic.o: ../include/ministl/list.h ../include/ministl/map
-poa_impl.o poa_impl.pic.o: ../include/ministl/map.h ../include/ministl/ministl.h
-poa_impl.o poa_impl.pic.o: ../include/ministl/pair ../include/ministl/pair.h
-poa_impl.o poa_impl.pic.o: ../include/ministl/set ../include/ministl/set.h
-poa_impl.o poa_impl.pic.o: ../include/ministl/simplevec.h ../include/ministl/string
-poa_impl.o poa_impl.pic.o: ../include/ministl/vector ../include/ministl/vector.h
-poa_impl.o poa_impl.pic.o: orb_pch.h poa_impl.cc
+poa_impl.o poa_impl.pic.o: ../include/mico/transport/sharedMemory.h ../include/mico/transport/tcp.h
+poa_impl.o poa_impl.pic.o: ../include/mico/transport/udp.h ../include/mico/transport/unix.h
+poa_impl.o poa_impl.pic.o: ../include/mico/transport_impl.h ../include/mico/typecode.h
+poa_impl.o poa_impl.pic.o: ../include/mico/typecode_seq.h ../include/mico/types.h
+poa_impl.o poa_impl.pic.o: ../include/mico/util.h ../include/mico/value.h
+poa_impl.o poa_impl.pic.o: ../include/mico/valuetype.h ../include/mico/valuetype_impl.h
+poa_impl.o poa_impl.pic.o: ../include/mico/version.h ../include/ministl/bool.h
+poa_impl.o poa_impl.pic.o: ../include/ministl/bstring.h ../include/ministl/defalloc.h
+poa_impl.o poa_impl.pic.o: ../include/ministl/function ../include/ministl/function.h
+poa_impl.o poa_impl.pic.o: ../include/ministl/list ../include/ministl/list.h
+poa_impl.o poa_impl.pic.o: ../include/ministl/map ../include/ministl/map.h
+poa_impl.o poa_impl.pic.o: ../include/ministl/ministl.h ../include/ministl/pair
+poa_impl.o poa_impl.pic.o: ../include/ministl/pair.h ../include/ministl/set
+poa_impl.o poa_impl.pic.o: ../include/ministl/set.h ../include/ministl/simplevec.h
+poa_impl.o poa_impl.pic.o: ../include/ministl/string ../include/ministl/vector
+poa_impl.o poa_impl.pic.o: ../include/ministl/vector.h orb_pch.h poa_impl.cc
 policy.o policy.pic.o: ../include/CORBA.h ../include/mico/address.h ../include/mico/any.h
 policy.o policy.pic.o: ../include/mico/array.h ../include/mico/assert.h
 policy.o policy.pic.o: ../include/mico/basic.h ../include/mico/basic_seq.h
@@ -3866,6 +3881,7 @@ policy_impl.o policy_impl.pic.o: ../include/mico/sysexc.h ../include/mico/tccons
 policy_impl.o policy_impl.pic.o: ../include/mico/tckind.h ../include/mico/template.h
 policy_impl.o policy_impl.pic.o: ../include/mico/template_impl.h ../include/mico/throw.h
 policy_impl.o policy_impl.pic.o: ../include/mico/timebase.h ../include/mico/transport.h
+policy_impl.o policy_impl.pic.o: ../include/mico/transport/sharedMemory.h
 policy_impl.o policy_impl.pic.o: ../include/mico/transport/tcp.h ../include/mico/transport/udp.h
 policy_impl.o policy_impl.pic.o: ../include/mico/transport/unix.h ../include/mico/transport_impl.h
 policy_impl.o policy_impl.pic.o: ../include/mico/typecode.h ../include/mico/typecode_seq.h
@@ -3945,20 +3961,21 @@ queue.o queue.pic.o: ../include/mico/string.h ../include/mico/sysexc.h ../includ
 queue.o queue.pic.o: ../include/mico/tckind.h ../include/mico/template.h
 queue.o queue.pic.o: ../include/mico/template_impl.h ../include/mico/throw.h
 queue.o queue.pic.o: ../include/mico/timebase.h ../include/mico/transport.h
-queue.o queue.pic.o: ../include/mico/transport/tcp.h ../include/mico/transport/udp.h
-queue.o queue.pic.o: ../include/mico/transport/unix.h ../include/mico/transport_impl.h
-queue.o queue.pic.o: ../include/mico/typecode.h ../include/mico/typecode_seq.h
-queue.o queue.pic.o: ../include/mico/types.h ../include/mico/util.h ../include/mico/value.h
-queue.o queue.pic.o: ../include/mico/valuetype.h ../include/mico/valuetype_impl.h
-queue.o queue.pic.o: ../include/mico/version.h ../include/ministl/bool.h
-queue.o queue.pic.o: ../include/ministl/bstring.h ../include/ministl/defalloc.h
-queue.o queue.pic.o: ../include/ministl/function ../include/ministl/function.h
-queue.o queue.pic.o: ../include/ministl/list ../include/ministl/list.h ../include/ministl/map
-queue.o queue.pic.o: ../include/ministl/map.h ../include/ministl/ministl.h
-queue.o queue.pic.o: ../include/ministl/pair ../include/ministl/pair.h ../include/ministl/set
-queue.o queue.pic.o: ../include/ministl/set.h ../include/ministl/simplevec.h
-queue.o queue.pic.o: ../include/ministl/string ../include/ministl/vector
-queue.o queue.pic.o: ../include/ministl/vector.h orb_pch.h queue.cc
+queue.o queue.pic.o: ../include/mico/transport/sharedMemory.h ../include/mico/transport/tcp.h
+queue.o queue.pic.o: ../include/mico/transport/udp.h ../include/mico/transport/unix.h
+queue.o queue.pic.o: ../include/mico/transport_impl.h ../include/mico/typecode.h
+queue.o queue.pic.o: ../include/mico/typecode_seq.h ../include/mico/types.h
+queue.o queue.pic.o: ../include/mico/util.h ../include/mico/value.h ../include/mico/valuetype.h
+queue.o queue.pic.o: ../include/mico/valuetype_impl.h ../include/mico/version.h
+queue.o queue.pic.o: ../include/ministl/bool.h ../include/ministl/bstring.h
+queue.o queue.pic.o: ../include/ministl/defalloc.h ../include/ministl/function
+queue.o queue.pic.o: ../include/ministl/function.h ../include/ministl/list
+queue.o queue.pic.o: ../include/ministl/list.h ../include/ministl/map ../include/ministl/map.h
+queue.o queue.pic.o: ../include/ministl/ministl.h ../include/ministl/pair
+queue.o queue.pic.o: ../include/ministl/pair.h ../include/ministl/set ../include/ministl/set.h
+queue.o queue.pic.o: ../include/ministl/simplevec.h ../include/ministl/string
+queue.o queue.pic.o: ../include/ministl/vector ../include/ministl/vector.h
+queue.o queue.pic.o: orb_pch.h queue.cc
 reflection.o reflection.pic.o: ../include/CORBA.h ../include/mico/address.h
 reflection.o reflection.pic.o: ../include/mico/any.h ../include/mico/array.h
 reflection.o reflection.pic.o: ../include/mico/assert.h ../include/mico/basic.h
@@ -4142,12 +4159,13 @@ ssl.o ssl.pic.o: ../include/mico/ssliop.h ../include/mico/static.h ../include/mi
 ssl.o ssl.pic.o: ../include/mico/sysexc.h ../include/mico/tcconst.h ../include/mico/tckind.h
 ssl.o ssl.pic.o: ../include/mico/template.h ../include/mico/template_impl.h
 ssl.o ssl.pic.o: ../include/mico/throw.h ../include/mico/timebase.h ../include/mico/transport.h
-ssl.o ssl.pic.o: ../include/mico/transport/tcp.h ../include/mico/transport/udp.h
-ssl.o ssl.pic.o: ../include/mico/transport/unix.h ../include/mico/transport_impl.h
-ssl.o ssl.pic.o: ../include/mico/typecode.h ../include/mico/typecode_seq.h
-ssl.o ssl.pic.o: ../include/mico/types.h ../include/mico/util.h ../include/mico/value.h
-ssl.o ssl.pic.o: ../include/mico/valuetype.h ../include/mico/valuetype_impl.h
-ssl.o ssl.pic.o: ../include/mico/version.h ../include/ministl/bool.h ../include/ministl/bstring.h
+ssl.o ssl.pic.o: ../include/mico/transport/sharedMemory.h ../include/mico/transport/tcp.h
+ssl.o ssl.pic.o: ../include/mico/transport/udp.h ../include/mico/transport/unix.h
+ssl.o ssl.pic.o: ../include/mico/transport_impl.h ../include/mico/typecode.h
+ssl.o ssl.pic.o: ../include/mico/typecode_seq.h ../include/mico/types.h
+ssl.o ssl.pic.o: ../include/mico/util.h ../include/mico/value.h ../include/mico/valuetype.h
+ssl.o ssl.pic.o: ../include/mico/valuetype_impl.h ../include/mico/version.h
+ssl.o ssl.pic.o: ../include/ministl/bool.h ../include/ministl/bstring.h
 ssl.o ssl.pic.o: ../include/ministl/defalloc.h ../include/ministl/function
 ssl.o ssl.pic.o: ../include/ministl/function.h ../include/ministl/list ../include/ministl/list.h
 ssl.o ssl.pic.o: ../include/ministl/map ../include/ministl/map.h ../include/ministl/ministl.h
@@ -4275,17 +4293,17 @@ static.o static.pic.o: ../include/mico/string.h ../include/mico/sysexc.h
 static.o static.pic.o: ../include/mico/tcconst.h ../include/mico/tckind.h
 static.o static.pic.o: ../include/mico/template.h ../include/mico/template_impl.h
 static.o static.pic.o: ../include/mico/throw.h ../include/mico/timebase.h
-static.o static.pic.o: ../include/mico/transport.h ../include/mico/transport/tcp.h
-static.o static.pic.o: ../include/mico/transport/udp.h ../include/mico/transport/unix.h
-static.o static.pic.o: ../include/mico/transport_impl.h ../include/mico/typecode.h
-static.o static.pic.o: ../include/mico/typecode_seq.h ../include/mico/types.h
-static.o static.pic.o: ../include/mico/util.h ../include/mico/value.h ../include/mico/valuetype.h
-static.o static.pic.o: ../include/mico/valuetype_impl.h ../include/mico/version.h
-static.o static.pic.o: ../include/ministl/bool.h ../include/ministl/bstring.h
-static.o static.pic.o: ../include/ministl/defalloc.h ../include/ministl/function
-static.o static.pic.o: ../include/ministl/function.h ../include/ministl/list
-static.o static.pic.o: ../include/ministl/list.h ../include/ministl/map
-static.o static.pic.o: ../include/ministl/map.h ../include/ministl/ministl.h
+static.o static.pic.o: ../include/mico/transport.h ../include/mico/transport/sharedMemory.h
+static.o static.pic.o: ../include/mico/transport/tcp.h ../include/mico/transport/udp.h
+static.o static.pic.o: ../include/mico/transport/unix.h ../include/mico/transport_impl.h
+static.o static.pic.o: ../include/mico/typecode.h ../include/mico/typecode_seq.h
+static.o static.pic.o: ../include/mico/types.h ../include/mico/util.h ../include/mico/value.h
+static.o static.pic.o: ../include/mico/valuetype.h ../include/mico/valuetype_impl.h
+static.o static.pic.o: ../include/mico/version.h ../include/ministl/bool.h
+static.o static.pic.o: ../include/ministl/bstring.h ../include/ministl/defalloc.h
+static.o static.pic.o: ../include/ministl/function ../include/ministl/function.h
+static.o static.pic.o: ../include/ministl/list ../include/ministl/list.h
+static.o static.pic.o: ../include/ministl/map ../include/ministl/map.h ../include/ministl/ministl.h
 static.o static.pic.o: ../include/ministl/pair ../include/ministl/pair.h
 static.o static.pic.o: ../include/ministl/set ../include/ministl/set.h ../include/ministl/simplevec.h
 static.o static.pic.o: ../include/ministl/string ../include/ministl/vector
@@ -4355,17 +4373,17 @@ string.o string.pic.o: ../include/mico/string.h ../include/mico/sysexc.h
 string.o string.pic.o: ../include/mico/tcconst.h ../include/mico/tckind.h
 string.o string.pic.o: ../include/mico/template.h ../include/mico/template_impl.h
 string.o string.pic.o: ../include/mico/throw.h ../include/mico/timebase.h
-string.o string.pic.o: ../include/mico/transport.h ../include/mico/transport/tcp.h
-string.o string.pic.o: ../include/mico/transport/udp.h ../include/mico/transport/unix.h
-string.o string.pic.o: ../include/mico/transport_impl.h ../include/mico/typecode.h
-string.o string.pic.o: ../include/mico/typecode_seq.h ../include/mico/types.h
-string.o string.pic.o: ../include/mico/util.h ../include/mico/value.h ../include/mico/valuetype.h
-string.o string.pic.o: ../include/mico/valuetype_impl.h ../include/mico/version.h
-string.o string.pic.o: ../include/ministl/bool.h ../include/ministl/bstring.h
-string.o string.pic.o: ../include/ministl/defalloc.h ../include/ministl/function
-string.o string.pic.o: ../include/ministl/function.h ../include/ministl/list
-string.o string.pic.o: ../include/ministl/list.h ../include/ministl/map
-string.o string.pic.o: ../include/ministl/map.h ../include/ministl/ministl.h
+string.o string.pic.o: ../include/mico/transport.h ../include/mico/transport/sharedMemory.h
+string.o string.pic.o: ../include/mico/transport/tcp.h ../include/mico/transport/udp.h
+string.o string.pic.o: ../include/mico/transport/unix.h ../include/mico/transport_impl.h
+string.o string.pic.o: ../include/mico/typecode.h ../include/mico/typecode_seq.h
+string.o string.pic.o: ../include/mico/types.h ../include/mico/util.h ../include/mico/value.h
+string.o string.pic.o: ../include/mico/valuetype.h ../include/mico/valuetype_impl.h
+string.o string.pic.o: ../include/mico/version.h ../include/ministl/bool.h
+string.o string.pic.o: ../include/ministl/bstring.h ../include/ministl/defalloc.h
+string.o string.pic.o: ../include/ministl/function ../include/ministl/function.h
+string.o string.pic.o: ../include/ministl/list ../include/ministl/list.h
+string.o string.pic.o: ../include/ministl/map ../include/ministl/map.h ../include/ministl/ministl.h
 string.o string.pic.o: ../include/ministl/pair ../include/ministl/pair.h
 string.o string.pic.o: ../include/ministl/set ../include/ministl/set.h ../include/ministl/simplevec.h
 string.o string.pic.o: ../include/ministl/string ../include/ministl/vector
@@ -4553,22 +4571,22 @@ transport.o transport.pic.o: ../include/mico/sysexc.h ../include/mico/tcconst.h
 transport.o transport.pic.o: ../include/mico/tckind.h ../include/mico/template.h
 transport.o transport.pic.o: ../include/mico/template_impl.h ../include/mico/throw.h
 transport.o transport.pic.o: ../include/mico/timebase.h ../include/mico/transport.h
-transport.o transport.pic.o: ../include/mico/transport/tcp.h ../include/mico/transport/udp.h
-transport.o transport.pic.o: ../include/mico/transport/unix.h ../include/mico/transport_impl.h
-transport.o transport.pic.o: ../include/mico/typecode.h ../include/mico/typecode_seq.h
-transport.o transport.pic.o: ../include/mico/types.h ../include/mico/util.h
-transport.o transport.pic.o: ../include/mico/value.h ../include/mico/valuetype.h
-transport.o transport.pic.o: ../include/mico/valuetype_impl.h ../include/mico/version.h
-transport.o transport.pic.o: ../include/ministl/bool.h ../include/ministl/bstring.h
-transport.o transport.pic.o: ../include/ministl/defalloc.h ../include/ministl/function
-transport.o transport.pic.o: ../include/ministl/function.h ../include/ministl/list
-transport.o transport.pic.o: ../include/ministl/list.h ../include/ministl/map
-transport.o transport.pic.o: ../include/ministl/map.h ../include/ministl/ministl.h
-transport.o transport.pic.o: ../include/ministl/pair ../include/ministl/pair.h
-transport.o transport.pic.o: ../include/ministl/set ../include/ministl/set.h
-transport.o transport.pic.o: ../include/ministl/simplevec.h ../include/ministl/string
-transport.o transport.pic.o: ../include/ministl/vector ../include/ministl/vector.h
-transport.o transport.pic.o: orb_pch.h transport.cc
+transport.o transport.pic.o: ../include/mico/transport/sharedMemory.h ../include/mico/transport/tcp.h
+transport.o transport.pic.o: ../include/mico/transport/udp.h ../include/mico/transport/unix.h
+transport.o transport.pic.o: ../include/mico/transport_impl.h ../include/mico/typecode.h
+transport.o transport.pic.o: ../include/mico/typecode_seq.h ../include/mico/types.h
+transport.o transport.pic.o: ../include/mico/util.h ../include/mico/value.h
+transport.o transport.pic.o: ../include/mico/valuetype.h ../include/mico/valuetype_impl.h
+transport.o transport.pic.o: ../include/mico/version.h ../include/ministl/bool.h
+transport.o transport.pic.o: ../include/ministl/bstring.h ../include/ministl/defalloc.h
+transport.o transport.pic.o: ../include/ministl/function ../include/ministl/function.h
+transport.o transport.pic.o: ../include/ministl/list ../include/ministl/list.h
+transport.o transport.pic.o: ../include/ministl/map ../include/ministl/map.h
+transport.o transport.pic.o: ../include/ministl/ministl.h ../include/ministl/pair
+transport.o transport.pic.o: ../include/ministl/pair.h ../include/ministl/set
+transport.o transport.pic.o: ../include/ministl/set.h ../include/ministl/simplevec.h
+transport.o transport.pic.o: ../include/ministl/string ../include/ministl/vector
+transport.o transport.pic.o: ../include/ministl/vector.h orb_pch.h transport.cc
 typecode.o typecode.pic.o: ../include/CORBA-SMALL.h ../include/CORBA.h ../include/mico/address.h
 typecode.o typecode.pic.o: ../include/mico/address_impl.h ../include/mico/any.h
 typecode.o typecode.pic.o: ../include/mico/array.h ../include/mico/assert.h
@@ -4638,22 +4656,22 @@ typecode.o typecode.pic.o: ../include/mico/sysexc.h ../include/mico/tcconst.h
 typecode.o typecode.pic.o: ../include/mico/tckind.h ../include/mico/template.h
 typecode.o typecode.pic.o: ../include/mico/template_impl.h ../include/mico/throw.h
 typecode.o typecode.pic.o: ../include/mico/timebase.h ../include/mico/transport.h
-typecode.o typecode.pic.o: ../include/mico/transport/tcp.h ../include/mico/transport/udp.h
-typecode.o typecode.pic.o: ../include/mico/transport/unix.h ../include/mico/transport_impl.h
-typecode.o typecode.pic.o: ../include/mico/typecode.h ../include/mico/typecode_seq.h
-typecode.o typecode.pic.o: ../include/mico/types.h ../include/mico/util.h
-typecode.o typecode.pic.o: ../include/mico/value.h ../include/mico/valuetype.h
-typecode.o typecode.pic.o: ../include/mico/valuetype_impl.h ../include/mico/version.h
-typecode.o typecode.pic.o: ../include/ministl/bool.h ../include/ministl/bstring.h
-typecode.o typecode.pic.o: ../include/ministl/defalloc.h ../include/ministl/function
-typecode.o typecode.pic.o: ../include/ministl/function.h ../include/ministl/list
-typecode.o typecode.pic.o: ../include/ministl/list.h ../include/ministl/map
-typecode.o typecode.pic.o: ../include/ministl/map.h ../include/ministl/ministl.h
-typecode.o typecode.pic.o: ../include/ministl/pair ../include/ministl/pair.h
-typecode.o typecode.pic.o: ../include/ministl/set ../include/ministl/set.h
-typecode.o typecode.pic.o: ../include/ministl/simplevec.h ../include/ministl/string
-typecode.o typecode.pic.o: ../include/ministl/vector ../include/ministl/vector.h
-typecode.o typecode.pic.o: orb_pch.h typecode.cc
+typecode.o typecode.pic.o: ../include/mico/transport/sharedMemory.h ../include/mico/transport/tcp.h
+typecode.o typecode.pic.o: ../include/mico/transport/udp.h ../include/mico/transport/unix.h
+typecode.o typecode.pic.o: ../include/mico/transport_impl.h ../include/mico/typecode.h
+typecode.o typecode.pic.o: ../include/mico/typecode_seq.h ../include/mico/types.h
+typecode.o typecode.pic.o: ../include/mico/util.h ../include/mico/value.h
+typecode.o typecode.pic.o: ../include/mico/valuetype.h ../include/mico/valuetype_impl.h
+typecode.o typecode.pic.o: ../include/mico/version.h ../include/ministl/bool.h
+typecode.o typecode.pic.o: ../include/ministl/bstring.h ../include/ministl/defalloc.h
+typecode.o typecode.pic.o: ../include/ministl/function ../include/ministl/function.h
+typecode.o typecode.pic.o: ../include/ministl/list ../include/ministl/list.h
+typecode.o typecode.pic.o: ../include/ministl/map ../include/ministl/map.h
+typecode.o typecode.pic.o: ../include/ministl/ministl.h ../include/ministl/pair
+typecode.o typecode.pic.o: ../include/ministl/pair.h ../include/ministl/set
+typecode.o typecode.pic.o: ../include/ministl/set.h ../include/ministl/simplevec.h
+typecode.o typecode.pic.o: ../include/ministl/string ../include/ministl/vector
+typecode.o typecode.pic.o: ../include/ministl/vector.h orb_pch.h typecode.cc
 typecode_seq.o typecode_seq.pic.o: ../include/CORBA.h ../include/mico/address.h
 typecode_seq.o typecode_seq.pic.o: ../include/mico/any.h ../include/mico/array.h
 typecode_seq.o typecode_seq.pic.o: ../include/mico/assert.h ../include/mico/basic.h
@@ -4793,12 +4811,13 @@ util.o util.pic.o: ../include/mico/ssl.h ../include/mico/ssliop.h ../include/mic
 util.o util.pic.o: ../include/mico/string.h ../include/mico/sysexc.h ../include/mico/tcconst.h
 util.o util.pic.o: ../include/mico/tckind.h ../include/mico/template.h ../include/mico/template_impl.h
 util.o util.pic.o: ../include/mico/throw.h ../include/mico/timebase.h ../include/mico/transport.h
-util.o util.pic.o: ../include/mico/transport/tcp.h ../include/mico/transport/udp.h
-util.o util.pic.o: ../include/mico/transport/unix.h ../include/mico/transport_impl.h
-util.o util.pic.o: ../include/mico/typecode.h ../include/mico/typecode_seq.h
-util.o util.pic.o: ../include/mico/types.h ../include/mico/util.h ../include/mico/value.h
-util.o util.pic.o: ../include/mico/valuetype.h ../include/mico/valuetype_impl.h
-util.o util.pic.o: ../include/mico/version.h ../include/ministl/bool.h ../include/ministl/bstring.h
+util.o util.pic.o: ../include/mico/transport/sharedMemory.h ../include/mico/transport/tcp.h
+util.o util.pic.o: ../include/mico/transport/udp.h ../include/mico/transport/unix.h
+util.o util.pic.o: ../include/mico/transport_impl.h ../include/mico/typecode.h
+util.o util.pic.o: ../include/mico/typecode_seq.h ../include/mico/types.h
+util.o util.pic.o: ../include/mico/util.h ../include/mico/value.h ../include/mico/valuetype.h
+util.o util.pic.o: ../include/mico/valuetype_impl.h ../include/mico/version.h
+util.o util.pic.o: ../include/ministl/bool.h ../include/ministl/bstring.h
 util.o util.pic.o: ../include/ministl/defalloc.h ../include/ministl/function
 util.o util.pic.o: ../include/ministl/function.h ../include/ministl/list
 util.o util.pic.o: ../include/ministl/list.h ../include/ministl/map ../include/ministl/map.h
@@ -4869,20 +4888,21 @@ value.o value.pic.o: ../include/mico/string.h ../include/mico/sysexc.h ../includ
 value.o value.pic.o: ../include/mico/tckind.h ../include/mico/template.h
 value.o value.pic.o: ../include/mico/template_impl.h ../include/mico/throw.h
 value.o value.pic.o: ../include/mico/timebase.h ../include/mico/transport.h
-value.o value.pic.o: ../include/mico/transport/tcp.h ../include/mico/transport/udp.h
-value.o value.pic.o: ../include/mico/transport/unix.h ../include/mico/transport_impl.h
-value.o value.pic.o: ../include/mico/typecode.h ../include/mico/typecode_seq.h
-value.o value.pic.o: ../include/mico/types.h ../include/mico/util.h ../include/mico/value.h
-value.o value.pic.o: ../include/mico/valuetype.h ../include/mico/valuetype_impl.h
-value.o value.pic.o: ../include/mico/version.h ../include/ministl/bool.h
-value.o value.pic.o: ../include/ministl/bstring.h ../include/ministl/defalloc.h
-value.o value.pic.o: ../include/ministl/function ../include/ministl/function.h
-value.o value.pic.o: ../include/ministl/list ../include/ministl/list.h ../include/ministl/map
-value.o value.pic.o: ../include/ministl/map.h ../include/ministl/ministl.h
-value.o value.pic.o: ../include/ministl/pair ../include/ministl/pair.h ../include/ministl/set
-value.o value.pic.o: ../include/ministl/set.h ../include/ministl/simplevec.h
-value.o value.pic.o: ../include/ministl/string ../include/ministl/vector
-value.o value.pic.o: ../include/ministl/vector.h orb_pch.h value.cc
+value.o value.pic.o: ../include/mico/transport/sharedMemory.h ../include/mico/transport/tcp.h
+value.o value.pic.o: ../include/mico/transport/udp.h ../include/mico/transport/unix.h
+value.o value.pic.o: ../include/mico/transport_impl.h ../include/mico/typecode.h
+value.o value.pic.o: ../include/mico/typecode_seq.h ../include/mico/types.h
+value.o value.pic.o: ../include/mico/util.h ../include/mico/value.h ../include/mico/valuetype.h
+value.o value.pic.o: ../include/mico/valuetype_impl.h ../include/mico/version.h
+value.o value.pic.o: ../include/ministl/bool.h ../include/ministl/bstring.h
+value.o value.pic.o: ../include/ministl/defalloc.h ../include/ministl/function
+value.o value.pic.o: ../include/ministl/function.h ../include/ministl/list
+value.o value.pic.o: ../include/ministl/list.h ../include/ministl/map ../include/ministl/map.h
+value.o value.pic.o: ../include/ministl/ministl.h ../include/ministl/pair
+value.o value.pic.o: ../include/ministl/pair.h ../include/ministl/set ../include/ministl/set.h
+value.o value.pic.o: ../include/ministl/simplevec.h ../include/ministl/string
+value.o value.pic.o: ../include/ministl/vector ../include/ministl/vector.h
+value.o value.pic.o: orb_pch.h value.cc
 valuetype.o valuetype.pic.o: ../include/CORBA.h ../include/mico/address.h
 valuetype.o valuetype.pic.o: ../include/mico/any.h ../include/mico/array.h
 valuetype.o valuetype.pic.o: ../include/mico/assert.h ../include/mico/basic.h
@@ -5030,8 +5050,9 @@ valuetype_impl.o valuetype_impl.pic.o: ../include/mico/string.h ../include/mico/
 valuetype_impl.o valuetype_impl.pic.o: ../include/mico/tcconst.h ../include/mico/tckind.h
 valuetype_impl.o valuetype_impl.pic.o: ../include/mico/template.h ../include/mico/template_impl.h
 valuetype_impl.o valuetype_impl.pic.o: ../include/mico/throw.h ../include/mico/timebase.h
-valuetype_impl.o valuetype_impl.pic.o: ../include/mico/transport.h ../include/mico/transport/tcp.h
-valuetype_impl.o valuetype_impl.pic.o: ../include/mico/transport/udp.h ../include/mico/transport/unix.h
+valuetype_impl.o valuetype_impl.pic.o: ../include/mico/transport.h ../include/mico/transport/sharedMemory.h
+valuetype_impl.o valuetype_impl.pic.o: ../include/mico/transport/tcp.h ../include/mico/transport/udp.h
+valuetype_impl.o valuetype_impl.pic.o: ../include/mico/transport/unix.h
 valuetype_impl.o valuetype_impl.pic.o: ../include/mico/transport_impl.h
 valuetype_impl.o valuetype_impl.pic.o: ../include/mico/typecode.h ../include/mico/typecode_seq.h
 valuetype_impl.o valuetype_impl.pic.o: ../include/mico/types.h ../include/mico/util.h
@@ -5096,19 +5117,20 @@ watm.o watm.pic.o: ../include/mico/static.h ../include/mico/string.h ../include/
 watm.o watm.pic.o: ../include/mico/tcconst.h ../include/mico/tckind.h ../include/mico/template.h
 watm.o watm.pic.o: ../include/mico/template_impl.h ../include/mico/throw.h
 watm.o watm.pic.o: ../include/mico/timebase.h ../include/mico/transport.h
-watm.o watm.pic.o: ../include/mico/transport/tcp.h ../include/mico/transport/udp.h
-watm.o watm.pic.o: ../include/mico/transport/unix.h ../include/mico/transport_impl.h
-watm.o watm.pic.o: ../include/mico/typecode.h ../include/mico/typecode_seq.h
-watm.o watm.pic.o: ../include/mico/types.h ../include/mico/util.h ../include/mico/value.h
-watm.o watm.pic.o: ../include/mico/valuetype.h ../include/mico/valuetype_impl.h
-watm.o watm.pic.o: ../include/mico/version.h ../include/mico/watm.h ../include/ministl/bool.h
-watm.o watm.pic.o: ../include/ministl/bstring.h ../include/ministl/defalloc.h
-watm.o watm.pic.o: ../include/ministl/function ../include/ministl/function.h
-watm.o watm.pic.o: ../include/ministl/list ../include/ministl/list.h ../include/ministl/map
-watm.o watm.pic.o: ../include/ministl/map.h ../include/ministl/ministl.h
-watm.o watm.pic.o: ../include/ministl/pair ../include/ministl/pair.h ../include/ministl/set
-watm.o watm.pic.o: ../include/ministl/set.h ../include/ministl/simplevec.h
-watm.o watm.pic.o: ../include/ministl/string ../include/ministl/vector ../include/ministl/vector.h
+watm.o watm.pic.o: ../include/mico/transport/sharedMemory.h ../include/mico/transport/tcp.h
+watm.o watm.pic.o: ../include/mico/transport/udp.h ../include/mico/transport/unix.h
+watm.o watm.pic.o: ../include/mico/transport_impl.h ../include/mico/typecode.h
+watm.o watm.pic.o: ../include/mico/typecode_seq.h ../include/mico/types.h
+watm.o watm.pic.o: ../include/mico/util.h ../include/mico/value.h ../include/mico/valuetype.h
+watm.o watm.pic.o: ../include/mico/valuetype_impl.h ../include/mico/version.h
+watm.o watm.pic.o: ../include/mico/watm.h ../include/ministl/bool.h ../include/ministl/bstring.h
+watm.o watm.pic.o: ../include/ministl/defalloc.h ../include/ministl/function
+watm.o watm.pic.o: ../include/ministl/function.h ../include/ministl/list
+watm.o watm.pic.o: ../include/ministl/list.h ../include/ministl/map ../include/ministl/map.h
+watm.o watm.pic.o: ../include/ministl/ministl.h ../include/ministl/pair
+watm.o watm.pic.o: ../include/ministl/pair.h ../include/ministl/set ../include/ministl/set.h
+watm.o watm.pic.o: ../include/ministl/simplevec.h ../include/ministl/string
+watm.o watm.pic.o: ../include/ministl/vector ../include/ministl/vector.h
 watm.o watm.pic.o: watm.cc
 win32def.o win32def.pic.o: win32def.cc
 win32dll.o win32dll.pic.o: ../include/CORBA.h ../include/mico/address.h
@@ -5232,22 +5254,139 @@ transport/ltp.o transport/ltp.pic.o: ../include/mico/string.h ../include/mico/sy
 transport/ltp.o transport/ltp.pic.o: ../include/mico/tcconst.h ../include/mico/tckind.h
 transport/ltp.o transport/ltp.pic.o: ../include/mico/template.h ../include/mico/template_impl.h
 transport/ltp.o transport/ltp.pic.o: ../include/mico/throw.h ../include/mico/timebase.h
-transport/ltp.o transport/ltp.pic.o: ../include/mico/transport.h ../include/mico/transport/tcp.h
-transport/ltp.o transport/ltp.pic.o: ../include/mico/transport/udp.h ../include/mico/transport/unix.h
-transport/ltp.o transport/ltp.pic.o: ../include/mico/transport_impl.h ../include/mico/typecode.h
-transport/ltp.o transport/ltp.pic.o: ../include/mico/typecode_seq.h ../include/mico/types.h
-transport/ltp.o transport/ltp.pic.o: ../include/mico/util.h ../include/mico/value.h
-transport/ltp.o transport/ltp.pic.o: ../include/mico/valuetype.h ../include/mico/valuetype_impl.h
-transport/ltp.o transport/ltp.pic.o: ../include/mico/version.h ../include/ministl/bool.h
-transport/ltp.o transport/ltp.pic.o: ../include/ministl/bstring.h ../include/ministl/defalloc.h
-transport/ltp.o transport/ltp.pic.o: ../include/ministl/function ../include/ministl/function.h
-transport/ltp.o transport/ltp.pic.o: ../include/ministl/list ../include/ministl/list.h
-transport/ltp.o transport/ltp.pic.o: ../include/ministl/map ../include/ministl/map.h
-transport/ltp.o transport/ltp.pic.o: ../include/ministl/ministl.h ../include/ministl/pair
-transport/ltp.o transport/ltp.pic.o: ../include/ministl/pair.h ../include/ministl/set
-transport/ltp.o transport/ltp.pic.o: ../include/ministl/set.h ../include/ministl/simplevec.h
-transport/ltp.o transport/ltp.pic.o: ../include/ministl/string ../include/ministl/vector
-transport/ltp.o transport/ltp.pic.o: ../include/ministl/vector.h transport/ltp.cc
+transport/ltp.o transport/ltp.pic.o: ../include/mico/transport.h ../include/mico/transport/sharedMemory.h
+transport/ltp.o transport/ltp.pic.o: ../include/mico/transport/tcp.h ../include/mico/transport/udp.h
+transport/ltp.o transport/ltp.pic.o: ../include/mico/transport/unix.h ../include/mico/transport_impl.h
+transport/ltp.o transport/ltp.pic.o: ../include/mico/typecode.h ../include/mico/typecode_seq.h
+transport/ltp.o transport/ltp.pic.o: ../include/mico/types.h ../include/mico/util.h
+transport/ltp.o transport/ltp.pic.o: ../include/mico/value.h ../include/mico/valuetype.h
+transport/ltp.o transport/ltp.pic.o: ../include/mico/valuetype_impl.h ../include/mico/version.h
+transport/ltp.o transport/ltp.pic.o: ../include/ministl/bool.h ../include/ministl/bstring.h
+transport/ltp.o transport/ltp.pic.o: ../include/ministl/defalloc.h ../include/ministl/function
+transport/ltp.o transport/ltp.pic.o: ../include/ministl/function.h ../include/ministl/list
+transport/ltp.o transport/ltp.pic.o: ../include/ministl/list.h ../include/ministl/map
+transport/ltp.o transport/ltp.pic.o: ../include/ministl/map.h ../include/ministl/ministl.h
+transport/ltp.o transport/ltp.pic.o: ../include/ministl/pair ../include/ministl/pair.h
+transport/ltp.o transport/ltp.pic.o: ../include/ministl/set ../include/ministl/set.h
+transport/ltp.o transport/ltp.pic.o: ../include/ministl/simplevec.h ../include/ministl/string
+transport/ltp.o transport/ltp.pic.o: ../include/ministl/vector ../include/ministl/vector.h
+transport/ltp.o transport/ltp.pic.o: transport/ltp.cc
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/CORBA-SMALL.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/CORBA.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/address.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/any.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/array.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/assert.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/basic.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/basic_seq.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/buffer.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/codec.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/codeset.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/config-win32.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/config.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/current.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/dii.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/dsi.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/dynany.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/except.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/fixed.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/imr.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/ioptypes.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/ior.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/ir.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/ir_base.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/magic.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/memtrace.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/messaging.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/mtdebug.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/mtpolicy.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/mttypes.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/native.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/object.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/operators.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/orb_excepts.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/orb_fwd.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/orb_mico.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/os-net.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/os-thread.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/os-thread/dcethreads.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/os-thread/pthreads.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/os-thread/pththreads.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/os-thread/solaris-threads.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/pi.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/poa.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/poa_base.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/poa_stubs.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/policy.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/policy2.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/security/DomainManager.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/security/SecurityAdmin.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/security/atlas.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/security/csi.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/security/csi_base.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/security/csiiop.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/security/csiv2.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/security/gssup.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/security/odm.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/security/security.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/security/securitylevel1.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/security/securitylevel2.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/security/securitylevel3.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/security/sl3aqargs.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/security/sl3aqargs_p.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/security/sl3authorization.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/security/sl3cm.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/security/sl3cmdext.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/security/sl3csi.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/security/sl3ipc.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/security/sl3om.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/security/sl3omext.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/security/sl3pm.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/security/sl3tcpip.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/security/sl3tls.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/security/transportsecurity.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/security/transportsecurity_p.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/security/trust.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/security/userpassword.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/sequence.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/sequence_special.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/service_info.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/static.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/string.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/sysexc.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/tcconst.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/tckind.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/template.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/template_impl.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/throw.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/timebase.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/transport.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/typecode.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/typecode_seq.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/types.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/value.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/valuetype.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/valuetype_impl.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/version.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/ministl/bool.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/ministl/bstring.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/ministl/defalloc.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/ministl/function
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/ministl/function.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/ministl/list
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/ministl/list.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/ministl/map
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/ministl/map.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/ministl/ministl.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/ministl/pair
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/ministl/pair.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/ministl/set
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/ministl/set.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/ministl/simplevec.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/ministl/string
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/ministl/vector
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/ministl/vector.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: sharedMemory.h transport/sharedMemory.cc
 transport/tcp.o transport/tcp.pic.o: ../include/CORBA-SMALL.h ../include/CORBA.h
 transport/tcp.o transport/tcp.pic.o: ../include/mico/address.h ../include/mico/address_impl.h
 transport/tcp.o transport/tcp.pic.o: ../include/mico/any.h ../include/mico/array.h
@@ -5311,22 +5450,23 @@ transport/tcp.o transport/tcp.pic.o: ../include/mico/string.h ../include/mico/sy
 transport/tcp.o transport/tcp.pic.o: ../include/mico/tcconst.h ../include/mico/tckind.h
 transport/tcp.o transport/tcp.pic.o: ../include/mico/template.h ../include/mico/template_impl.h
 transport/tcp.o transport/tcp.pic.o: ../include/mico/throw.h ../include/mico/timebase.h
-transport/tcp.o transport/tcp.pic.o: ../include/mico/transport.h ../include/mico/transport/tcp.h
-transport/tcp.o transport/tcp.pic.o: ../include/mico/transport/udp.h ../include/mico/transport/unix.h
-transport/tcp.o transport/tcp.pic.o: ../include/mico/transport_impl.h ../include/mico/typecode.h
-transport/tcp.o transport/tcp.pic.o: ../include/mico/typecode_seq.h ../include/mico/types.h
-transport/tcp.o transport/tcp.pic.o: ../include/mico/util.h ../include/mico/value.h
-transport/tcp.o transport/tcp.pic.o: ../include/mico/valuetype.h ../include/mico/valuetype_impl.h
-transport/tcp.o transport/tcp.pic.o: ../include/mico/version.h ../include/ministl/bool.h
-transport/tcp.o transport/tcp.pic.o: ../include/ministl/bstring.h ../include/ministl/defalloc.h
-transport/tcp.o transport/tcp.pic.o: ../include/ministl/function ../include/ministl/function.h
-transport/tcp.o transport/tcp.pic.o: ../include/ministl/list ../include/ministl/list.h
-transport/tcp.o transport/tcp.pic.o: ../include/ministl/map ../include/ministl/map.h
-transport/tcp.o transport/tcp.pic.o: ../include/ministl/ministl.h ../include/ministl/pair
-transport/tcp.o transport/tcp.pic.o: ../include/ministl/pair.h ../include/ministl/set
-transport/tcp.o transport/tcp.pic.o: ../include/ministl/set.h ../include/ministl/simplevec.h
-transport/tcp.o transport/tcp.pic.o: ../include/ministl/string ../include/ministl/vector
-transport/tcp.o transport/tcp.pic.o: ../include/ministl/vector.h transport/tcp.cc
+transport/tcp.o transport/tcp.pic.o: ../include/mico/transport.h ../include/mico/transport/sharedMemory.h
+transport/tcp.o transport/tcp.pic.o: ../include/mico/transport/tcp.h ../include/mico/transport/udp.h
+transport/tcp.o transport/tcp.pic.o: ../include/mico/transport/unix.h ../include/mico/transport_impl.h
+transport/tcp.o transport/tcp.pic.o: ../include/mico/typecode.h ../include/mico/typecode_seq.h
+transport/tcp.o transport/tcp.pic.o: ../include/mico/types.h ../include/mico/util.h
+transport/tcp.o transport/tcp.pic.o: ../include/mico/value.h ../include/mico/valuetype.h
+transport/tcp.o transport/tcp.pic.o: ../include/mico/valuetype_impl.h ../include/mico/version.h
+transport/tcp.o transport/tcp.pic.o: ../include/ministl/bool.h ../include/ministl/bstring.h
+transport/tcp.o transport/tcp.pic.o: ../include/ministl/defalloc.h ../include/ministl/function
+transport/tcp.o transport/tcp.pic.o: ../include/ministl/function.h ../include/ministl/list
+transport/tcp.o transport/tcp.pic.o: ../include/ministl/list.h ../include/ministl/map
+transport/tcp.o transport/tcp.pic.o: ../include/ministl/map.h ../include/ministl/ministl.h
+transport/tcp.o transport/tcp.pic.o: ../include/ministl/pair ../include/ministl/pair.h
+transport/tcp.o transport/tcp.pic.o: ../include/ministl/set ../include/ministl/set.h
+transport/tcp.o transport/tcp.pic.o: ../include/ministl/simplevec.h ../include/ministl/string
+transport/tcp.o transport/tcp.pic.o: ../include/ministl/vector ../include/ministl/vector.h
+transport/tcp.o transport/tcp.pic.o: transport/tcp.cc
 transport/udp.o transport/udp.pic.o: ../include/CORBA-SMALL.h ../include/CORBA.h
 transport/udp.o transport/udp.pic.o: ../include/mico/address.h ../include/mico/address_impl.h
 transport/udp.o transport/udp.pic.o: ../include/mico/any.h ../include/mico/array.h
@@ -5390,22 +5530,23 @@ transport/udp.o transport/udp.pic.o: ../include/mico/string.h ../include/mico/sy
 transport/udp.o transport/udp.pic.o: ../include/mico/tcconst.h ../include/mico/tckind.h
 transport/udp.o transport/udp.pic.o: ../include/mico/template.h ../include/mico/template_impl.h
 transport/udp.o transport/udp.pic.o: ../include/mico/throw.h ../include/mico/timebase.h
-transport/udp.o transport/udp.pic.o: ../include/mico/transport.h ../include/mico/transport/tcp.h
-transport/udp.o transport/udp.pic.o: ../include/mico/transport/udp.h ../include/mico/transport/unix.h
-transport/udp.o transport/udp.pic.o: ../include/mico/transport_impl.h ../include/mico/typecode.h
-transport/udp.o transport/udp.pic.o: ../include/mico/typecode_seq.h ../include/mico/types.h
-transport/udp.o transport/udp.pic.o: ../include/mico/util.h ../include/mico/value.h
-transport/udp.o transport/udp.pic.o: ../include/mico/valuetype.h ../include/mico/valuetype_impl.h
-transport/udp.o transport/udp.pic.o: ../include/mico/version.h ../include/ministl/bool.h
-transport/udp.o transport/udp.pic.o: ../include/ministl/bstring.h ../include/ministl/defalloc.h
-transport/udp.o transport/udp.pic.o: ../include/ministl/function ../include/ministl/function.h
-transport/udp.o transport/udp.pic.o: ../include/ministl/list ../include/ministl/list.h
-transport/udp.o transport/udp.pic.o: ../include/ministl/map ../include/ministl/map.h
-transport/udp.o transport/udp.pic.o: ../include/ministl/ministl.h ../include/ministl/pair
-transport/udp.o transport/udp.pic.o: ../include/ministl/pair.h ../include/ministl/set
-transport/udp.o transport/udp.pic.o: ../include/ministl/set.h ../include/ministl/simplevec.h
-transport/udp.o transport/udp.pic.o: ../include/ministl/string ../include/ministl/vector
-transport/udp.o transport/udp.pic.o: ../include/ministl/vector.h transport/udp.cc
+transport/udp.o transport/udp.pic.o: ../include/mico/transport.h ../include/mico/transport/sharedMemory.h
+transport/udp.o transport/udp.pic.o: ../include/mico/transport/tcp.h ../include/mico/transport/udp.h
+transport/udp.o transport/udp.pic.o: ../include/mico/transport/unix.h ../include/mico/transport_impl.h
+transport/udp.o transport/udp.pic.o: ../include/mico/typecode.h ../include/mico/typecode_seq.h
+transport/udp.o transport/udp.pic.o: ../include/mico/types.h ../include/mico/util.h
+transport/udp.o transport/udp.pic.o: ../include/mico/value.h ../include/mico/valuetype.h
+transport/udp.o transport/udp.pic.o: ../include/mico/valuetype_impl.h ../include/mico/version.h
+transport/udp.o transport/udp.pic.o: ../include/ministl/bool.h ../include/ministl/bstring.h
+transport/udp.o transport/udp.pic.o: ../include/ministl/defalloc.h ../include/ministl/function
+transport/udp.o transport/udp.pic.o: ../include/ministl/function.h ../include/ministl/list
+transport/udp.o transport/udp.pic.o: ../include/ministl/list.h ../include/ministl/map
+transport/udp.o transport/udp.pic.o: ../include/ministl/map.h ../include/ministl/ministl.h
+transport/udp.o transport/udp.pic.o: ../include/ministl/pair ../include/ministl/pair.h
+transport/udp.o transport/udp.pic.o: ../include/ministl/set ../include/ministl/set.h
+transport/udp.o transport/udp.pic.o: ../include/ministl/simplevec.h ../include/ministl/string
+transport/udp.o transport/udp.pic.o: ../include/ministl/vector ../include/ministl/vector.h
+transport/udp.o transport/udp.pic.o: transport/udp.cc
 transport/unix.o transport/unix.pic.o: ../include/CORBA-SMALL.h ../include/CORBA.h
 transport/unix.o transport/unix.pic.o: ../include/mico/address.h ../include/mico/address_impl.h
 transport/unix.o transport/unix.pic.o: ../include/mico/any.h ../include/mico/array.h
@@ -5476,8 +5617,9 @@ transport/unix.o transport/unix.pic.o: ../include/mico/string.h ../include/mico/
 transport/unix.o transport/unix.pic.o: ../include/mico/tcconst.h ../include/mico/tckind.h
 transport/unix.o transport/unix.pic.o: ../include/mico/template.h ../include/mico/template_impl.h
 transport/unix.o transport/unix.pic.o: ../include/mico/throw.h ../include/mico/timebase.h
-transport/unix.o transport/unix.pic.o: ../include/mico/transport.h ../include/mico/transport/tcp.h
-transport/unix.o transport/unix.pic.o: ../include/mico/transport/udp.h ../include/mico/transport/unix.h
+transport/unix.o transport/unix.pic.o: ../include/mico/transport.h ../include/mico/transport/sharedMemory.h
+transport/unix.o transport/unix.pic.o: ../include/mico/transport/tcp.h ../include/mico/transport/udp.h
+transport/unix.o transport/unix.pic.o: ../include/mico/transport/unix.h
 transport/unix.o transport/unix.pic.o: ../include/mico/transport_impl.h
 transport/unix.o transport/unix.pic.o: ../include/mico/typecode.h ../include/mico/typecode_seq.h
 transport/unix.o transport/unix.pic.o: ../include/mico/types.h ../include/mico/util.h
@@ -5817,6 +5959,7 @@ os-thread/pththreads.o os-thread/pththreads.pic.o: ../include/mico/template_impl
 os-thread/pththreads.o os-thread/pththreads.pic.o: ../include/mico/throw.h
 os-thread/pththreads.o os-thread/pththreads.pic.o: ../include/mico/timebase.h
 os-thread/pththreads.o os-thread/pththreads.pic.o: ../include/mico/transport.h
+os-thread/pththreads.o os-thread/pththreads.pic.o: ../include/mico/transport/sharedMemory.h
 os-thread/pththreads.o os-thread/pththreads.pic.o: ../include/mico/transport/tcp.h
 os-thread/pththreads.o os-thread/pththreads.pic.o: ../include/mico/transport/udp.h
 os-thread/pththreads.o os-thread/pththreads.pic.o: ../include/mico/transport/unix.h
@@ -6074,6 +6217,7 @@ security/AccessConfig.o security/AccessConfig.pic.o: ../include/mico/template_im
 security/AccessConfig.o security/AccessConfig.pic.o: ../include/mico/throw.h
 security/AccessConfig.o security/AccessConfig.pic.o: ../include/mico/timebase.h
 security/AccessConfig.o security/AccessConfig.pic.o: ../include/mico/transport.h
+security/AccessConfig.o security/AccessConfig.pic.o: ../include/mico/transport/sharedMemory.h
 security/AccessConfig.o security/AccessConfig.pic.o: ../include/mico/transport/tcp.h
 security/AccessConfig.o security/AccessConfig.pic.o: ../include/mico/transport/udp.h
 security/AccessConfig.o security/AccessConfig.pic.o: ../include/mico/transport/unix.h
@@ -6215,6 +6359,7 @@ security/AuditClientIntercept.o security/AuditClientIntercept.pic.o: ../include/
 security/AuditClientIntercept.o security/AuditClientIntercept.pic.o: ../include/mico/throw.h
 security/AuditClientIntercept.o security/AuditClientIntercept.pic.o: ../include/mico/timebase.h
 security/AuditClientIntercept.o security/AuditClientIntercept.pic.o: ../include/mico/transport.h
+security/AuditClientIntercept.o security/AuditClientIntercept.pic.o: ../include/mico/transport/sharedMemory.h
 security/AuditClientIntercept.o security/AuditClientIntercept.pic.o: ../include/mico/transport/tcp.h
 security/AuditClientIntercept.o security/AuditClientIntercept.pic.o: ../include/mico/transport/udp.h
 security/AuditClientIntercept.o security/AuditClientIntercept.pic.o: ../include/mico/transport/unix.h
@@ -6359,6 +6504,7 @@ security/AuditConfig.o security/AuditConfig.pic.o: ../include/mico/template_impl
 security/AuditConfig.o security/AuditConfig.pic.o: ../include/mico/throw.h
 security/AuditConfig.o security/AuditConfig.pic.o: ../include/mico/timebase.h
 security/AuditConfig.o security/AuditConfig.pic.o: ../include/mico/transport.h
+security/AuditConfig.o security/AuditConfig.pic.o: ../include/mico/transport/sharedMemory.h
 security/AuditConfig.o security/AuditConfig.pic.o: ../include/mico/transport/tcp.h
 security/AuditConfig.o security/AuditConfig.pic.o: ../include/mico/transport/udp.h
 security/AuditConfig.o security/AuditConfig.pic.o: ../include/mico/transport/unix.h
@@ -6617,6 +6763,7 @@ security/AuditServIntercept.o security/AuditServIntercept.pic.o: ../include/mico
 security/AuditServIntercept.o security/AuditServIntercept.pic.o: ../include/mico/throw.h
 security/AuditServIntercept.o security/AuditServIntercept.pic.o: ../include/mico/timebase.h
 security/AuditServIntercept.o security/AuditServIntercept.pic.o: ../include/mico/transport.h
+security/AuditServIntercept.o security/AuditServIntercept.pic.o: ../include/mico/transport/sharedMemory.h
 security/AuditServIntercept.o security/AuditServIntercept.pic.o: ../include/mico/transport/tcp.h
 security/AuditServIntercept.o security/AuditServIntercept.pic.o: ../include/mico/transport/udp.h
 security/AuditServIntercept.o security/AuditServIntercept.pic.o: ../include/mico/transport/unix.h
@@ -6877,6 +7024,7 @@ security/DomainManager_impl.o security/DomainManager_impl.pic.o: ../include/mico
 security/DomainManager_impl.o security/DomainManager_impl.pic.o: ../include/mico/throw.h
 security/DomainManager_impl.o security/DomainManager_impl.pic.o: ../include/mico/timebase.h
 security/DomainManager_impl.o security/DomainManager_impl.pic.o: ../include/mico/transport.h
+security/DomainManager_impl.o security/DomainManager_impl.pic.o: ../include/mico/transport/sharedMemory.h
 security/DomainManager_impl.o security/DomainManager_impl.pic.o: ../include/mico/transport/tcp.h
 security/DomainManager_impl.o security/DomainManager_impl.pic.o: ../include/mico/transport/udp.h
 security/DomainManager_impl.o security/DomainManager_impl.pic.o: ../include/mico/transport/unix.h
@@ -7126,6 +7274,7 @@ security/RightsConfig.o security/RightsConfig.pic.o: ../include/mico/template_im
 security/RightsConfig.o security/RightsConfig.pic.o: ../include/mico/throw.h
 security/RightsConfig.o security/RightsConfig.pic.o: ../include/mico/timebase.h
 security/RightsConfig.o security/RightsConfig.pic.o: ../include/mico/transport.h
+security/RightsConfig.o security/RightsConfig.pic.o: ../include/mico/transport/sharedMemory.h
 security/RightsConfig.o security/RightsConfig.pic.o: ../include/mico/transport/tcp.h
 security/RightsConfig.o security/RightsConfig.pic.o: ../include/mico/transport/udp.h
 security/RightsConfig.o security/RightsConfig.pic.o: ../include/mico/transport/unix.h
@@ -7383,6 +7532,7 @@ security/SecurityAdmin_impl.o security/SecurityAdmin_impl.pic.o: ../include/mico
 security/SecurityAdmin_impl.o security/SecurityAdmin_impl.pic.o: ../include/mico/throw.h
 security/SecurityAdmin_impl.o security/SecurityAdmin_impl.pic.o: ../include/mico/timebase.h
 security/SecurityAdmin_impl.o security/SecurityAdmin_impl.pic.o: ../include/mico/transport.h
+security/SecurityAdmin_impl.o security/SecurityAdmin_impl.pic.o: ../include/mico/transport/sharedMemory.h
 security/SecurityAdmin_impl.o security/SecurityAdmin_impl.pic.o: ../include/mico/transport/tcp.h
 security/SecurityAdmin_impl.o security/SecurityAdmin_impl.pic.o: ../include/mico/transport/udp.h
 security/SecurityAdmin_impl.o security/SecurityAdmin_impl.pic.o: ../include/mico/transport/unix.h
@@ -7596,6 +7746,7 @@ security/audit_impl.o security/audit_impl.pic.o: ../include/mico/template_impl.h
 security/audit_impl.o security/audit_impl.pic.o: ../include/mico/throw.h
 security/audit_impl.o security/audit_impl.pic.o: ../include/mico/timebase.h
 security/audit_impl.o security/audit_impl.pic.o: ../include/mico/transport.h
+security/audit_impl.o security/audit_impl.pic.o: ../include/mico/transport/sharedMemory.h
 security/audit_impl.o security/audit_impl.pic.o: ../include/mico/transport/tcp.h
 security/audit_impl.o security/audit_impl.pic.o: ../include/mico/transport/udp.h
 security/audit_impl.o security/audit_impl.pic.o: ../include/mico/transport/unix.h
@@ -8034,6 +8185,7 @@ security/csiv2_impl.o security/csiv2_impl.pic.o: ../include/mico/template_impl.h
 security/csiv2_impl.o security/csiv2_impl.pic.o: ../include/mico/throw.h
 security/csiv2_impl.o security/csiv2_impl.pic.o: ../include/mico/timebase.h
 security/csiv2_impl.o security/csiv2_impl.pic.o: ../include/mico/transport.h
+security/csiv2_impl.o security/csiv2_impl.pic.o: ../include/mico/transport/sharedMemory.h
 security/csiv2_impl.o security/csiv2_impl.pic.o: ../include/mico/transport/tcp.h
 security/csiv2_impl.o security/csiv2_impl.pic.o: ../include/mico/transport/udp.h
 security/csiv2_impl.o security/csiv2_impl.pic.o: ../include/mico/transport/unix.h
@@ -8285,6 +8437,7 @@ security/odm_impl.o security/odm_impl.pic.o: ../include/mico/tckind.h ../include
 security/odm_impl.o security/odm_impl.pic.o: ../include/mico/template_impl.h
 security/odm_impl.o security/odm_impl.pic.o: ../include/mico/throw.h ../include/mico/timebase.h
 security/odm_impl.o security/odm_impl.pic.o: ../include/mico/transport.h
+security/odm_impl.o security/odm_impl.pic.o: ../include/mico/transport/sharedMemory.h
 security/odm_impl.o security/odm_impl.pic.o: ../include/mico/transport/tcp.h
 security/odm_impl.o security/odm_impl.pic.o: ../include/mico/transport/udp.h
 security/odm_impl.o security/odm_impl.pic.o: ../include/mico/transport/unix.h
@@ -8625,6 +8778,7 @@ security/securitylevel1_impl.o security/securitylevel1_impl.pic.o: ../include/mi
 security/securitylevel1_impl.o security/securitylevel1_impl.pic.o: ../include/mico/throw.h
 security/securitylevel1_impl.o security/securitylevel1_impl.pic.o: ../include/mico/timebase.h
 security/securitylevel1_impl.o security/securitylevel1_impl.pic.o: ../include/mico/transport.h
+security/securitylevel1_impl.o security/securitylevel1_impl.pic.o: ../include/mico/transport/sharedMemory.h
 security/securitylevel1_impl.o security/securitylevel1_impl.pic.o: ../include/mico/transport/tcp.h
 security/securitylevel1_impl.o security/securitylevel1_impl.pic.o: ../include/mico/transport/udp.h
 security/securitylevel1_impl.o security/securitylevel1_impl.pic.o: ../include/mico/transport/unix.h
@@ -8889,6 +9043,7 @@ security/securitylevel2_impl.o security/securitylevel2_impl.pic.o: ../include/mi
 security/securitylevel2_impl.o security/securitylevel2_impl.pic.o: ../include/mico/throw.h
 security/securitylevel2_impl.o security/securitylevel2_impl.pic.o: ../include/mico/timebase.h
 security/securitylevel2_impl.o security/securitylevel2_impl.pic.o: ../include/mico/transport.h
+security/securitylevel2_impl.o security/securitylevel2_impl.pic.o: ../include/mico/transport/sharedMemory.h
 security/securitylevel2_impl.o security/securitylevel2_impl.pic.o: ../include/mico/transport/tcp.h
 security/securitylevel2_impl.o security/securitylevel2_impl.pic.o: ../include/mico/transport/udp.h
 security/securitylevel2_impl.o security/securitylevel2_impl.pic.o: ../include/mico/transport/unix.h
@@ -9227,8 +9382,9 @@ security/sl3ac.o security/sl3ac.pic.o: ../include/mico/string.h ../include/mico/
 security/sl3ac.o security/sl3ac.pic.o: ../include/mico/tcconst.h ../include/mico/tckind.h
 security/sl3ac.o security/sl3ac.pic.o: ../include/mico/template.h ../include/mico/template_impl.h
 security/sl3ac.o security/sl3ac.pic.o: ../include/mico/throw.h ../include/mico/timebase.h
-security/sl3ac.o security/sl3ac.pic.o: ../include/mico/transport.h ../include/mico/transport/tcp.h
-security/sl3ac.o security/sl3ac.pic.o: ../include/mico/transport/udp.h ../include/mico/transport/unix.h
+security/sl3ac.o security/sl3ac.pic.o: ../include/mico/transport.h ../include/mico/transport/sharedMemory.h
+security/sl3ac.o security/sl3ac.pic.o: ../include/mico/transport/tcp.h ../include/mico/transport/udp.h
+security/sl3ac.o security/sl3ac.pic.o: ../include/mico/transport/unix.h
 security/sl3ac.o security/sl3ac.pic.o: ../include/mico/transport_impl.h
 security/sl3ac.o security/sl3ac.pic.o: ../include/mico/typecode.h ../include/mico/typecode_seq.h
 security/sl3ac.o security/sl3ac.pic.o: ../include/mico/types.h ../include/mico/util.h
@@ -10168,6 +10324,7 @@ security/sl3csi_impl.o security/sl3csi_impl.pic.o: ../include/mico/template_impl
 security/sl3csi_impl.o security/sl3csi_impl.pic.o: ../include/mico/throw.h
 security/sl3csi_impl.o security/sl3csi_impl.pic.o: ../include/mico/timebase.h
 security/sl3csi_impl.o security/sl3csi_impl.pic.o: ../include/mico/transport.h
+security/sl3csi_impl.o security/sl3csi_impl.pic.o: ../include/mico/transport/sharedMemory.h
 security/sl3csi_impl.o security/sl3csi_impl.pic.o: ../include/mico/transport/tcp.h
 security/sl3csi_impl.o security/sl3csi_impl.pic.o: ../include/mico/transport/udp.h
 security/sl3csi_impl.o security/sl3csi_impl.pic.o: ../include/mico/transport/unix.h
@@ -10391,6 +10548,7 @@ security/sl3ipc_impl.o security/sl3ipc_impl.pic.o: ../include/mico/template_impl
 security/sl3ipc_impl.o security/sl3ipc_impl.pic.o: ../include/mico/throw.h
 security/sl3ipc_impl.o security/sl3ipc_impl.pic.o: ../include/mico/timebase.h
 security/sl3ipc_impl.o security/sl3ipc_impl.pic.o: ../include/mico/transport.h
+security/sl3ipc_impl.o security/sl3ipc_impl.pic.o: ../include/mico/transport/sharedMemory.h
 security/sl3ipc_impl.o security/sl3ipc_impl.pic.o: ../include/mico/transport/tcp.h
 security/sl3ipc_impl.o security/sl3ipc_impl.pic.o: ../include/mico/transport/udp.h
 security/sl3ipc_impl.o security/sl3ipc_impl.pic.o: ../include/mico/transport/unix.h
@@ -10965,6 +11123,7 @@ security/sl3tcpip_impl.o security/sl3tcpip_impl.pic.o: ../include/mico/template_
 security/sl3tcpip_impl.o security/sl3tcpip_impl.pic.o: ../include/mico/throw.h
 security/sl3tcpip_impl.o security/sl3tcpip_impl.pic.o: ../include/mico/timebase.h
 security/sl3tcpip_impl.o security/sl3tcpip_impl.pic.o: ../include/mico/transport.h
+security/sl3tcpip_impl.o security/sl3tcpip_impl.pic.o: ../include/mico/transport/sharedMemory.h
 security/sl3tcpip_impl.o security/sl3tcpip_impl.pic.o: ../include/mico/transport/tcp.h
 security/sl3tcpip_impl.o security/sl3tcpip_impl.pic.o: ../include/mico/transport/udp.h
 security/sl3tcpip_impl.o security/sl3tcpip_impl.pic.o: ../include/mico/transport/unix.h
@@ -11189,6 +11348,7 @@ security/sl3tls_impl.o security/sl3tls_impl.pic.o: ../include/mico/template_impl
 security/sl3tls_impl.o security/sl3tls_impl.pic.o: ../include/mico/throw.h
 security/sl3tls_impl.o security/sl3tls_impl.pic.o: ../include/mico/timebase.h
 security/sl3tls_impl.o security/sl3tls_impl.pic.o: ../include/mico/transport.h
+security/sl3tls_impl.o security/sl3tls_impl.pic.o: ../include/mico/transport/sharedMemory.h
 security/sl3tls_impl.o security/sl3tls_impl.pic.o: ../include/mico/transport/tcp.h
 security/sl3tls_impl.o security/sl3tls_impl.pic.o: ../include/mico/transport/udp.h
 security/sl3tls_impl.o security/sl3tls_impl.pic.o: ../include/mico/transport/unix.h
@@ -11304,6 +11464,7 @@ security/sl3utils.o security/sl3utils.pic.o: ../include/mico/tckind.h ../include
 security/sl3utils.o security/sl3utils.pic.o: ../include/mico/template_impl.h
 security/sl3utils.o security/sl3utils.pic.o: ../include/mico/throw.h ../include/mico/timebase.h
 security/sl3utils.o security/sl3utils.pic.o: ../include/mico/transport.h
+security/sl3utils.o security/sl3utils.pic.o: ../include/mico/transport/sharedMemory.h
 security/sl3utils.o security/sl3utils.pic.o: ../include/mico/transport/tcp.h
 security/sl3utils.o security/sl3utils.pic.o: ../include/mico/transport/udp.h
 security/sl3utils.o security/sl3utils.pic.o: ../include/mico/transport/unix.h
@@ -11560,6 +11721,7 @@ security/transportsecurity_impl.o security/transportsecurity_impl.pic.o: ../incl
 security/transportsecurity_impl.o security/transportsecurity_impl.pic.o: ../include/mico/throw.h
 security/transportsecurity_impl.o security/transportsecurity_impl.pic.o: ../include/mico/timebase.h
 security/transportsecurity_impl.o security/transportsecurity_impl.pic.o: ../include/mico/transport.h
+security/transportsecurity_impl.o security/transportsecurity_impl.pic.o: ../include/mico/transport/sharedMemory.h
 security/transportsecurity_impl.o security/transportsecurity_impl.pic.o: ../include/mico/transport/tcp.h
 security/transportsecurity_impl.o security/transportsecurity_impl.pic.o: ../include/mico/transport/udp.h
 security/transportsecurity_impl.o security/transportsecurity_impl.pic.o: ../include/mico/transport/unix.h

@@ -3208,6 +3208,7 @@ MICO::SharedMemoryServer::SharedMemoryServer(CORBA::ORB_ptr orb,
 CORBA::Boolean
 MICO::SharedMemoryServer::listen (vector<std::string>& addr)
 {
+		cout << "\nIn listen method";
     CORBA::IORProfile *prof;
 		MICO::SharedMemoryAddress shma =  SharedMemoryAddress(addr[0],addr[1], atoi(addr[2].c_str()));
 		//replace this with shm segment creation
@@ -3221,11 +3222,12 @@ MICO::SharedMemoryServer::listen (vector<std::string>& addr)
 			}
 		}
 
+		cout << "\n Past shmcreation";
 		//replace with shm ior creation
 
 		prof = shma.make_ior_profile ((CORBA::Octet *)"", 1,CORBA::MultiComponent(),_iiop_ver);
 
-
+		cout << "\n Past make ior profile";
 
     //bound_addr = tserv->addr();
     //if (MICO::Logger::IsLogged (MICO::Logger::IIOP)) {

@@ -3989,8 +3989,8 @@ CORBA::ORB_init (int &argc, char **argv, const char *_id)
 
 		// create Shared Memory Segment
 	if (run_shm) {
-		cout << run_shm << " run_shm";
-		cout << run_iiop_server << " run_iiop_server";
+		std::cout << std::boolalpha << run_shm << " run_shm\n";
+		std::cout << std::boolalpha << run_iiop_server << " run_iiop_server\n";
 		MICO::SharedMemoryServer* shm_server_instance
 		= new MICO::SharedMemoryServer (orb_instance, iiop_ver, max_message_size);
 			for (mico_vec_size_type i = 0; i < shmaddr.size(); ++i) {
@@ -4004,16 +4004,21 @@ CORBA::ORB_init (int &argc, char **argv, const char *_id)
 				}
 				mico_throw (CORBA::INITIALIZE());
 		}
-		if (!shm_server_instance->listen (addr))
-				mico_throw (CORBA::INITIALIZE());
+		cout << "Before listen";
+
+		shm_server_instance->listen(addr);
+
+		//if (!shm_server_instance->listen (addr))
+				//mico_throw (CORBA::INITIALIZE());
 				//delete *addr;
 			}
 		}
+
 		cout << "\n Past run_shm";
     // create IIOP server
     if (!use_sl3) {
 	if (run_iiop_server) {
-		cout << "\nIn run_iiop_server" << run_iiop_server;
+		std::cout << "\nIn run_iiop_server" << run_iiop_server;
 	    MICO::IIOPServer* iiop_server_instance
 		= new MICO::IIOPServer (orb_instance,
 					iiop_ver,

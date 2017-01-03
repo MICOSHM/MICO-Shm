@@ -63,7 +63,7 @@ private:
   int _length;
 
 public:
-  SharedMemoryAddress (std::string address = NULL, std::string semName = NULL, int length = 0);
+  SharedMemoryAddress (std::string address = "", std::string semName = "", int length = 0);
   std::string address() const;
   std::string semName() const;
   int length() const;

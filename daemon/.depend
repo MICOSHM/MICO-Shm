@@ -58,6 +58,7 @@ imr_client.o imr_client.pic.o: ../include/mico/sysexc.h ../include/mico/tcconst.
 imr_client.o imr_client.pic.o: ../include/mico/tckind.h ../include/mico/template.h
 imr_client.o imr_client.pic.o: ../include/mico/template_impl.h ../include/mico/throw.h
 imr_client.o imr_client.pic.o: ../include/mico/timebase.h ../include/mico/transport.h
+imr_client.o imr_client.pic.o: ../include/mico/transport/sharedMemory.h
 imr_client.o imr_client.pic.o: ../include/mico/transport/tcp.h ../include/mico/transport/udp.h
 imr_client.o imr_client.pic.o: ../include/mico/transport/unix.h ../include/mico/transport_impl.h
 imr_client.o imr_client.pic.o: ../include/mico/typecode.h ../include/mico/typecode_seq.h
@@ -129,23 +130,24 @@ imr_impl.o imr_impl.pic.o: ../include/mico/sysexc.h ../include/mico/tcconst.h
 imr_impl.o imr_impl.pic.o: ../include/mico/tckind.h ../include/mico/template.h
 imr_impl.o imr_impl.pic.o: ../include/mico/template_impl.h ../include/mico/throw.h
 imr_impl.o imr_impl.pic.o: ../include/mico/timebase.h ../include/mico/transport.h
-imr_impl.o imr_impl.pic.o: ../include/mico/transport/tcp.h ../include/mico/transport/udp.h
-imr_impl.o imr_impl.pic.o: ../include/mico/transport/unix.h ../include/mico/transport_impl.h
-imr_impl.o imr_impl.pic.o: ../include/mico/typecode.h ../include/mico/typecode_seq.h
-imr_impl.o imr_impl.pic.o: ../include/mico/types.h ../include/mico/util.h
-imr_impl.o imr_impl.pic.o: ../include/mico/value.h ../include/mico/valuetype.h
-imr_impl.o imr_impl.pic.o: ../include/mico/valuetype_impl.h ../include/mico/version.h
-imr_impl.o imr_impl.pic.o: ../include/ministl/bool.h ../include/ministl/bstring.h
-imr_impl.o imr_impl.pic.o: ../include/ministl/defalloc.h ../include/ministl/function
-imr_impl.o imr_impl.pic.o: ../include/ministl/function.h ../include/ministl/list
-imr_impl.o imr_impl.pic.o: ../include/ministl/list.h ../include/ministl/map
-imr_impl.o imr_impl.pic.o: ../include/ministl/map.h ../include/ministl/ministl.h
-imr_impl.o imr_impl.pic.o: ../include/ministl/pair ../include/ministl/pair.h
-imr_impl.o imr_impl.pic.o: ../include/ministl/set ../include/ministl/set.h
-imr_impl.o imr_impl.pic.o: ../include/ministl/simplevec.h ../include/ministl/string
-imr_impl.o imr_impl.pic.o: ../include/ministl/vector ../include/ministl/vector.h
-imr_impl.o imr_impl.pic.o: ./imr_impl.h ./imr_pch.h ./poamediator.h imr_impl.cc
-imr_impl.o imr_impl.pic.o: imr_impl.h imr_pch.h poamediator.h
+imr_impl.o imr_impl.pic.o: ../include/mico/transport/sharedMemory.h ../include/mico/transport/tcp.h
+imr_impl.o imr_impl.pic.o: ../include/mico/transport/udp.h ../include/mico/transport/unix.h
+imr_impl.o imr_impl.pic.o: ../include/mico/transport_impl.h ../include/mico/typecode.h
+imr_impl.o imr_impl.pic.o: ../include/mico/typecode_seq.h ../include/mico/types.h
+imr_impl.o imr_impl.pic.o: ../include/mico/util.h ../include/mico/value.h
+imr_impl.o imr_impl.pic.o: ../include/mico/valuetype.h ../include/mico/valuetype_impl.h
+imr_impl.o imr_impl.pic.o: ../include/mico/version.h ../include/ministl/bool.h
+imr_impl.o imr_impl.pic.o: ../include/ministl/bstring.h ../include/ministl/defalloc.h
+imr_impl.o imr_impl.pic.o: ../include/ministl/function ../include/ministl/function.h
+imr_impl.o imr_impl.pic.o: ../include/ministl/list ../include/ministl/list.h
+imr_impl.o imr_impl.pic.o: ../include/ministl/map ../include/ministl/map.h
+imr_impl.o imr_impl.pic.o: ../include/ministl/ministl.h ../include/ministl/pair
+imr_impl.o imr_impl.pic.o: ../include/ministl/pair.h ../include/ministl/set
+imr_impl.o imr_impl.pic.o: ../include/ministl/set.h ../include/ministl/simplevec.h
+imr_impl.o imr_impl.pic.o: ../include/ministl/string ../include/ministl/vector
+imr_impl.o imr_impl.pic.o: ../include/ministl/vector.h ./imr_impl.h ./imr_pch.h
+imr_impl.o imr_impl.pic.o: ./poamediator.h imr_impl.cc imr_impl.h imr_pch.h
+imr_impl.o imr_impl.pic.o: poamediator.h
 main.o main.pic.o: ../include/CORBA.h ../include/mico/address.h ../include/mico/address_impl.h
 main.o main.pic.o: ../include/mico/any.h ../include/mico/array.h ../include/mico/assert.h
 main.o main.pic.o: ../include/mico/basic.h ../include/mico/basic_seq.h ../include/mico/buffer.h
@@ -194,12 +196,13 @@ main.o main.pic.o: ../include/mico/static.h ../include/mico/string.h ../include/
 main.o main.pic.o: ../include/mico/tcconst.h ../include/mico/tckind.h ../include/mico/template.h
 main.o main.pic.o: ../include/mico/template_impl.h ../include/mico/throw.h
 main.o main.pic.o: ../include/mico/timebase.h ../include/mico/transport.h
-main.o main.pic.o: ../include/mico/transport/tcp.h ../include/mico/transport/udp.h
-main.o main.pic.o: ../include/mico/transport/unix.h ../include/mico/transport_impl.h
-main.o main.pic.o: ../include/mico/typecode.h ../include/mico/typecode_seq.h
-main.o main.pic.o: ../include/mico/types.h ../include/mico/util.h ../include/mico/value.h
-main.o main.pic.o: ../include/mico/valuetype.h ../include/mico/valuetype_impl.h
-main.o main.pic.o: ../include/mico/version.h ../include/ministl/bool.h ../include/ministl/bstring.h
+main.o main.pic.o: ../include/mico/transport/sharedMemory.h ../include/mico/transport/tcp.h
+main.o main.pic.o: ../include/mico/transport/udp.h ../include/mico/transport/unix.h
+main.o main.pic.o: ../include/mico/transport_impl.h ../include/mico/typecode.h
+main.o main.pic.o: ../include/mico/typecode_seq.h ../include/mico/types.h
+main.o main.pic.o: ../include/mico/util.h ../include/mico/value.h ../include/mico/valuetype.h
+main.o main.pic.o: ../include/mico/valuetype_impl.h ../include/mico/version.h
+main.o main.pic.o: ../include/ministl/bool.h ../include/ministl/bstring.h
 main.o main.pic.o: ../include/ministl/defalloc.h ../include/ministl/function
 main.o main.pic.o: ../include/ministl/function.h ../include/ministl/list
 main.o main.pic.o: ../include/ministl/list.h ../include/ministl/map ../include/ministl/map.h
@@ -268,6 +271,7 @@ poamediator.o poamediator.pic.o: ../include/mico/sysexc.h ../include/mico/tccons
 poamediator.o poamediator.pic.o: ../include/mico/tckind.h ../include/mico/template.h
 poamediator.o poamediator.pic.o: ../include/mico/template_impl.h ../include/mico/throw.h
 poamediator.o poamediator.pic.o: ../include/mico/timebase.h ../include/mico/transport.h
+poamediator.o poamediator.pic.o: ../include/mico/transport/sharedMemory.h
 poamediator.o poamediator.pic.o: ../include/mico/transport/tcp.h ../include/mico/transport/udp.h
 poamediator.o poamediator.pic.o: ../include/mico/transport/unix.h ../include/mico/transport_impl.h
 poamediator.o poamediator.pic.o: ../include/mico/typecode.h ../include/mico/typecode_seq.h

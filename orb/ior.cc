@@ -1,4 +1,4 @@
-/*
+ /*
  *  MICO --- an Open Source CORBA implementation
  *  Copyright (c) 1997-2006 by The Mico Team
  *
@@ -828,10 +828,8 @@ MICO::SharedMemoryProfile::SharedMemoryProfile (CORBA::Octet *o, CORBA::ULong l,
 				CORBA::UShort ver,
         ProfileId id)
 {
+   cout << "\nIn SharedMemoryProfile constructor";
     version = ver;
-
-    if (version < 0x0101 && mc.size() > 0)
-	   version = 0x0101;
 
     tagid = id;
     comps = mc;
