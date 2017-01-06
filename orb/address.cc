@@ -266,7 +266,7 @@ static MICO::LocalAddressParser local_address_parser;
 *in IOR.cc require private members fo teh address class in teh SharedMemoryProfile.
 */
 
-MICO::SharedMemoryAddress::SharedMemoryAddress(std::string address, std::string semName, int length)
+MICO::SharedMemoryAddress::SharedMemoryAddress(std::string address, std::string semName, CORBA::UShort length)
   : _address(address), _semName(semName), _length(length)
 {
 }

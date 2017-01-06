@@ -962,7 +962,86 @@ MICO::SharedMemoryProfile::operator< (const CORBA::IORProfile &p) const
     return compare (p) < 0;
 }
 
+/************************* SharedMemoryProfile Decoder *******************/
 
+MICO::SharedMemoryProfileDecoder::SharedMemoryProfileDecoder (CORBA::IORProfile::ProfileId id)
+{
+    tagid = id;
+    CORBA::IORProfile::register_decoder (this);
+}
+
+MICO::SharedMemoryProfileDecoder::~SharedMemoryProfileDecoder ()
+{
+    CORBA::IORProfile::unregister_decoder (this);
+}
+
+#define check(exp) if (!(exp)) goto bad;
+
+CORBA::IORProfile *
+MICO::SharedMemoryProfileDecoder::decode (CORBA::DataDecoder &dc, ProfileId,
+                                  CORBA::ULong) const
+{
+    CORBA::Octet minor, major, *objkey;
+    CORBA::UShort version;
+    CORBA::ULong len;
+    CORBA::MultiComponent comps;
+    string address, semName;
+    CORBA::UShort memLength;
+    CORBA::IORProfile *ip = 0;
+
+    check (dc.struct_begin ());
+    {
+	check (dc.struct_begin ());
+	{
+	    check (dc.get_octet (major));
+	    check (dc.get_octet (minor));
+	    version = ((major << 8) | minor);
+	    check (version <= 0x0102);
+	}
+	check (dc.struct_end ());
+
+	check (dc.get_string_raw_stl (address));
+	check (dc.get_string_raw_stl (semName));
+  check (dc.get_ushort (memLength));
+
+	check (dc.seq_begin (len));
+	{
+	    // XXX make sure seeked over data is still valid later
+            check (dc.buffer()->length() >= len);
+	    objkey = dc.buffer()->data();
+	    dc.buffer()->rseek_rel (len);
+	}
+	check (dc.seq_end ());
+
+	if (major > 1 || minor > 0)
+	    check (comps.decode (dc));
+
+	ip = new SharedMemoryProfile (objkey, len,
+			      SharedMemoryAddress (address, semName, memLength),
+			      comps,
+			      version,
+			      tagid);
+#ifdef HAVE_SSL
+	if (comps.component (CORBA::Component::TAG_SSL_SEC_TRANS)) {
+	    MICOSSL::SSLAddress sa (ip->addr()->clone());
+	    ip = new MICOSSL::SSLProfile (ip, sa);
+	}
+#endif
+    }
+    check (dc.struct_end ());
+    return ip;
+
+bad:
+    if (ip)
+	delete ip;
+    return 0;
+}
+
+CORBA::Boolean
+MICO::SharedMemoryProfileDecoder::has_id (MICO::SharedMemoryProfile::ProfileId id) const
+{
+    return CORBA::IORProfile::TAG_SHM_IOP == id;
+}
 
 /****************************** IIOPProfile *****************************/
 

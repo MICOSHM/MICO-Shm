@@ -3210,12 +3210,12 @@ MICO::SharedMemoryServer::listen (vector<std::string>& addr)
 {
 		cout << "\nIn listen method";
     CORBA::IORProfile *prof;
-		MICO::SharedMemoryAddress shma =  SharedMemoryAddress(addr[0],addr[1], atoi(addr[2].c_str()));
+		MICO::SharedMemoryAddress shma =  SharedMemoryAddress(addr[0],addr[1], (short)atoi(addr[2].c_str()));
 		//replace this with shm segment creation
 		if(!addr.empty()){
 			try{
 				MICO::CSharedMemory shmMemory(addr[0]);
-				shmMemory.Create(atoi(addr[2].c_str()));
+				shmMemory.Create((short)atoi(addr[2].c_str()));
 				shmMemory.Attach();
 			} catch(std::exception& e){
 				cout << "Exception: " << e.what();

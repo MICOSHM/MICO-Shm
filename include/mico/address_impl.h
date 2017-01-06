@@ -60,10 +60,10 @@ class SharedMemoryAddress : public CORBA::Address {
 private:
   std::string _address;
   std::string _semName;
-  int _length;
+  CORBA::UShort _length;
 
 public:
-  SharedMemoryAddress (std::string address = "", std::string semName = "", int length = 0);
+  SharedMemoryAddress (std::string address = "", std::string semName = "", CORBA::UShort length = 0);
   std::string address() const;
   std::string semName() const;
   int length() const;

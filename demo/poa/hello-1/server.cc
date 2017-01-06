@@ -34,7 +34,7 @@ main (int argc, char *argv[])
   /*
    * Initialize the ORB
    */
-  
+
   CORBA::ORB_var orb = CORBA::ORB_init (argc, argv);
 
   /*
@@ -72,16 +72,16 @@ main (int argc, char *argv[])
    */
 
   cout << "Running." << endl;
-  while(1);
-  //mgr->activate ();
-  //orb->run();
+  //while(1);
+  mgr->activate ();
+  orb->run();
 
   /*
    * Shutdown (never reached)
    */
 
-  //poa->destroy (TRUE, TRUE);
-  //delete hello;
+  poa->destroy (TRUE, TRUE);
+  delete hello;
 
   return 0;
 }

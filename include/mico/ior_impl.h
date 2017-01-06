@@ -110,6 +110,17 @@ public:
    CORBA::Boolean operator< (const CORBA::IORProfile &) const;
 };
 
+class SharedMemoryProfileDecoder : public CORBA::IORProfileDecoder {
+    CORBA::IORProfile::ProfileId tagid;
+public:
+    SharedMemoryProfileDecoder (CORBA::IORProfile::ProfileId
+			= CORBA::IORProfile::TAG_SHM_IOP);
+    ~SharedMemoryProfileDecoder ();
+    CORBA::IORProfile *decode (CORBA::DataDecoder &, ProfileId,
+    			       CORBA::ULong) const;
+    CORBA::Boolean has_id (ProfileId) const;
+};
+
 class IIOPProfile : public CORBA::IORProfile,
                     public MICO::ProfileIIOPVersionProvider {
     CORBA::Octet *objkey;

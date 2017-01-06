@@ -3290,7 +3290,7 @@ CORBA::ORB_init (int &argc, char **argv, const char *_id)
 #endif
     PInterceptor::PI::_init();
 		Boolean run_shm = FALSE;
-    Boolean run_iiop_server = FALSE;
+    Boolean run_iiop_server = TRUE;
     Boolean run_iiop_proxy = TRUE;
     Boolean iiop_blocking = FALSE;
     Boolean plugged = TRUE;
@@ -3468,6 +3468,7 @@ CORBA::ORB_init (int &argc, char **argv, const char *_id)
 	    run_iiop_proxy = FALSE;
 	} else if (arg == "-ORBIIOPAddr") {
 	    iiopaddrs.push_back (val);
+			//run_iiop_server = TRUE;
         } else if (arg == "-ORBIIOPProxy") {
           fwproxyaddr = Address::parse (val.c_str());
         } else if (arg == "-ORBIIOPBlocking") {
