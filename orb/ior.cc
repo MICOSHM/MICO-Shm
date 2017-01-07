@@ -854,6 +854,7 @@ MICO::SharedMemoryProfile::encode (CORBA::DataEncoder &ec) const
 	ec.struct_end ();
 
 	ec.put_string_raw (myaddr.address());
+  ec.put_string_raw (myaddr.semName());
 	ec.put_ushort (myaddr.length());
 
 	ec.seq_begin (length);
@@ -1023,11 +1024,13 @@ MICO::SharedMemoryProfileDecoder::decode (CORBA::DataDecoder &dc, ProfileId,
 	    check (version <= 0x0102);
 	}
 	check (dc.struct_end ());
-cout << "\n Inside adress, semname, grab";
+cout << "\n Inside adress, semname, grab\n";
 	check (dc.get_string_raw_stl (address));
+  cout << "\n Past address\n";
 	check (dc.get_string_raw_stl (semName));
+  cout << "\n Past semName\n";
   check (dc.get_ushort (memLength));
-
+cout << "\n Made past memLength grab\n";
 	check (dc.seq_begin (len));
 	{
 	    // XXX make sure seeked over data is still valid later
