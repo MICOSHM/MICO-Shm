@@ -3202,7 +3202,7 @@ MICO::SharedMemoryServer::SharedMemoryServer(CORBA::ORB_ptr orb,
 
 	_max_message_size = max_size;
 	_iiop_ver = iiop_ver;
-	//_orb->register_oa (this);
+	_orb->register_oa (this);
 }
 
 CORBA::Boolean
@@ -3258,6 +3258,145 @@ MICO::SharedMemoryServer::listen (vector<std::string>& addr)
 	//tserv->start();
 //#endif // HAVE_THREADS
     return TRUE;
+}
+
+const char *
+MICO::SharedMemoryServer::get_oaid () const
+{
+    return "mico-shm-server";
+}
+
+CORBA::Boolean
+MICO::SharedMemoryServer::has_object (CORBA::Object_ptr)
+{
+    return FALSE;
+}
+
+#ifdef USE_CSL2
+CORBA::Principal_ptr
+MICO::SharedMemoryServer::get_principal(CORBA::Object_ptr obj){
+  assert(0);
+  return (CORBA::Principal_ptr)0;
+}
+#endif /* USE_CSL2  */
+
+CORBA::Boolean
+MICO::SharedMemoryServer::is_local () const
+{
+    // so we shutdown() after all local adapters which might
+    // need IIOPServer for shutdown ...
+    return FALSE;
+}
+
+CORBA::Boolean
+MICO::SharedMemoryServer::invoke (CORBA::ORBMsgId, CORBA::Object_ptr,
+			  CORBA::ORBRequest *,
+			  CORBA::Principal_ptr, CORBA::Boolean)
+{
+    assert (0);
+    return TRUE;
+}
+
+CORBA::Boolean
+MICO::SharedMemoryServer::bind (CORBA::ORBMsgId, const char *,
+			const CORBA::ORB::ObjectTag &,
+			CORBA::Address *)
+{
+    return FALSE;
+}
+
+CORBA::Boolean
+MICO::SharedMemoryServer::locate (CORBA::ORBMsgId, CORBA::Object_ptr)
+{
+    assert (0);
+    return FALSE;
+}
+
+CORBA::Object_ptr
+MICO::SharedMemoryServer::skeleton (CORBA::Object_ptr)
+{
+    assert (0);
+    return CORBA::Object::_nil ();
+}
+
+void
+MICO::SharedMemoryServer::cancel (CORBA::ORBMsgId)
+{
+    assert (0);
+}
+
+void
+MICO::SharedMemoryServer::shutdown (CORBA::Boolean wait_for_completion)
+{
+    //{
+	//MICOMT::AutoLock lock(_tservers);
+	//for (CORBA::ULong i = 0; i < _tservers.size(); i++) {
+	    //_tservers[i]->close();
+	    //delete _tservers[i];
+	    //_tservers[i] = NULL;
+	//}
+	//_tservers.erase(_tservers.begin(), _tservers.end());
+    //}
+    /*
+     * the GIOPConn entries in the 'orbids' and 'reqids' maps are just
+     * pointers to the entries in the 'conns' list, so do not delete them
+     */
+
+    //_conns.lock();
+
+    //for (ListConn::iterator i0 = _conns.begin(); i0 != _conns.end(); ++i0) {
+	//conn_closed (*i0);
+	//deref_conn(*i0, TRUE);
+    //}
+    //_conns.erase (_conns.begin(), _conns.end());
+
+    //_conns.unlock();
+
+
+//#ifdef USE_IOP_CACHE
+    //if (_cache_used)
+	//_orb->cancel (_cache_rec->orbid());
+//#endif
+
+    //{
+	//MICOMT::AutoLock l(_orbids_mutex);
+
+	//for (MapIdConn::iterator i1 = _orbids.begin();
+	  //   i1 != _orbids.end(); ++i1) {
+	    //IIOPServerInvokeRec *rec = (*i1).second;
+	    //_orb->cancel ( rec->orbid() );
+	    //delete rec;
+	//}
+	//_orbids.erase (_orbids.begin(), _orbids.end());
+    //}
+//#ifdef USE_IOP_CACHE
+    //_cache_used = FALSE;
+//#endif
+    //_orb->answer_shutdown (this);
+}
+
+void
+MICO::SharedMemoryServer::answer_invoke (CORBA::ORBMsgId, CORBA::Object_ptr,
+				 CORBA::ORBRequest *, CORBA::InvokeStatus)
+{
+    assert (0);
+}
+
+CORBA::Boolean
+MICO::SharedMemoryServer::validate_connection
+(CORBA::Object_ptr obj,
+ CORBA::PolicyList_out inconsistent_policies)
+{
+    // shouldn't be called
+    assert(0);
+    return FALSE;
+}
+
+void
+MICO::SharedMemoryServer::timedout_invoke(CORBA::ORBMsgId)
+{
+    // shouldn't be called
+    assert(0);
 }
 
 /******************************* IIOPProxy ******************************/

@@ -843,6 +843,7 @@ MICO::SharedMemoryProfile::SharedMemoryProfile (CORBA::Octet *o, CORBA::ULong l,
 void
 MICO::SharedMemoryProfile::encode (CORBA::DataEncoder &ec) const
 {
+  cout << "\n In shm encode";
     ec.struct_begin ();
     {
 	ec.struct_begin ();
@@ -947,7 +948,27 @@ MICO::SharedMemoryProfile::clone () const
 CORBA::Long
 MICO::SharedMemoryProfile::compare (const CORBA::IORProfile &p) const
 {
-    return 0;
+  if (p.id() != id())
+return (CORBA::Long)id() - (CORBA::Long)p.id();
+
+  const SharedMemoryProfile &ip = (const SharedMemoryProfile &)p;
+
+  if (length != ip.length)
+return (CORBA::Long)length - (CORBA::Long)ip.length;
+
+  CORBA::Long r = mico_key_compare (objkey, ip.objkey, length);
+  if (r)
+return r;
+
+  if (version != ip.version)
+return (CORBA::Long)version - (CORBA::Long)ip.version;
+
+  r = myaddr.compare (ip.myaddr);
+  if (r)
+return r;
+
+  return comps.compare (ip.comps);
+
 }
 
 CORBA::Boolean
@@ -989,8 +1010,11 @@ MICO::SharedMemoryProfileDecoder::decode (CORBA::DataDecoder &dc, ProfileId,
     CORBA::UShort memLength;
     CORBA::IORProfile *ip = 0;
 
+    cout << "\n In shm decode";
+
     check (dc.struct_begin ());
     {
+      cout << "\n In struct begin";
 	check (dc.struct_begin ());
 	{
 	    check (dc.get_octet (major));
@@ -999,7 +1023,7 @@ MICO::SharedMemoryProfileDecoder::decode (CORBA::DataDecoder &dc, ProfileId,
 	    check (version <= 0x0102);
 	}
 	check (dc.struct_end ());
-
+cout << "\n Inside adress, semname, grab";
 	check (dc.get_string_raw_stl (address));
 	check (dc.get_string_raw_stl (semName));
   check (dc.get_ushort (memLength));
@@ -1015,7 +1039,9 @@ MICO::SharedMemoryProfileDecoder::decode (CORBA::DataDecoder &dc, ProfileId,
 
 	if (major > 1 || minor > 0)
 	    check (comps.decode (dc));
-
+cout << "\nAddress: " << address;
+cout << "\nSemName " << semName;
+cout << "\nMemLength" << memLength;
 	ip = new SharedMemoryProfile (objkey, len,
 			      SharedMemoryAddress (address, semName, memLength),
 			      comps,
@@ -1042,6 +1068,8 @@ MICO::SharedMemoryProfileDecoder::has_id (MICO::SharedMemoryProfile::ProfileId i
 {
     return CORBA::IORProfile::TAG_SHM_IOP == id;
 }
+
+static MICO::SharedMemoryProfileDecoder shm_ior_decoder;
 
 /****************************** IIOPProfile *****************************/
 

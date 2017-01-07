@@ -4005,7 +4005,6 @@ CORBA::ORB_init (int &argc, char **argv, const char *_id)
 				}
 				mico_throw (CORBA::INITIALIZE());
 		}
-		cout << "Before listen";
 
 		shm_server_instance->listen(addr);
 
