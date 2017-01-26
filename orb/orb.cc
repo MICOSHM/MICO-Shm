@@ -1528,7 +1528,7 @@ CORBA::ORB::get_default_domain_manager (DomainManager_out dm)
 
 	// install default policies ...
 	MICOPolicy::TransportPrefPolicy::ProfileTagSeq prefs;
-	prefs.length (7);
+	prefs.length (8);
 
 	prefs[0] = CORBA::IORProfile::TAG_INTERNET_IOP;
 	prefs[1] = CORBA::IORProfile::TAG_UNIX_IOP;
@@ -1537,6 +1537,7 @@ CORBA::ORB::get_default_domain_manager (DomainManager_out dm)
 	prefs[4] = CORBA::IORProfile::TAG_SSL_UNIX_IOP;
 	prefs[5] = CORBA::IORProfile::TAG_SSL_UDP_IOP;
 	prefs[6] = CORBA::IORProfile::TAG_LTP_IOP;
+	prefs[7] = CORBA::IORProfile::TAG_SHM_IOP;
 
 	MICOPolicy::TransportPrefPolicy_var tpp =
 	    new MICO::TransportPrefPolicy_impl (prefs);
@@ -3290,7 +3291,7 @@ CORBA::ORB_init (int &argc, char **argv, const char *_id)
 #endif
     PInterceptor::PI::_init();
 		Boolean run_shm = FALSE;
-    Boolean run_iiop_server = TRUE;
+    Boolean run_iiop_server = FALSE;
     Boolean run_iiop_proxy = TRUE;
     Boolean iiop_blocking = FALSE;
     Boolean plugged = TRUE;
@@ -3990,8 +3991,6 @@ CORBA::ORB_init (int &argc, char **argv, const char *_id)
 
 		// create Shared Memory Segment
 	if (run_shm) {
-		std::cout << std::boolalpha << run_shm << " run_shm\n";
-		std::cout << std::boolalpha << run_iiop_server << " run_iiop_server\n";
 		MICO::SharedMemoryServer* shm_server_instance
 		= new MICO::SharedMemoryServer (orb_instance, iiop_ver, max_message_size);
 			for (mico_vec_size_type i = 0; i < shmaddr.size(); ++i) {
@@ -4014,11 +4013,9 @@ CORBA::ORB_init (int &argc, char **argv, const char *_id)
 			}
 		}
 
-		cout << "\n Past run_shm";
     // create IIOP server
     if (!use_sl3) {
 	if (run_iiop_server) {
-		std::cout << "\nIn run_iiop_server" << run_iiop_server;
 	    MICO::IIOPServer* iiop_server_instance
 		= new MICO::IIOPServer (orb_instance,
 					iiop_ver,

@@ -920,14 +920,15 @@ MICO::SharedMemoryProfile::print (ostream &o) const
   o << "SharedMemory Profile" << endl;
   o << "    Version:  " << (CORBA::Long) (version >> 8) << "."
     << (CORBA::Long) (version & 0xff) << endl;
-  o << "    Address:  " << myaddr.stringify() << endl;
-
-  o << "   Location:  corbaloc::";
+  o << "    Address:  " << myaddr.address() << endl;
+  o << "    Semeaphore Name:  " << myaddr.semName() << endl;
+  o << "    Memory Length:  " << myaddr.length() << endl;
+  o << "    Location:  corbaloc::";
   if (version != 0x0100) {
     o << (CORBA::Long) (version >> 8) << "."
       << (CORBA::Long) (version & 0xff) << "@";
   }
-  o << myaddr.address() << ":" << myaddr.length();
+  //o << myaddr.address() << ":" << myaddr.length();
   if (length > 0) {
     CORBA::String_var url = mico_url_encode (objkey, length);
     o << "/" << url.in() << endl;
