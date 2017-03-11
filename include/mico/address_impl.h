@@ -1,4 +1,4 @@
-// -*- c++ -*-
+  // -*- c++ -*-
 /*
  *  MICO --- an Open Source CORBA implementation
  *  Copyright (c) 1997-2005 by The Mico Team

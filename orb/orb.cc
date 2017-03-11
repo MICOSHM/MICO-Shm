@@ -3291,7 +3291,7 @@ CORBA::ORB_init (int &argc, char **argv, const char *_id)
 #endif
     PInterceptor::PI::_init();
 		Boolean run_shm = FALSE;
-    Boolean run_iiop_server = FALSE;
+    Boolean run_iiop_server = TRUE;
     Boolean run_iiop_proxy = TRUE;
     Boolean iiop_blocking = FALSE;
     Boolean plugged = TRUE;
@@ -3301,7 +3301,7 @@ CORBA::ORB_init (int &argc, char **argv, const char *_id)
     string naming_ior, naming_addr;
     string trading_ior, trading_addr;
     string mtb_addr_str;
-    vector<string> debug_level;
+     vector<string> debug_level;
     vector<string> bindaddrs, iiopaddrs, shmaddr;
     string rcfile;
 #if defined(_WIN32)
