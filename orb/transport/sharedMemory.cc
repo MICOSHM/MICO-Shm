@@ -32,6 +32,10 @@
 
 using namespace std;
 
+MICO::CSharedMemory::CSharedMemory() {
+
+}
+
 MICO::CSharedMemory::CSharedMemory( const string& sName ):m_sName(sName),m_Ptr(NULL),m_iD(-1),
 m_nSize(0)
 {
@@ -55,38 +59,6 @@ MICO::CSharedMemory::Create( size_t nSize, int mode /*= READ_WRITE*/ )
    m_nSize = nSize;
    m_iD = shm_open(m_sName.c_str(), O_CREAT | O_RDWR, 0777);
 
-   if(m_iD < 0)
-   {
-      switch(errno)
-      {
-      case EACCES:
-         throw CSharedMemoryException("Permission Exception ");
-         cout << "\nEACCES";
-         break;
-      case EEXIST:
-         cout << "\nEEXIST";
-         throw CSharedMemoryException("Shared memory object specified by name already exists.");
-         break;
-      case EINVAL:
-         cout << "\nEINVAL";
-         throw CSharedMemoryException("Invalid shared memory name passed.");
-         break;
-      case EMFILE:
-         throw CSharedMemoryException("The process already has the maximum number of files open.");
-         break;
-      case ENAMETOOLONG:
-         throw CSharedMemoryException("The length of name exceeds PATH_MAX.");
-         break;
-      case ENFILE:
-         throw CSharedMemoryException("The limit on the total number of files open on the system has been reached");
-         break;
-      default:
-         cout << "\ndefault";
-         throw CSharedMemoryException("Invalid exception occurred in shared memory creation");
-         break;
-      }
-   }
-
    /* adjusting mapped file size (make room for the whole segment to map)      --  ftruncate() */
    ftruncate(m_iD, m_nSize);
    return true;
@@ -97,11 +69,6 @@ MICO::CSharedMemory::Attach( int mode /*= A_READ | A_WRITE*/ )
 {
    /* requesting the shared segment    --  mmap() */
    m_Ptr = mmap(NULL, m_nSize, PROT_READ | PROT_WRITE, MAP_SHARED, m_iD, 0);
-   if (m_Ptr == NULL)
-   {
-     cout << "Error in attach";
-      throw CSharedMemoryException("Exception in attaching the shared memory region");
-   }
    return true;
 }
 
@@ -160,14 +127,4 @@ MICO::CSharedMemory::Clear()
          perror("sem_unlink");
       }
    }
-}
-
-MICO::CSharedMemoryException::CSharedMemoryException( const string &message, bool bSysMsg /*= false*/ ) throw()
-{
-
-}
-
-MICO::CSharedMemoryException::~CSharedMemoryException() throw ()
-{
-
 }

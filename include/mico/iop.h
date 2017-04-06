@@ -656,60 +656,6 @@ public:
 
 #endif // HAVE_THREADS
 
-class IIOPProxyInvokeRec {
-public:
-    typedef CORBA::ULong MsgId;
-    typedef CORBA::Codeset::CodesetId CodesetId;
-private:
-    CORBA::ORBMsgId _id;
-    MsgId _msgid;
-    GIOPConn *_conn;
-    CORBA::ORBRequest *_req;
-
-    CORBA::Boolean _active;
-
-public:
-    IIOPProxyInvokeRec ()
-    {}
-
-    ~IIOPProxyInvokeRec ()
-    {
-	if (this->id() != NULL) {
-	    this->id()->set_invoke_hint(NULL);
-	}
-    }
-
-    void free ()
-    {}
-
-    void init (CORBA::ORBMsgId idval, GIOPConn *connval, CORBA::ORBRequest *req = 0)
-    {
-	_id = idval;
-	_msgid = CORBA::ORB::get_msgid(idval);
-	_conn = connval;
-	_req = req;
-	_active = TRUE;
-    }
-
-    CORBA::Boolean active() const
-    { return _active; };
-
-    void deactivate()
-    { _active = FALSE; };
-
-    GIOPConn *conn () const
-    { return _conn; }
-
-    CORBA::ORBRequest *request () const
-    { return _req; }
-
-    CORBA::ORBMsgId id () const
-    { return _id; }
-
-    MsgId msgid () const
-    { return _msgid; }
-};
-
 class SharedMemoryProxyInvokeRec {
 public:
     typedef CORBA::ULong MsgId;
@@ -764,165 +710,131 @@ public:
     { return _msgid; }
 };
 
-class SharedMemoryServer :  public CORBA::ObjectAdapter {
-  CORBA::UShort _iiop_ver = 0x0100;
-  CORBA::ORB_ptr _orb;
-  CORBA::ULong _max_message_size;
-
-public:
-  SharedMemoryServer (CORBA::ORB_ptr, CORBA::UShort iiop_ver = 0x0100,
-  CORBA::ULong max_size = 0);
-
-  CORBA::Boolean listen(std::vector<std::string>& addr);
-
-  // ObjectAdapter methods
-  const char *get_oaid () const;
-  CORBA::Boolean has_object (CORBA::Object_ptr);
-  CORBA::Boolean is_local () const;
-
-#ifdef USE_CSL2
-  CORBA::Principal_ptr get_principal (CORBA::Object_ptr);
-#endif /* USE_CSL2  */
-
-  CORBA::Boolean invoke (CORBA::ORBMsgId, CORBA::Object_ptr,
-           CORBA::ORBRequest *,
-           CORBA::Principal_ptr,
-           CORBA::Boolean repsonse_exp);
-  CORBA::Boolean bind (CORBA::ORBMsgId, const char *repoid,
-         const CORBA::ORB::ObjectTag &,
-         CORBA::Address *addr);
-  CORBA::Boolean locate (CORBA::ORBMsgId, CORBA::Object_ptr);
-  CORBA::Object_ptr skeleton (CORBA::Object_ptr);
-  void cancel (CORBA::ORBMsgId);
-  void shutdown (CORBA::Boolean wait_for_completion);
-
-  void answer_invoke (CORBA::ORBMsgId, CORBA::Object_ptr,
-        CORBA::ORBRequest *,
-        CORBA::InvokeStatus);
-
-  virtual CORBA::Boolean
-  validate_connection(CORBA::Object_ptr, CORBA::PolicyList_out);
-
-  virtual void
-  timedout_invoke(CORBA::ORBMsgId);
-};
-
 class SharedMemoryProxy : public CORBA::ObjectAdapter, public GIOPConnCallback, public GIOPConnMgr {
-  typedef std::map<MsgId, SharedMemoryProxyInvokeRec *, std::less<MsgId> > MapIdConn;
+    typedef std::map<MsgId, SharedMemoryProxyInvokeRec *, std::less<MsgId> > MapIdConn;
 
-  struct addrcomp :
-std::binary_function<const CORBA::Address *, const CORBA::Address *, bool> {
-bool operator() (const CORBA::Address *a1,
-     const CORBA::Address *a2) const
-{ return a1->compare (*a2) < 0; }
-  };
+    struct addrcomp :
+	std::binary_function<const CORBA::Address *, const CORBA::Address *, bool> {
+	bool operator() (const CORBA::Address *a1,
+			 const CORBA::Address *a2) const
+	{ return a1->compare (*a2) < 0; }
+    };
 
-  struct iorcomp :
-std::binary_function<const CORBA::IORProfile *, const CORBA::IORProfile *, bool> {
-  bool operator() (const CORBA::IORProfile *ior1,
-       const CORBA::IORProfile *ior2) const
-{
-    if (ior1 && ior2)
-  return  (ior1->compare (*ior2) < 0);
-    else if (ior1 && !ior2)
-  return true;
-    else
-  return false;
-      }
-  };
+    struct iorcomp :
+	std::binary_function<const CORBA::IORProfile *, const CORBA::IORProfile *, bool> {
+	  bool operator() (const CORBA::IORProfile *ior1,
+			   const CORBA::IORProfile *ior2) const
+	{
+	    if (ior1 && ior2)
+		return  (ior1->compare (*ior2) < 0);
+	    else if (ior1 && !ior2)
+		return true;
+	    else
+		return false;
+        }
+    };
 
-  typedef std::map<const CORBA::Address *, GIOPConn *, addrcomp> MapAddrConn;
-  typedef std::map<CORBA::UShort, MapAddrConn, std::less<CORBA::UShort> > MapVerAddrConn;
-  typedef std::map<const CORBA::IORProfile *, GIOPConn *,
-              iorcomp > MapProfConn;
-  typedef std::vector<CORBA::IORProfile::ProfileId> ProfIdVec;
+    typedef std::map<const CORBA::Address *, GIOPConn *, addrcomp> MapAddrConn;
+    typedef std::map<CORBA::UShort, MapAddrConn, std::less<CORBA::UShort> > MapVerAddrConn;
+    typedef std::map<const CORBA::IORProfile *, GIOPConn *,
+	              iorcomp > MapProfConn;
+    typedef std::vector<CORBA::IORProfile::ProfileId> ProfIdVec;
 
-  ProfIdVec _valid_profiles;
+    ProfIdVec _valid_profiles;
 
-  MICOMT::Locked<MapIdConn> _ids;
-  MICOMT::Locked<MapVerAddrConn> _conns;
-  MICOMT::Locked<MapProfConn> _prof_conns;
+    MICOMT::Locked<MapIdConn> _ids;
+    MICOMT::Locked<MapVerAddrConn> _conns;
+    MICOMT::Locked<MapProfConn> _prof_conns;
 
-  CORBA::ORB_ptr _orb;
-  CORBA::UShort _giop_ver;
-  CORBA::ULong _max_message_size;
+    CORBA::ORB_ptr _orb;
+    CORBA::UShort _giop_ver;
+    CORBA::ULong _max_message_size;
 
-  CORBA::Address *_reroute;
+    CORBA::Address *_reroute;
 
-  SharedMemoryProxyInvokeRec *create_invoke ();
-  SharedMemoryProxyInvokeRec *pull_invoke (CORBA::ORBMsgId);
-  void add_invoke (SharedMemoryProxyInvokeRec *);
-  void del_invoke (SharedMemoryProxyInvokeRec *);
-  void abort_invoke (CORBA::ORBMsgId);
-  void redo_invoke  (CORBA::ORBMsgId);
+#ifdef USE_IOP_CACHE
+    SharedMemoryProxyInvokeRec *_cache_rec;
+    CORBA::Boolean _cache_used;
+#endif
 
-  GIOPConn *make_conn (CORBA::Object_ptr, CORBA::Boolean&);
-  GIOPConn *make_conn (const CORBA::Address *,
-     CORBA::ULong timeout,
-     CORBA::Boolean& timedout,
-     CORBA::Boolean create = TRUE,
-     CORBA::UShort version = 0);
+    SharedMemoryProxyInvokeRec *create_invoke ();
+    SharedMemoryProxyInvokeRec *pull_invoke (CORBA::ORBMsgId);
+    void add_invoke (SharedMemoryProxyInvokeRec *);
+    void del_invoke (SharedMemoryProxyInvokeRec *);
+    void abort_invoke (CORBA::ORBMsgId);
+    void redo_invoke  (CORBA::ORBMsgId);
 
-     void conn_error (GIOPConn *, CORBA::Boolean send_error = TRUE);
+    GIOPConn *make_conn (CORBA::Object_ptr, CORBA::Boolean&);
+    GIOPConn *make_conn (const CORBA::Address *,
+			 CORBA::ULong timeout,
+			 CORBA::Boolean& timedout,
+			 CORBA::Boolean create = TRUE,
+			 CORBA::UShort version = 0
+#ifdef USE_SL3
+			 ,
+			 const char* tcpip_creds_id = 0,
+			 const char* tls_creds_id = 0
+#endif // USE_SL3
+			 );
+    void conn_error (GIOPConn *, CORBA::Boolean send_error = TRUE);
 
-     void deref_conn (GIOPConn *conn, CORBA::Boolean all = FALSE );
+    void deref_conn (GIOPConn *conn, CORBA::Boolean all = FALSE );
 
-     CORBA::Boolean handle_input (GIOPConn *, CORBA::Buffer *);
-     void exec_invoke_reply (GIOPInContext &, CORBA::ORBMsgId,
- 			    GIOP::ReplyStatusType,
- 			    CORBA::Object_ptr, CORBA::ORBRequest *,
- 			    GIOP::AddressingDisposition,
- 			    GIOPConn *conn);
-     CORBA::Boolean handle_invoke_reply (GIOPConn *conn, GIOPInContext &);
-     CORBA::Boolean handle_locate_reply (GIOPConn *conn, GIOPInContext &);
+    CORBA::Boolean handle_input (GIOPConn *, CORBA::Buffer *);
+    void exec_invoke_reply (GIOPInContext &, CORBA::ORBMsgId,
+			    GIOP::ReplyStatusType,
+			    CORBA::Object_ptr, CORBA::ORBRequest *,
+			    GIOP::AddressingDisposition,
+			    GIOPConn *conn);
+    CORBA::Boolean handle_invoke_reply (GIOPConn *conn, GIOPInContext &);
+    CORBA::Boolean handle_locate_reply (GIOPConn *conn, GIOPInContext &);
+public:
+    SharedMemoryProxy (CORBA::ORB_ptr,
+               CORBA::UShort giop_ver = 0x0100,
+	       CORBA::ULong max_size = 0);
+    ~SharedMemoryProxy ();
 
-   public:
-  SharedMemoryProxy (CORBA::ORB_ptr,
-             CORBA::UShort giop_ver = 0x0100,
-       CORBA::ULong max_size = 0);
-  ~SharedMemoryProxy ();
+    void register_profile_id (CORBA::ULong id);
+    void unregister_profile_id (CORBA::ULong id);
 
-  void register_profile_id (CORBA::ULong id);
-  void unregister_profile_id (CORBA::ULong id);
-
-  const char *get_oaid () const;
-  CORBA::Boolean has_object (CORBA::Object_ptr);
-  CORBA::Boolean is_local () const;
+    const char *get_oaid () const;
+    CORBA::Boolean has_object (CORBA::Object_ptr);
+    CORBA::Boolean is_local () const;
 
 #ifdef USE_CSL2
-  CORBA::Principal_ptr get_principal (CORBA::Object_ptr);
+    CORBA::Principal_ptr get_principal (CORBA::Object_ptr);
 #endif /* USE_CSL2  */
 
-  CORBA::Boolean invoke (CORBA::ORBMsgId, CORBA::Object_ptr,
-           CORBA::ORBRequest *,
-           CORBA::Principal_ptr,
-           CORBA::Boolean repsonse_exp);
-  CORBA::Boolean bind (CORBA::ORBMsgId, const char *repoid,
-         const CORBA::ORB::ObjectTag &,
-         CORBA::Address *addr);
-  CORBA::Boolean locate (CORBA::ORBMsgId, CORBA::Object_ptr);
-  CORBA::Object_ptr skeleton (CORBA::Object_ptr);
-  void cancel (CORBA::ORBMsgId);
-  void shutdown (CORBA::Boolean wait_for_completion);
+    CORBA::Boolean invoke (CORBA::ORBMsgId, CORBA::Object_ptr,
+    			   CORBA::ORBRequest *,
+    			   CORBA::Principal_ptr,
+    			   CORBA::Boolean repsonse_exp);
+    CORBA::Boolean bind (CORBA::ORBMsgId, const char *repoid,
+    			 const CORBA::ORB::ObjectTag &,
+    			 CORBA::Address *addr);
+    CORBA::Boolean locate (CORBA::ORBMsgId, CORBA::Object_ptr);
+    CORBA::Object_ptr skeleton (CORBA::Object_ptr);
+    void cancel (CORBA::ORBMsgId);
+    void shutdown (CORBA::Boolean wait_for_completion);
 
-  void answer_invoke (CORBA::ORBMsgId, CORBA::Object_ptr,
-        CORBA::ORBRequest *,
-        CORBA::InvokeStatus);
+    void answer_invoke (CORBA::ORBMsgId, CORBA::Object_ptr,
+    			CORBA::ORBRequest *,
+    			CORBA::InvokeStatus);
 
-  virtual CORBA::Boolean
-  validate_connection(CORBA::Object_ptr, CORBA::PolicyList_out);
+    virtual CORBA::Boolean
+    validate_connection(CORBA::Object_ptr, CORBA::PolicyList_out);
 
-  virtual void
-  timedout_invoke(CORBA::ORBMsgId);
+    virtual void
+    timedout_invoke(CORBA::ORBMsgId);
 
-  CORBA::Boolean callback (GIOPConn *, GIOPConnCallback::Event);
-  CORBA::Boolean input_callback (GIOPConn *, CORBA::Buffer *);
+    CORBA::Boolean callback (GIOPConn *, GIOPConnCallback::Event);
+    CORBA::Boolean input_callback (GIOPConn *, CORBA::Buffer *);
 
-  void kill_conn (GIOPConn *, CORBA::Boolean redo = FALSE);
+    void kill_conn (GIOPConn *, CORBA::Boolean redo = FALSE);
 
-  virtual CORBA::Dispatcher* Dispatcher();
+    virtual CORBA::Dispatcher* Dispatcher();
 
-  void redirect (CORBA::Address *addr) { _reroute = addr; }
+    void redirect (CORBA::Address *addr) { _reroute = addr; }
 
 };
 
@@ -972,6 +884,103 @@ public:
 
     GIOPConn *conn()
     { return _conn; }
+};
+
+class SharedMemoryServer :  public CORBA::ObjectAdapter {
+  CORBA::UShort _iiop_ver = 0x0100;
+  CORBA::ORB_ptr _orb;
+  CORBA::ULong _max_message_size;
+
+public:
+  SharedMemoryServer (CORBA::ORB_ptr, CORBA::UShort iiop_ver = 0x0100,
+  CORBA::ULong max_size = 0);
+
+  CORBA::Boolean listen(std::vector<std::string>& addr);
+
+  // ObjectAdapter methods
+  const char *get_oaid () const;
+  CORBA::Boolean has_object (CORBA::Object_ptr);
+  CORBA::Boolean is_local () const;
+
+#ifdef USE_CSL2
+  CORBA::Principal_ptr get_principal (CORBA::Object_ptr);
+#endif /* USE_CSL2  */
+
+  CORBA::Boolean invoke (CORBA::ORBMsgId, CORBA::Object_ptr,
+           CORBA::ORBRequest *,
+           CORBA::Principal_ptr,
+           CORBA::Boolean repsonse_exp);
+  CORBA::Boolean bind (CORBA::ORBMsgId, const char *repoid,
+         const CORBA::ORB::ObjectTag &,
+         CORBA::Address *addr);
+  CORBA::Boolean locate (CORBA::ORBMsgId, CORBA::Object_ptr);
+  CORBA::Object_ptr skeleton (CORBA::Object_ptr);
+  void cancel (CORBA::ORBMsgId);
+  void shutdown (CORBA::Boolean wait_for_completion);
+
+  void answer_invoke (CORBA::ORBMsgId, CORBA::Object_ptr,
+        CORBA::ORBRequest *,
+        CORBA::InvokeStatus);
+
+  virtual CORBA::Boolean
+  validate_connection(CORBA::Object_ptr, CORBA::PolicyList_out);
+
+  virtual void
+  timedout_invoke(CORBA::ORBMsgId);
+};
+
+class IIOPProxyInvokeRec {
+public:
+    typedef CORBA::ULong MsgId;
+    typedef CORBA::Codeset::CodesetId CodesetId;
+private:
+    CORBA::ORBMsgId _id;
+    MsgId _msgid;
+    GIOPConn *_conn;
+    CORBA::ORBRequest *_req;
+
+    CORBA::Boolean _active;
+
+public:
+    IIOPProxyInvokeRec ()
+    {}
+
+    ~IIOPProxyInvokeRec ()
+    {
+	if (this->id() != NULL) {
+	    this->id()->set_invoke_hint(NULL);
+	}
+    }
+
+    void free ()
+    {}
+
+    void init (CORBA::ORBMsgId idval, GIOPConn *connval, CORBA::ORBRequest *req = 0)
+    {
+	_id = idval;
+	_msgid = CORBA::ORB::get_msgid(idval);
+	_conn = connval;
+	_req = req;
+	_active = TRUE;
+    }
+
+    CORBA::Boolean active() const
+    { return _active; };
+
+    void deactivate()
+    { _active = FALSE; };
+
+    GIOPConn *conn () const
+    { return _conn; }
+
+    CORBA::ORBRequest *request () const
+    { return _req; }
+
+    CORBA::ORBMsgId id () const
+    { return _id; }
+
+    MsgId msgid () const
+    { return _msgid; }
 };
 
 class IIOPProxy : public CORBA::ObjectAdapter, public GIOPConnCallback, public GIOPConnMgr {

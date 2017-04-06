@@ -323,7 +323,9 @@ MICO::SharedMemoryAddress::proto () const
 CORBA::Transport *
 MICO::SharedMemoryAddress::make_transport () const
 {
-	return 0;
+  CORBA::Transport *ret = new UnixTransport;
+  ret->open();
+  return ret;
 }
 
 CORBA::TransportServer *

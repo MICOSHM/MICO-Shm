@@ -33,63 +33,18 @@
 
 namespace MICO {
 
-/**
- *   Signals a problem with the execution of a SharedMemory call.
- */
+class CSharedMemory {
 
-class CSharedMemoryException: public std::exception
-{
 public:
-    /**
-   *   Construct a SharedMemoryException with a explanatory message.
-   *   @param message explanatory message
-   *   @param bSysMsg true if system message (from strerror(errno))
-   *   should be postfixed to the user provided message
-   */
-    CSharedMemoryException(const std::string &message, bool bSysMsg = false) throw();
-
-
-    /** Destructor.
-     * Virtual to allow for subclassing.
-     */
-    virtual ~CSharedMemoryException() throw ();
-
-    /** Returns a pointer to the (constant) error description.
-     *  @return A pointer to a \c const \c char*. The underlying memory
-     *          is in posession of the \c Exception object. Callers \a must
-     *          not attempt to free the memory.
-     */
-    virtual const char* what() const throw (){  return m_sMsg.c_str(); }
-
-protected:
-    /** Error message.
-     */
-    std::string m_sMsg;
-};
-
-class CSharedMemory
-{
-public:
-   enum
-   {
-      C_READ_ONLY  = O_RDONLY,
-      C_READ_WRITE = O_RDWR,
-   } CREATE_MODE;
-
-   enum
-   {
-      A_READ  = PROT_READ,
-      A_WRITE = PROT_WRITE,
-   } ATTACH_MODE;
-
    static std::string sLockSemaphoreName;
-public:
+
+   CSharedMemory();
    CSharedMemory(const std::string& sName );
    //~CSharedMemory();
 
    bool openSem(std::string sem);
-   bool Create(size_t nSize, int mode = C_READ_WRITE);
-   bool Attach(int mode = A_READ | A_WRITE);
+   bool Create(size_t nSize, int mode = O_RDWR);
+   bool Attach(int mode = PROT_READ | PROT_WRITE);
    bool Detach();
    bool Lock();
    bool UnLock();

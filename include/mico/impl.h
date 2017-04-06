@@ -80,8 +80,9 @@
 #include <mico/poll_dispatcher.h>
 #endif // HAVE_POLL_H
 #include <mico/transport_impl.h>
-#include <mico/transport/tcp.h>
 #include <mico/transport/sharedMemory.h>
+#include <mico/transport/tcp.h>
+//#include <mico/transport/sharedMemory.h>
 #include <mico/transport/udp.h>
 #include <mico/transport/unix.h>
 #include <mico/shlib_impl.h>
