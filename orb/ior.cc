@@ -828,7 +828,6 @@ MICO::SharedMemoryProfile::SharedMemoryProfile (CORBA::Octet *o, CORBA::ULong l,
 				CORBA::UShort ver,
         ProfileId id)
 {
-   cout << "\nIn SharedMemoryProfile constructor";
     version = ver;
 
     tagid = id;
@@ -843,7 +842,7 @@ MICO::SharedMemoryProfile::SharedMemoryProfile (CORBA::Octet *o, CORBA::ULong l,
 void
 MICO::SharedMemoryProfile::encode (CORBA::DataEncoder &ec) const
 {
-  cout << "\n In shm encode";
+
     ec.struct_begin ();
     {
 	ec.struct_begin ();
@@ -1010,13 +1009,10 @@ MICO::SharedMemoryProfileDecoder::decode (CORBA::DataDecoder &dc, ProfileId,
     CORBA::MultiComponent comps;
     string address, semName;
     CORBA::UShort memLength;
-    CORBA::IORProfile *ip = 0;
-
-    cout << "\n In shm decode";
+    CORBA::IORProfile *ip = 0;;
 
     check (dc.struct_begin ());
     {
-      cout << "\n In struct begin";
 	check (dc.struct_begin ());
 	{
 	    check (dc.get_octet (major));
@@ -1025,13 +1021,9 @@ MICO::SharedMemoryProfileDecoder::decode (CORBA::DataDecoder &dc, ProfileId,
 	    check (version <= 0x0102);
 	}
 	check (dc.struct_end ());
-cout << "\n Inside adress, semname, grab\n";
 	check (dc.get_string_raw_stl (address));
-  cout << "\n Past address\n";
 	check (dc.get_string_raw_stl (semName));
-  cout << "\n Past semName\n";
   check (dc.get_ushort (memLength));
-cout << "\n Made past memLength grab\n";
 	check (dc.seq_begin (len));
 	{
 	    // XXX make sure seeked over data is still valid later
@@ -1043,9 +1035,6 @@ cout << "\n Made past memLength grab\n";
 
 	if (major > 1 || minor > 0)
 	    check (comps.decode (dc));
-cout << "\nAddress: " << address;
-cout << "\nSemName " << semName;
-cout << "\nMemLength" << memLength;
 	ip = new SharedMemoryProfile (objkey, len,
 			      SharedMemoryAddress (address, semName, memLength),
 			      comps,

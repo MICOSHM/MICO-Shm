@@ -896,6 +896,7 @@ public:
   CORBA::ULong max_size = 0);
 
   CORBA::Boolean listen(std::vector<std::string>& addr);
+  CORBA::Boolean listen();
 
   // ObjectAdapter methods
   const char *get_oaid () const;

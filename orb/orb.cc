@@ -627,6 +627,7 @@ CORBA::ORBInvokeRec::timedout(Boolean val)
 
 static CORBA::ORB_ptr orb_instance = CORBA::ORB::_nil();
 static MICO::IIOPProxy *iiop_proxy_instance = 0;
+static MICO::SharedMemoryProxy *shm_proxy_instance = 0;
 
 CORBA::ORB::ORB (int &argc, char **argv, const char *rcfile)
     :_init_refs_lock(FALSE, MICOMT::Mutex::Recursive)
@@ -680,6 +681,10 @@ CORBA::ORB::~ORB ()
 	delete iiop_proxy_instance;
 	iiop_proxy_instance = NULL;
     }
+		if(shm_proxy_instance != NULL) {
+			delete shm_proxy_instance;
+			shm_proxy_instance = NULL;
+		}
     MICO::IIOPServer* srv = MICO::IIOPServer::iiopserver_instance();
     if (srv != NULL) {
 	delete srv;
@@ -2394,6 +2399,9 @@ CORBA::ORB::register_profile_id (CORBA::ULong id)
     if (iiop_proxy_instance)
         iiop_proxy_instance->register_profile_id (id);
 
+		if(shm_proxy_instance)
+				shm_proxy_instance->register_profile_id(id);
+
     CORBA::DomainManager_var dm;
     get_default_domain_manager (dm);
 
@@ -2422,6 +2430,9 @@ CORBA::ORB::unregister_profile_id (CORBA::ULong id)
 {
     if (iiop_proxy_instance)
         iiop_proxy_instance->unregister_profile_id (id);
+
+		if(shm_proxy_instance)
+				shm_proxy_instance->unregister_profile_id(id);
 
     CORBA::DomainManager_var dm;
     get_default_domain_manager (dm);
@@ -3293,6 +3304,7 @@ CORBA::ORB_init (int &argc, char **argv, const char *_id)
 		Boolean run_shm = TRUE;
     Boolean run_iiop_server = FALSE;
     Boolean run_iiop_proxy = TRUE;
+		Boolean run_shm_proxy = TRUE;
     Boolean iiop_blocking = FALSE;
     Boolean plugged = TRUE;
     CORBA::Address *fwproxyaddr = 0;
@@ -3989,10 +4001,22 @@ CORBA::ORB_init (int &argc, char **argv, const char *_id)
 	}
     }
 
+		//create SHM client
+		if(run_shm_proxy) {
+				shm_proxy_instance = new MICO::SharedMemoryProxy (orb_instance, giop_ver, max_message_size);
+		}
+
 		// create Shared Memory Segment
 	if (run_shm) {
 		MICO::SharedMemoryServer* shm_server_instance
-		= new MICO::SharedMemoryServer (orb_instance, iiop_ver, max_message_size);
+		= new MICO::SharedMemoryServer (orb_instance,
+			iiop_ver,
+			max_message_size);
+
+			if(shmaddr.size() == 0)
+				shm_server_instance->listen();
+
+
 			for (mico_vec_size_type i = 0; i < shmaddr.size(); ++i) {
 		vector<string> addr = Address::sharedMemoryParse (shmaddr[i].c_str());
 		if (addr.empty()) {
@@ -4006,11 +4030,9 @@ CORBA::ORB_init (int &argc, char **argv, const char *_id)
 		}
 
 		shm_server_instance->listen(addr);
-
-		//if (!shm_server_instance->listen (addr))
-				//mico_throw (CORBA::INITIALIZE());
-				//delete *addr;
 			}
+		} else {
+			orb_instance->ior_template()->add_profile(new MICO::LocalProfile((Octet *)"", 1));
 		}
 
     // create IIOP server

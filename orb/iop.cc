@@ -3208,10 +3208,9 @@ MICO::SharedMemoryServer::SharedMemoryServer(CORBA::ORB_ptr orb,
 CORBA::Boolean
 MICO::SharedMemoryServer::listen (vector<std::string>& addr)
 {
-		cout << "\nIn listen method";
     CORBA::IORProfile *prof;
 		MICO::SharedMemoryAddress shma =  SharedMemoryAddress(addr[0],addr[1], (short)atoi(addr[2].c_str()));
-		//replace this with shm segment creation
+
 		if(!addr.empty()){
 			try{
 				MICO::CSharedMemory shmMemory(addr[0]);
@@ -3222,41 +3221,30 @@ MICO::SharedMemoryServer::listen (vector<std::string>& addr)
 			}
 		}
 
-		cout << "\n Past shmcreation";
-		//replace with shm ior creation
+		prof = shma.make_ior_profile ((CORBA::Octet *)"", 1,CORBA::MultiComponent(),_iiop_ver);
+
+    //bound_addr = tserv->addr();
+
+    _orb->ior_template()->add_profile (prof);
+
+    return TRUE;
+}
+
+CORBA::Boolean
+MICO::SharedMemoryServer::listen ()
+{
+  	vector<string> addr;
+		addr.push_back("");
+		addr.push_back("");
+		addr.push_back("0");
+
+		CORBA::IORProfile *prof;
+		MICO::SharedMemoryAddress shma =  SharedMemoryAddress(addr[0],addr[1], (short)atoi(addr[2].c_str()));
 
 		prof = shma.make_ior_profile ((CORBA::Octet *)"", 1,CORBA::MultiComponent(),_iiop_ver);
 
-		cout << "\n Past make ior profile";
+		_orb->ior_template()->add_profile (prof);
 
-    //bound_addr = tserv->addr();
-    //if (MICO::Logger::IsLogged (MICO::Logger::IIOP)) {
-      //MICOMT::AutoDebugLock __lock;
-      //MICO::Logger::Stream (MICO::Logger::IIOP)
-	//<< "IIOP: server listening on "
-	//<< tserv->addr()->stringify()
-	//<< " IIOP version "
-	//<< (_iiop_ver >> 8) << "." << (_iiop_ver & 255)
-	//<< endl;
-    //}
-    /*
-     * install an IIOP profile tag in the ORB's object template.
-     * object adapters will use this template to generate new object
-     * references...
-     */
-
-    //if (MICO::Logger::IsLogged (MICO::Logger::GIOP)) {
-	//MICOMT::AutoDebugLock __lock;
-	//MICO::Logger::Stream (MICO::Logger::GIOP)
-	    //<< "binding to " << prof->addr()->stringify() << endl;
-    //}
-    _orb->ior_template()->add_profile (prof);
-
-    //_tservers.push_back(tserv);
-//#ifdef HAVE_THREADS
-    //if (!MICO::MTManager::thread_pool())
-	//tserv->start();
-//#endif // HAVE_THREADS
     return TRUE;
 }
 
@@ -3408,12 +3396,8 @@ MICO::SharedMemoryProxy::SharedMemoryProxy (CORBA::ORB_ptr orb,
     /*
      * these are the IOR profile types we can handle.
      */
-    _valid_profiles.push_back (CORBA::IORProfile::TAG_INTERNET_IOP);
-    _valid_profiles.push_back (CORBA::IORProfile::TAG_UNIX_IOP);
-    _valid_profiles.push_back (CORBA::IORProfile::TAG_UDP_IOP);
-    _valid_profiles.push_back (CORBA::IORProfile::TAG_SSL_INTERNET_IOP);
-    _valid_profiles.push_back (CORBA::IORProfile::TAG_SSL_UNIX_IOP);
-    _valid_profiles.push_back (CORBA::IORProfile::TAG_SSL_UDP_IOP);
+
+		_valid_profiles.push_back (CORBA::IORProfile::TAG_SHM_IOP);
 
     _orb = orb;
 

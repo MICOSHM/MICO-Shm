@@ -292,10 +292,7 @@ MICO::SharedMemoryAddress::make_ior_profile (CORBA::Octet *key,
 				     const CORBA::MultiComponent &mc,
                                      CORBA::UShort version) const
 {
-  cout << "\n Inside make_ior_profile, before creation";
 	  SharedMemoryAddress shma (address(), semName(), length());
-    cout << "\nAfter SharedMemoryAddress creation";
-
 	  return new SharedMemoryProfile (key, len, shma, mc, version);
 }
 
@@ -361,7 +358,15 @@ MICO::SharedMemoryAddress::clone () const
 CORBA::Long
 MICO::SharedMemoryAddress::compare (const CORBA::Address &a) const
 {
-      return 0;
+  CORBA::Long r = strcmp (proto(), a.proto());
+  if (r)
+return r;
+
+  const SharedMemoryAddress &he = (const SharedMemoryAddress &)a;
+
+  return _address.compare (he._address);
+
+
 }
 
 CORBA::Boolean
