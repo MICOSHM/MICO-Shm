@@ -19,18 +19,26 @@
  *  For more information, visit the MICO Home Page at
  *  http://www.mico.org/
  */
-#include "sharedMemory.h"
+
+#define MICO_CONF_IMR
+
+#include <string>
+#include <sys/stat.h>        /* For mode constants */
 #include <sys/mman.h>
+#include <fcntl.h>           /* For O_* constants */
 #include <errno.h>
 #include <cstdio>
 #include <cstdlib>
-#include <CORBA-SMALL.h>
-#include <mico/os-net.h>
 #include <semaphore.h>
 #include <pthread.h>
 
+#include <CORBA-SMALL.h>
+#include <mico/os-net.h>
+#include <mico/impl.h>
 
 using namespace std;
+
+/************************* CSharedMemory ***************************/
 
 MICO::CSharedMemory::CSharedMemory() {
 
@@ -54,7 +62,7 @@ MICO::CSharedMemory::openSem(std::string sem)
 }
 
 bool
-MICO::CSharedMemory::Create( size_t nSize, int mode /*= READ_WRITE*/ )
+MICO::CSharedMemory::Create( size_t nSize)
 {
    m_nSize = nSize;
    m_iD = shm_open(m_sName.c_str(), O_CREAT | O_RDWR, 0777);
@@ -65,7 +73,7 @@ MICO::CSharedMemory::Create( size_t nSize, int mode /*= READ_WRITE*/ )
 }
 
 bool
-MICO::CSharedMemory::Attach( int mode /*= A_READ | A_WRITE*/ )
+MICO::CSharedMemory::Attach()
 {
    /* requesting the shared segment    --  mmap() */
    m_Ptr = mmap(NULL, m_nSize, PROT_READ | PROT_WRITE, MAP_SHARED, m_iD, 0);
@@ -127,4 +135,63 @@ MICO::CSharedMemory::Clear()
          perror("sem_unlink");
       }
    }
+}
+
+/***************************** SharedMemoryTransport **********************************/
+MICO::SharedMemoryTransport::~SharedMemoryTransport () {
+    close();
+}
+
+CORBA::Boolean
+MICO::SharedMemoryTransport::bind (const CORBA::Address *a)
+{
+    return TRUE;
+}
+
+CORBA::Boolean
+MICO::SharedMemoryTransport::connect (const CORBA::Address *a, CORBA::ULong timeout, CORBA::Boolean& timedout)
+{
+    shmFDAddress = (SharedMemoryAddress *)a;
+
+    shm_fd = shm_open(shmFDAddress->address().c_str(), O_RDWR, 0);
+
+    return TRUE;
+}
+
+void
+MICO::SharedMemoryTransport::open (CORBA::Long thefd)
+{
+
+}
+
+void
+MICO::SharedMemoryTransport::close ()
+{
+
+}
+
+CORBA::Long
+MICO::SharedMemoryTransport::read (void *_b, CORBA::Long len)
+{
+
+    return -1;
+}
+
+CORBA::Long
+MICO::SharedMemoryTransport::write (const void *_b, CORBA::Long len)
+{
+
+    return -1;
+}
+
+const CORBA::Address *
+MICO::SharedMemoryTransport::addr ()
+{
+    return shmFDAddress;
+}
+
+const CORBA::Address *
+MICO::SharedMemoryTransport::peer ()
+{
+    return NULL;
 }

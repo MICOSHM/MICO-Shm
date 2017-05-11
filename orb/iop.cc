@@ -3626,19 +3626,8 @@ MICO::SharedMemoryProxy::make_conn (const CORBA::Address *addr,
 			    CORBA::Boolean& timedout,
 			    CORBA::Boolean docreate,
 			    CORBA::UShort version
-#ifdef USE_SL3
-			    ,
-			    const char* tcpip_creds_id,
-			    const char* tls_creds_id
-#endif // USE_SL3
 			    )
 {
-    //cerr << "IIOPProxy::make_conn: " << addr->stringify() << endl;
-    if (MICO::Logger::IsLogged(MICO::Logger::Security)) {
-	MICOMT::AutoDebugLock lock;
-	MICO::Logger::Stream(MICO::Logger::Security)
-	    << "SL3TS: IIOPProxy::make_conn: " << addr->stringify() << endl;
-    }
     MICO::GIOPConn *conn;
 
     MICOMT::AutoLock l(_conns);
@@ -3760,42 +3749,7 @@ MICO::SharedMemoryProxy::make_conn (const CORBA::Address *addr,
                                      version),
 		      0L /* no tmout */, _max_message_size);
 #endif
-#ifdef USE_SL3
-    if (secman != NULL && secman->security_enabled()) {
-	CORBA::String_var tmp_id = creds->creds_id();
-	string id = tmp_id.in();
-	conn->creds_id(id.c_str());
-	InitiatingContext_var ctx = InitiatingContext::_nil();
-	if (id.find("TCPIP") != string::npos) {
-	    ctx = new MICOSL3_SL3TCPIP::TCPIPInitiatingContext
-		(creds, t->peer(), t->addr());
-	}
-	else if (id.find("TLS") != string::npos) {
-	    ctx = new MICOSL3_SL3TLS::TLSInitiatingContext
-		(creds, t);
-	}
-	else {
-	    // unknown own credentials type
-	    assert(0);
-	}
-	if (MICO::Logger::IsLogged(MICO::Logger::Security)) {
-	    MICOMT::AutoDebugLock lock;
-	    MICO::Logger::Stream(MICO::Logger::Security)
-		<< "SL3TS: created initiating context: " << ctx << endl;
-	}
-	conn->initiating_context(ctx);
-	conn->own_creds(creds);
-	MICOSL3_TransportSecurity::CredentialsCurator_impl* curator_impl
-	    = dynamic_cast<MICOSL3_TransportSecurity::CredentialsCurator_impl*>(curator.in());
-	assert(curator_impl != NULL);
-	curator_impl->add_init_context(ctx);
-	MICOSL3_TransportSecurity::InitiatingContext_impl* icimpl
-	    = dynamic_cast<MICOSL3_TransportSecurity::InitiatingContext_impl*>
-	    (ctx.in());
-	assert(icimpl != NULL);
-	icimpl->notify_establish_context();
-    }
-#endif // USE_SL3
+
     _conns[version][t->peer()] = conn;
 #ifdef HAVE_THREADS
     conn->start();
@@ -3811,44 +3765,8 @@ MICO::SharedMemoryProxy::make_conn (const CORBA::Address *addr,
 MICO::GIOPConn *
 MICO::SharedMemoryProxy::make_conn (CORBA::Object_ptr obj, CORBA::Boolean& timedout)
 {
-    //cerr << "make_conn: " << obj << endl;
     CORBA::IORProfile *prof;
     const CORBA::Address *addr;
-
-    /*
-     * See if we have already opened a conn for this profile
-     */
-
-    prof = obj->_ior_fwd()->active_profile();
-
-    if (prof) {
-      MapProfConn::iterator i;
-      GIOPConn* conn=NULL;
-      do { // same hack as above
-#ifdef HAVE_THREADS
-        MICOMT::AutoLock l(_prof_conns);
-#endif
-	i = _prof_conns.find (prof);
-        conn = ( (i!=_prof_conns.end()) ? (*i).second : NULL );
-        // TODO: add timeout here
-      } while (conn != NULL && conn->check_events());
-
-      /*
-       * If yes, then use it
-       */
-
-      if (conn != NULL) {
-	      return conn;
-      }
-
-      /*
-       * There was an active (connected) profile, but the conn is gone.
-       * Invalidate active profile; we might have to reconnect using an
-       * alternate address
-       */
-
-      obj->_ior_fwd()->active_profile((CORBA::IORProfile *) 0);
-    }
 
     /*
      * _prof_conns could grow indefinitely if the same object is created
@@ -3919,9 +3837,6 @@ MICO::SharedMemoryProxy::make_conn (CORBA::Object_ptr obj, CORBA::Boolean& timed
             }
 #endif // USE_MESSAGING
 	    GIOPConn *conn = make_conn (addr, timeout, timedout, 1, version
-#ifdef USE_SL3
-					, tcpip_creds_id, tls_creds_id
-#endif // USE_SL3
 					);
 	    if (conn) {
 	      obj->_ior_fwd()->active_profile (prof);

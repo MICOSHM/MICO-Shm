@@ -24,13 +24,6 @@
 #ifndef __mico_transport_sharedMemory_h_
 #define __mico_transport_sharedMemory_h_
 
-#include <string>
-#include <sys/stat.h>        /* For mode constants */
-#include <sys/mman.h>
-#include <fcntl.h>           /* For O_* constants */
-#include <semaphore.h>
-#include <pthread.h>
-
 namespace MICO {
 
 class CSharedMemory {
@@ -43,8 +36,8 @@ public:
    //~CSharedMemory();
 
    bool openSem(std::string sem);
-   bool Create(size_t nSize, int mode = O_RDWR);
-   bool Attach(int mode = PROT_READ | PROT_WRITE);
+   bool Create(size_t nSize);
+   bool Attach();
    bool Detach();
    bool Lock();
    bool UnLock();
@@ -60,6 +53,26 @@ private:
    size_t m_nSize;
    void* m_Ptr;
 
+};
+
+class SharedMemoryTransport : public SocketTransport {
+
+    SharedMemoryAddress *shmFDAddress;
+    int shm_fd;
+
+public:
+  virtual ~SharedMemoryTransport ();
+  CORBA::Boolean bind (const CORBA::Address *);
+  CORBA::Boolean connect (const CORBA::Address *, CORBA::ULong, CORBA::Boolean&);
+
+  void open (CORBA::Long fd = -1);
+  void close ();
+
+  CORBA::Long read (void *, CORBA::Long len);
+  CORBA::Long write (const void *, CORBA::Long len);
+
+  const CORBA::Address *addr ();
+  const CORBA::Address *peer ();
 };
 
 }
