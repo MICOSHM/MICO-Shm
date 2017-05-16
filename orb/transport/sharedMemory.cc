@@ -180,8 +180,13 @@ MICO::SharedMemoryTransport::read (void *_b, CORBA::Long len)
 CORBA::Long
 MICO::SharedMemoryTransport::write (const void *_b, CORBA::Long len)
 {
+    char *addr;
 
-    return -1;
+    CORBA::Octet *b = (CORBA::Octet *)_b
+    addr = mmap(NULL, len, PROT_READ | PROT_WRITE, MAP_SHARED, shm_fd, 0);
+    memcpy(addr, b, len);
+    
+    return len;
 }
 
 const CORBA::Address *
