@@ -31,6 +31,7 @@
 #include <cstdlib>
 #include <semaphore.h>
 #include <pthread.h>
+#include <fstream>
 
 #include <CORBA-SMALL.h>
 #include <mico/os-net.h>
@@ -173,19 +174,24 @@ MICO::SharedMemoryTransport::close ()
 CORBA::Long
 MICO::SharedMemoryTransport::read (void *_b, CORBA::Long len)
 {
+    CORBA::Octet *b = (CORBA::Octet *)_b;
+    void *addr;
 
-    return -1;
+    addr = mmap(NULL, len, PROT_READ, MAP_SHARED, shm_fd, 0);
+    write(b, addr, len);
+
+    return len;
 }
 
 CORBA::Long
 MICO::SharedMemoryTransport::write (const void *_b, CORBA::Long len)
 {
-    char *addr;
+    void *addr;
 
-    CORBA::Octet *b = (CORBA::Octet *)_b
+    CORBA::Octet *b = (CORBA::Octet *)_b;
     addr = mmap(NULL, len, PROT_READ | PROT_WRITE, MAP_SHARED, shm_fd, 0);
     memcpy(addr, b, len);
-    
+
     return len;
 }
 
