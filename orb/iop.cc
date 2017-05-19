@@ -69,6 +69,8 @@ using namespace std;
 //
 MICO::IIOPServer*
 MICO::IIOPServer::iiopserver_instance_ = NULL;
+MICO::SharedMemoryServer*
+MICO::SharedMemoryServer::SharedMemoryServer_instance_ = NULL;
 
 //
 // static member initialization
@@ -3205,6 +3207,50 @@ MICO::SharedMemoryServer::SharedMemoryServer(CORBA::ORB_ptr orb,
 	_orb->register_oa (this);
 }
 
+MICO::SharedMemoryServer::~SharedMemoryServer ()
+{
+    _orb->unregister_oa (this);
+    /*
+     * the GIOPConn entries in the 'orbids' and 'reqids' maps are just
+     * pointers to the entries in the 'conns' list, so do not delete them
+     */
+
+    _conns.lock();
+
+    for (ListConn::iterator i0 = _conns.begin(); i0 != _conns.end(); ++i0)
+	delete *i0;
+
+    _conns.unlock();
+
+
+#ifdef USE_IOP_CACHE
+    if (_cache_used)
+	_orb->cancel (_cache_rec->orbid());
+#endif
+    {
+	MICOMT::AutoLock l(_orbids_mutex);
+
+	for (MapIdConn::iterator i1 = _orbids.begin();
+	     i1 != _orbids.end(); ++i1) {
+	    SharedMemoryServerInvokeRec *rec = (*i1).second;
+	    _orb->cancel ( rec->orbid() );
+	    delete rec;
+	}
+    }
+
+    {
+	MICOMT::AutoLock lock(_tservers);
+	for (CORBA::ULong i = 0; i < _tservers.size(); i++) {
+	    _tservers[i]->aselect(this->Dispatcher(), NULL);
+	    delete _tservers[i];
+	    _tservers[i] = NULL;
+	}
+	_tservers.erase(_tservers.begin(), _tservers.end());
+    }
+    assert(SharedMemoryServer_instance_ != NULL);
+    SharedMemoryServer_instance_ = NULL;
+}
+
 CORBA::Boolean
 MICO::SharedMemoryServer::listen (vector<std::string>& addr)
 {
@@ -3231,6 +3277,78 @@ MICO::SharedMemoryServer::listen (vector<std::string>& addr)
 }
 
 CORBA::Boolean
+MICO::SharedMemoryServer::listen (CORBA::Address *addr, CORBA::Address *fwproxyaddr)
+{
+    const CORBA::Address* bound_addr;
+    return this->listen(addr, fwproxyaddr, bound_addr);
+}
+
+CORBA::Boolean
+MICO::SharedMemoryServer::listen (CORBA::Address *addr, CORBA::Address *fwproxyaddr, const CORBA::Address*& bound_addr)
+{
+    CORBA::IORProfile *prof;
+    CORBA::TransportServer *tserv = addr->make_transport_server ();
+#ifdef HAVE_THREADS
+    if (!MICO::MTManager::thread_pool())
+	tserv->create_thread();
+#endif
+    if (!tserv->bind (addr)) {
+      if (MICO::Logger::IsLogged (MICO::Logger::IIOP)) {
+	MICOMT::AutoDebugLock __lock;
+	MICO::Logger::Stream (MICO::Logger::IIOP)
+	  << "IIOP: cannot bind to " << addr->stringify() << ": "
+	  << tserv->errormsg() << endl;
+      }
+      return FALSE;
+    }
+    tserv->block ( Dispatcher()->isblocking() );
+    tserv->aselect ( Dispatcher(), this);
+
+    if (!fwproxyaddr) {
+        prof = tserv->addr()->make_ior_profile ((CORBA::Octet *)"", 1,
+						CORBA::MultiComponent(),
+                                                _iiop_ver);
+    } else {
+        prof = fwproxyaddr->make_ior_profile ((CORBA::Octet *)"", 1,
+                                              CORBA::MultiComponent(),
+                                              _iiop_ver);
+    }
+
+
+    bound_addr = tserv->addr();
+    if (MICO::Logger::IsLogged (MICO::Logger::IIOP)) {
+      MICOMT::AutoDebugLock __lock;
+      MICO::Logger::Stream (MICO::Logger::IIOP)
+	<< "IIOP: server listening on "
+	<< tserv->addr()->stringify()
+	<< " IIOP version "
+	<< (_iiop_ver >> 8) << "." << (_iiop_ver & 255)
+	<< endl;
+    }
+
+    /*
+     * install an IIOP profile tag in the ORB's object template.
+     * object adapters will use this template to generate new object
+     * references...
+     */
+
+    if (MICO::Logger::IsLogged (MICO::Logger::GIOP)) {
+	MICOMT::AutoDebugLock __lock;
+	MICO::Logger::Stream (MICO::Logger::GIOP)
+	    << "binding to " << prof->addr()->stringify() << endl;
+    }
+    _orb->ior_template()->add_profile (prof);
+
+    _tservers.push_back(tserv);
+#ifdef HAVE_THREADS
+    if (!MICO::MTManager::thread_pool())
+	tserv->start();
+#endif // HAVE_THREADS
+    return TRUE;
+}
+
+
+CORBA::Boolean
 MICO::SharedMemoryServer::listen ()
 {
   	vector<string> addr;
@@ -3246,6 +3364,768 @@ MICO::SharedMemoryServer::listen ()
 		_orb->ior_template()->add_profile (prof);
 
     return TRUE;
+}
+
+void
+MICO::SharedMemoryServer::shutdown(CORBA::Address* addr)
+{
+    // stop listening on the specified address
+    MICOMT::AutoLock lock(_tservers);
+    for (vector<CORBA::TransportServer*>::iterator iter = _tservers.begin();
+	 iter != _tservers.end();
+	 iter++) {
+	if ((*(*iter)->addr()) == (*addr)) {
+	    (*iter)->close();
+	    delete (*iter);
+	    _tservers.erase(iter);
+	    break;
+	}
+    }
+}
+
+MICO::SharedMemoryServerInvokeRec *
+MICO::SharedMemoryServer::create_invoke ()
+{
+#ifdef USE_IOP_CACHE
+    if (!_cache_used) {
+	_cache_used = TRUE;
+	return _cache_rec;
+    }
+#endif
+
+    return new SharedMemoryServerInvokeRec;
+}
+
+MICO::SharedMemoryServerInvokeRec *
+MICO::SharedMemoryServer::pull_invoke_reqid (MsgId msgid, GIOPConn *conn)
+{
+    MICOMT::AutoLock l(_orbids_mutex);
+
+#ifdef USE_IOP_CACHE
+    if (_cache_used && _cache_rec->reqid() == msgid &&
+	_cache_rec->conn() == conn) {
+	_cache_rec->deactivate();
+	return _cache_rec;
+    }
+#endif
+    // XXX slow, but only needed for cancel
+
+    SharedMemoryServerInvokeRec *rec;
+    for (MapIdConn::iterator i = _orbids.begin(); i != _orbids.end(); ++i) {
+	rec = (*i).second;
+	if (rec->reqid() == msgid && rec->conn() == conn && rec->active() )
+	    rec->deactivate();
+	    return rec;
+    }
+    return 0;
+}
+
+MICO::SharedMemoryServerInvokeRec *
+MICO::SharedMemoryServer::pull_invoke_orbid (CORBA::ORBMsgId id)
+{
+#ifdef USE_IOP_CACHE
+    if (_cache_used && _cache_rec->orbid() == msgid) {
+	_cache_rec->deactivate();
+	return _cache_rec;
+    }
+#endif
+
+    MICOMT::AutoLock l(_orbids_mutex);
+
+    MICO::SharedMemoryServerInvokeRec *rec;
+
+    rec = (MICO::SharedMemoryServerInvokeRec *)_orb->get_request_hint( id );
+    if (rec && rec->active() ) {
+	rec->deactivate();
+	return rec;
+    }
+    del_invoke_orbid(rec);
+    return 0;
+}
+
+void
+MICO::SharedMemoryServer::add_invoke (SharedMemoryServerInvokeRec *rec)
+{
+    MICOMT::AutoLock l(_orbids_mutex);
+
+#ifdef USE_IOP_CACHE
+    if (_cache_rec == rec)
+	return;
+#endif
+
+    if (MICO::Logger::IsLogged (MICO::Logger::GIOP)) {
+	MICOMT::AutoDebugLock __lock;
+	MICO::Logger::Stream (MICO::Logger::GIOP)
+	    << "IIOPServer::add_invoke (id="<< rec->orbmsgid() << ")" << endl;
+    }
+    //assert (_orbids.count (rec->orbid()) == 0);
+    _orbids[ rec->orbmsgid() ] = rec;
+    _orb->set_request_hint( rec->orbid(), rec );
+}
+
+void
+MICO::SharedMemoryServer::del_invoke_orbid (SharedMemoryServerInvokeRec *rec)
+{
+    MICOMT::AutoLock l(_orbids_mutex);
+
+    if (MICO::Logger::IsLogged (MICO::Logger::GIOP)) {
+	MICOMT::AutoDebugLock __lock;
+	MICO::Logger::Stream (MICO::Logger::GIOP)
+	    << "SharedMemoryServer::del_invoke (id="<< rec->orbmsgid() << ")" << endl;
+    }
+    assert( !rec->active() );
+
+#ifdef USE_IOP_CACHE
+    if (_cache_used && _cache_rec->orbmsgid() == msgid) {
+	assert( !_cache_rec->active() );
+	_cache_rec->free();
+	_cache_used = FALSE;
+	return;
+    }
+#endif
+
+    deref_conn( rec->conn() );
+    MapIdConn::iterator i = _orbids.find (rec->orbmsgid());
+    if (i != _orbids.end()) {
+	delete (*i).second;
+	_orbids.erase (i);
+    }
+}
+
+void
+MICO::SharedMemoryServer::del_invoke_reqid (MsgId msgid, GIOPConn *conn)
+{
+    MICOMT::AutoLock l(_orbids_mutex);
+
+#ifdef USE_IOP_CACHE
+    if (_cache_used && _cache_rec->reqid() == msgid &&
+	_cache_rec->conn() == conn) {
+	assert( !_cache_rec->active() );
+	_cache_rec->free();
+	_cache_used = FALSE;
+	return;
+    }
+#endif
+
+    // XXX slow, but rarely used
+    SharedMemoryServerInvokeRec *rec;
+
+    deref_conn( conn );
+    for (MapIdConn::iterator i = _orbids.begin(); i != _orbids.end(); ++i) {
+	rec = (*i).second;
+	if (rec->reqid() == msgid && rec->conn() == conn) {
+	    assert( !rec->active() );
+	    delete rec;
+	    _orbids.erase (i);
+	    break;
+	}
+    }
+}
+
+void
+MICO::SharedMemoryServer::abort_invoke_orbid (SharedMemoryServerInvokeRec *rec)
+{
+    _orb->cancel ( rec->orbmsgid() );
+    // del_invoke_orbid ( rec );
+}
+
+#ifdef HAVE_THREADS
+
+void
+MICO::SharedMemoryServer::deref_conn (GIOPConn *conn, CORBA::Boolean all )
+{
+    if ( conn->deref() ) {
+	this->send_orb_msg( conn, MICO::ORBMsg::KillConn );
+	_orb->resource_manager ().release_connection ();
+    }
+}
+
+#else
+
+void
+MICO::SharedMemoryServer::deref_conn (GIOPConn *conn, CORBA::Boolean all )
+{
+    conn->deref(all);
+    if (all)
+	delete conn;
+}
+
+#endif
+
+void
+MICO::SharedMemoryServer::kill_conn (GIOPConn *conn, CORBA::Boolean redo)
+{
+#ifdef HAVE_THREADS
+    if (conn->state() != MICOMT::StateRefCnt::Active
+        && conn->state() != MICOMT::StateRefCnt::InitShutdown) {
+        // kcg: calling kill_conn on terminated connection => return
+        return;
+    }
+#endif // HAVE_THREADS
+    CORBA::Boolean again;
+    // this and connection establischment in callback() are the only reasons to lock _conns
+
+    _conns.lock();
+
+    do {
+	again = FALSE;
+	for (ListConn::iterator i = _conns.begin(); i != _conns.end(); ++i) {
+	    if (*i == conn) {
+		_conns.erase (i);
+		again = TRUE;
+		break;
+	    }
+	}
+    } while (again);
+
+    _conns.unlock();
+
+#ifdef HAVE_THREADS
+    conn->terminate();
+#endif // HAVE_THREADS
+    // abort pending invocations for this connection
+
+#ifdef USE_IOP_CACHE
+    if (_cache_used && _cache_rec->conn() == conn) {
+	_orb->cancel (_cache_rec->orbid());
+	_cache_used = FALSE;
+    }
+#endif
+
+    do {
+	MICOMT::AutoLock l(_orbids_mutex);
+
+	again = FALSE;
+	SharedMemoryServerInvokeRec *rec;
+	for (MapIdConn::iterator i = _orbids.begin();
+	     i != _orbids.end(); ++i) {
+	    rec = (*i).second;
+	    if (rec->active() && (rec->conn() == conn)) {
+		rec->deactivate();
+
+		if (MICO::Logger::IsLogged (MICO::Logger::GIOP)) {
+		    MICOMT::AutoDebugLock __lock;
+		    MICO::Logger::Stream (MICO::Logger::GIOP)
+			<< "**aborting id="<< rec->orbmsgid()
+			<< endl;
+		}
+		abort_invoke_orbid (rec);
+		again = TRUE;
+		break;
+	    }
+	}
+    } while (again);
+    deref_conn( conn, TRUE );
+}
+
+void
+MICO::SharedMemoryServer::conn_error (GIOPConn *conn, CORBA::Boolean send_error)
+{
+    if (!send_error) {
+	kill_conn (conn);
+	return;
+    }
+
+    GIOPOutContext out (conn->codec());
+    conn->codec()->put_error_msg (out);
+    conn->output (out._retn());
+
+    conn->flush();
+    //deref_conn ( conn, TRUE);
+    this->kill_conn(conn);
+}
+
+void
+MICO::SharedMemoryServer::conn_closed (GIOPConn *conn)
+{
+    GIOPOutContext out (conn->codec());
+    conn->codec()->put_close_msg (out);
+    conn->output (out._retn());
+
+    conn->flush();
+#ifndef HAVE_THREADS
+    deref_conn( conn );
+#else // HAVE_THREADS
+    conn->terminate();
+#endif // HAVE_THREADS
+}
+
+CORBA::Boolean
+MICO::SharedMemoryServer::handle_input (GIOPConn *conn, CORBA::Buffer *inp)
+{
+    if (MICO::Logger::IsLogged (MICO::Logger::IIOP)) {
+      MICOMT::AutoDebugLock __lock;
+      MICO::Logger::Stream (MICO::Logger::IIOP)
+	<< "IIOP: incoming data from "
+	<< conn->transport()->peer()->stringify() << endl;
+    }
+
+    GIOPInContext in (conn->codec(), inp);
+
+    GIOP::MsgType mt;
+    CORBA::ULong size;
+    CORBA::Octet flags;
+
+    // XXX size is wrong for fragmented messages ...
+    if (!conn->codec()->get_header (in, mt, size, flags)) {
+      if (MICO::Logger::IsLogged (MICO::Logger::GIOP)) {
+	MICOMT::AutoDebugLock __lock;
+	MICO::Logger::Stream (MICO::Logger::GIOP)
+	  << "GIOP: cannot decode incoming header from "
+	  << conn->transport()->peer()->stringify() << endl;
+      }
+#ifdef HAVE_THREADS
+      conn->active_deref();
+#endif
+      conn_error (conn);
+      return FALSE;
+    }
+
+    switch (mt) {
+    case GIOP::Request:
+      return handle_invoke_request (conn, in);
+
+    case GIOP::LocateRequest:
+      return handle_locate_request (conn, in);
+
+    case GIOP::MessageError:
+#ifdef HAVE_THREADS
+	conn->active_deref();
+#endif // HAVE_THREADS
+	if (!conn->codec()->get_error_msg (in)) {
+	  if (MICO::Logger::IsLogged (MICO::Logger::GIOP)) {
+	    MICOMT::AutoDebugLock __lock;
+	    MICO::Logger::Stream (MICO::Logger::GIOP)
+	      << "GIOP: cannot decode MessageError from "
+	      << conn->transport()->peer()->stringify() << endl;
+	  }
+	  conn_error (conn, FALSE);
+	} else {
+	  if (MICO::Logger::IsLogged (MICO::Logger::GIOP)) {
+	    MICOMT::AutoDebugLock __lock;
+	    MICO::Logger::Stream (MICO::Logger::GIOP)
+	      << "GIOP: incoming MessageError from "
+	      << conn->transport()->peer()->stringify() << endl;
+	  }
+	  kill_conn (conn);
+	}
+	return FALSE;
+
+    case GIOP::CancelRequest:
+      return handle_cancel_request (conn, in);
+
+    case GIOP::CloseConnection:
+      if (MICO::Logger::IsLogged (MICO::Logger::GIOP)) {
+	MICOMT::AutoDebugLock __lock;
+	MICO::Logger::Stream (MICO::Logger::GIOP)
+	  << "GIOP: incoming CloseConnection from "
+	  << conn->transport()->peer()->stringify() << endl;
+      }
+      // for some strange reason Orbacus 4 clients send CloseConnection
+      // upon exit ...
+#ifdef HAVE_THREADS
+      conn->active_deref();
+#endif // HAVE_THREADS
+      break;
+
+    default:
+#ifdef HAVE_THREADS
+	conn->active_deref();
+#endif // HAVE_THREADS
+	if (MICO::Logger::IsLogged (MICO::Logger::GIOP)) {
+	    MICOMT::AutoDebugLock __lock;
+	    MICO::Logger::Stream (MICO::Logger::GIOP)
+		<< "GIOP: bad incoming message type (" << mt << ") from "
+		<< conn->transport()->peer()->stringify() << endl;
+	}
+	break;
+    }
+    return TRUE;
+}
+
+CORBA::ORBMsgId
+MICO::SharedMemoryServer::exec_invoke_request (GIOPInContext &in,
+				       CORBA::Object_ptr obj,
+				       CORBA::ORBRequest *req,
+				       CORBA::Principal_ptr pr,
+				       CORBA::Boolean resp_exp,
+				       GIOPConn *conn,
+				       CORBA::ORBMsgId orbid)
+{
+    if (!strcmp (req->op_name(), "_bind")) {
+	// its a bind
+	CORBA::String_var repoid;
+	CORBA::ORB::ObjectTag oid;
+	CORBA::Boolean r = conn->codec()->get_bind_request (in, repoid.out(),
+							    oid);
+	assert (r);
+	/*
+	 * orb makes copies of repoid and oid so we can delete them
+	 * after the call to bind_async()
+	 */
+	return _orb->bind_async (repoid, oid, 0, this, orbid);
+    } else {
+	// its a normal invocation
+	return _orb->invoke_async (obj, req, pr, resp_exp, this, orbid);
+    }
+}
+
+CORBA::Boolean
+MICO::SharedMemoryServer::handle_invoke_request (GIOPConn *conn, GIOPInContext &in)
+{
+    CORBA::ULong req_id;
+    CORBA::Boolean resp;
+    CORBA::ORBRequest *req;
+    CORBA::Principal_ptr pr = conn->transport()->get_principal();
+    CORBA::Object_ptr obj = new CORBA::Object (new CORBA::IOR);
+
+    // XXX take care, get_invoke_request() does a in._retn()
+    if (!conn->codec()->get_invoke_request (in, req_id, resp, obj, req, pr)) {
+	CORBA::release (obj);
+	CORBA::release (pr);
+
+	if (MICO::Logger::IsLogged (MICO::Logger::GIOP)) {
+	  MICOMT::AutoDebugLock __lock;
+	  MICO::Logger::Stream (MICO::Logger::GIOP)
+	    << "GIOP: cannot decode Request from "
+	    << conn->transport()->peer()->stringify() << endl;
+	}
+#ifdef HAVE_THREADS
+	conn->active_deref();
+#endif // HAVE_THREADS
+	conn->deref();
+	conn_error (conn);
+	return FALSE;
+    }
+    // XXX obj is incomplete, see IOR::operator== ...
+
+    if (MICO::Logger::IsLogged (MICO::Logger::GIOP)) {
+      MICOMT::AutoDebugLock __lock;
+      MICO::Logger::Stream (MICO::Logger::GIOP)
+	<< "GIOP: incoming Request from "
+	<< conn->transport()->peer()->stringify()
+	<< " with msgid " << req_id << endl;
+    }
+
+    /*
+     * code sets are set up in get_contextlist(). GIOPRequest will
+     * set up converters for out args, so we dont need to do anything
+     * special.
+     */
+
+    /*
+     * must install the invocation record before we call the ORB, because
+     * may invoke callback before returning from invoke_async ...
+     */
+    MsgId msgid = _orb->new_msgid();
+    CORBA::ORBMsgId orbid = 0;
+    orbid = _orb->new_orbid(msgid);
+    conn->ref ();
+    SharedMemoryServerInvokeRec *rec = create_invoke();
+    rec->init_invoke (conn, req_id, orbid, req, obj, pr);
+    add_invoke (rec);
+#ifdef HAVE_THREADS
+    // rssh: XXX:  are we must move active_deref into exec_invoke_request
+    //  to prevent potential destruction of conn, when it used in
+    //  exec_invoke_request ?
+    conn->active_deref();
+#endif // HAVE_THREADS
+    CORBA::ORBMsgId orbid2 = exec_invoke_request (in, obj, req, pr, resp, conn, orbid);
+    assert (orbid == orbid2 || (orbid2 == 0 && !resp));
+
+    // maybe the connection was closed inbetween: make do_read() break
+    //return FALSE;
+    // kcg: we need to return TRUE here, because of thread-per-connection
+    // concurrency model, where we cannot break do_read when we are not
+    // 100% sure that the connection is either closed or broken
+    return TRUE;
+}
+
+CORBA::Boolean
+MICO::SharedMemoryServer::handle_locate_request (GIOPConn *conn, GIOPInContext &in)
+{
+    CORBA::ULong req_id;
+    CORBA::Object_ptr obj = new CORBA::Object (new CORBA::IOR);
+
+    if (!conn->codec()->get_locate_request (in, req_id, obj)) {
+	CORBA::release (obj);
+	if (MICO::Logger::IsLogged (MICO::Logger::GIOP)) {
+	  MICOMT::AutoDebugLock __lock;
+	  MICO::Logger::Stream (MICO::Logger::GIOP)
+	    << "GIOP: cannot decode LocateRequest from "
+	    << conn->transport()->peer()->stringify() << endl;
+	}
+#ifdef HAVE_THREADS
+	conn->active_deref();
+#endif // HAVE_THREADS
+	conn_error (conn);
+	return FALSE;
+    }
+    // XXX obj is incomplete, see IOR::operator== ...
+
+    if (MICO::Logger::IsLogged (MICO::Logger::GIOP)) {
+      MICOMT::AutoDebugLock __lock;
+      MICO::Logger::Stream (MICO::Logger::GIOP)
+	<< "GIOP: incoming LocateRequest from "
+	<< conn->transport()->peer()->stringify()
+	<< " with msgid " << req_id << endl;
+    }
+
+    /*
+     * must install the invocation record before we call the ORB, because
+     * may invoke callback before returning from invoke_async ...
+     */
+    CORBA::ORBMsgId orbid = _orb->new_orbid();
+    conn->ref ();
+    SharedMemoryServerInvokeRec *rec = create_invoke();
+    rec->init_locate (conn, req_id, orbid, obj);
+    add_invoke (rec);
+#ifdef HAVE_THREADS
+    conn->active_deref();
+#endif // HAVE_THREADS
+    CORBA::ORBMsgId orbid2 = _orb->locate_async (obj, this, orbid);
+    assert (orbid == orbid2);
+
+    // maybe the connection was closed inbetween: make do_read() break
+    //return FALSE;
+    // kcg: we need to return TRUE here, because of thread-per-connection
+    // concurrency model, where we cannot break do_read when we are not
+    // 100% sure that the connection is either closed or broken
+    return TRUE;
+}
+
+CORBA::Boolean
+MICO::SharedMemoryServer::handle_cancel_request (GIOPConn *conn, GIOPInContext &in)
+{
+    CORBA::ULong req_id;
+
+    if (!conn->codec()->get_cancel_request (in, req_id)) {
+      if (MICO::Logger::IsLogged (MICO::Logger::GIOP)) {
+	MICOMT::AutoDebugLock __lock;
+	MICO::Logger::Stream (MICO::Logger::GIOP)
+	  << "GIOP: cannot decode CancelRequest from "
+	  << conn->transport()->peer()->stringify() << endl;
+      }
+#ifdef HAVE_THREADS
+      conn->active_deref();
+#endif // HAVE_THREADS
+      conn_error (conn);
+      return FALSE;
+    }
+
+    if (MICO::Logger::IsLogged (MICO::Logger::GIOP)) {
+      MICOMT::AutoDebugLock __lock;
+      MICO::Logger::Stream (MICO::Logger::GIOP)
+	<< "GIOP: incoming CancelRequest from "
+	<< conn->transport()->peer()->stringify()
+	<< " for msgid " << req_id << endl;
+    }
+
+    conn->cancel (req_id);
+
+    SharedMemoryServerInvokeRec *rec = pull_invoke_reqid (req_id, conn);
+#ifdef HAVE_THREADS
+    conn->active_deref();
+#endif // HAVE_THREADS
+    if (!rec) {
+	// request already finished or no such id
+	return TRUE;
+    }
+    CORBA::ORB::MsgId orbid = rec->orbmsgid();
+
+    // maybe rec->conn() != conn ...
+    // connection might be deleted during call to orb->cancel() ...
+
+    //FIXME: should we realy delete it here ????????????
+    del_invoke_orbid (rec);
+
+    _orb->cancel (orbid);
+
+    // maybe the connection was closed inbetween: make do_read() break
+    //return FALSE;
+    // kcg: we need to return TRUE here, because of thread-per-connection
+    // concurrency model, where we cannot break do_read when we are not
+    // 100% sure that the connection is either closed or broken
+    return TRUE;
+}
+
+void
+MICO::SharedMemoryServer::handle_invoke_reply (CORBA::ORBMsgId id)
+{
+    CORBA::ORBRequest *req;
+    CORBA::Object_ptr obj = CORBA::Object::_nil();
+
+    GIOP::AddressingDisposition ad;
+
+    SharedMemoryServerInvokeRec *rec = pull_invoke_orbid ( id );
+    if (rec == NULL)
+	return;
+    if (rec->orbid() != NULL) {
+	if (!rec->orbid()->response_expected()) {
+	    del_invoke_orbid (rec);
+	    return;
+	}
+    }
+    CORBA::InvokeStatus stat = _orb->get_invoke_reply (id, obj, req, ad);
+    if (!rec) {
+        // invocation canceled (perhaps connection to client broken)
+	CORBA::release (obj);
+        return;
+    }
+    // orb->get_invoke_reply calls orb->del_invoke, so we have to set
+    // rec->orbid() to NULL
+    rec->orbid(NULL);
+
+    GIOP::ReplyStatusType giop_stat = GIOP::NO_EXCEPTION;
+    switch (stat) {
+    case CORBA::InvokeSysEx:
+	giop_stat = GIOP::SYSTEM_EXCEPTION;
+	break;
+
+    case CORBA::InvokeUsrEx:
+	giop_stat = GIOP::USER_EXCEPTION;
+	break;
+
+    case CORBA::InvokeOk:
+	giop_stat = GIOP::NO_EXCEPTION;
+	break;
+
+    case CORBA::InvokeForward:
+	giop_stat = GIOP::LOCATION_FORWARD;
+	break;
+
+    case CORBA::InvokeAddrDisp:
+        giop_stat = GIOP::NEEDS_ADDRESSING_MODE;
+        break;
+    }
+
+    if (MICO::Logger::IsLogged (MICO::Logger::GIOP)) {
+      MICOMT::AutoDebugLock __lock;
+      MICO::Logger::Stream (MICO::Logger::GIOP)
+	<< "GIOP: sending Reply to "
+	<< rec->conn()->transport()->peer()->stringify()
+	<< " for msgid " << rec->reqid()
+	<< " status is " << (CORBA::ULong) giop_stat
+	<< endl;
+    }
+
+    GIOPOutContext out (rec->conn()->codec());
+    if (!rec->conn()->codec()->put_invoke_reply (out, rec->reqid(), giop_stat,
+						 obj, req, ad)) {
+	out.reset ();
+	CORBA::MARSHAL ex;
+	req->set_out_args (&ex);
+	rec->conn()->codec()->put_invoke_reply (out, rec->reqid(),
+						GIOP::SYSTEM_EXCEPTION,
+						obj, req, ad);
+    }
+    CORBA::release (obj);
+
+    rec->conn()->output (out._retn());
+    del_invoke_orbid (rec);
+}
+
+void
+MICO::SharedMemoryServer::handle_locate_reply (CORBA::ORBMsgId id)
+{
+    CORBA::Object_ptr obj = CORBA::Object::_nil();
+
+    GIOP::AddressingDisposition ad;
+
+    SharedMemoryServerInvokeRec *rec = pull_invoke_orbid ( id );
+    CORBA::LocateStatus stat = _orb->get_locate_reply (id, obj, ad);
+
+    if (!rec) {
+        // invocation canceled (perhaps connection to client broken)
+	CORBA::release (obj);
+        return;
+    }
+
+    GIOP::LocateStatusType giop_stat = GIOP::OBJECT_HERE;
+    switch (stat) {
+    case CORBA::LocateHere:
+	giop_stat = GIOP::OBJECT_HERE;
+	break;
+
+    case CORBA::LocateUnknown:
+	giop_stat = GIOP::UNKNOWN_OBJECT;
+	break;
+
+    case CORBA::LocateForward:
+	giop_stat = GIOP::OBJECT_FORWARD;
+	break;
+
+    case CORBA::LocateAddrDisp:
+        giop_stat = GIOP::LOC_NEEDS_ADDRESSING_MODE;
+	break;
+    }
+
+    if (MICO::Logger::IsLogged (MICO::Logger::GIOP)) {
+      MICOMT::AutoDebugLock __lock;
+      MICO::Logger::Stream (MICO::Logger::GIOP)
+	<< "GIOP: sending LocateReply to "
+	<< rec->conn()->transport()->peer()->stringify()
+	<< " for msgid " << rec->reqid()
+	<< " status is " << (CORBA::ULong) giop_stat
+	<< endl;
+    }
+
+    GIOPOutContext out (rec->conn()->codec());
+    rec->conn()->codec()->put_locate_reply (out, rec->reqid(),
+					    giop_stat, obj, ad);
+    CORBA::release (obj);
+
+    rec->conn()->output (out._retn());
+    del_invoke_orbid (rec);
+}
+
+void
+MICO::SharedMemoryServer::handle_bind_reply (CORBA::ORBMsgId id)
+{
+    CORBA::Object_ptr obj = CORBA::Object::_nil();
+
+    SharedMemoryServerInvokeRec *rec = pull_invoke_orbid ( id );
+    CORBA::LocateStatus stat = _orb->get_bind_reply (id, obj);
+
+    if (!rec) {
+        // invocation canceled (perhaps connection to client broken)
+	CORBA::release (obj);
+        return;
+    }
+
+    GIOP::LocateStatusType giop_stat = GIOP::OBJECT_HERE;
+    switch (stat) {
+    case CORBA::LocateHere:
+	giop_stat = GIOP::OBJECT_HERE;
+	break;
+
+    case CORBA::LocateUnknown:
+	giop_stat = GIOP::UNKNOWN_OBJECT;
+	break;
+
+    case CORBA::LocateForward:
+	giop_stat = GIOP::OBJECT_FORWARD;
+	break;
+    default:
+	break;
+    }
+
+    if (MICO::Logger::IsLogged (MICO::Logger::GIOP)) {
+      MICOMT::AutoDebugLock __lock;
+      MICO::Logger::Stream (MICO::Logger::GIOP)
+	<< "GIOP: sending _bind Reply to "
+	<< rec->conn()->transport()->peer()->stringify()
+	<< " for msgid " << rec->reqid()
+	<< " status is " << (CORBA::ULong) giop_stat
+	<< endl;
+    }
+
+    GIOPOutContext out (rec->conn()->codec());
+    rec->conn()->codec()->put_bind_reply (out, rec->reqid(), giop_stat, obj);
+    CORBA::release (obj);
+
+    rec->conn()->output (out._retn());
+    del_invoke_orbid (rec);
 }
 
 const char *
@@ -3385,6 +4265,238 @@ MICO::SharedMemoryServer::timedout_invoke(CORBA::ORBMsgId)
 {
     // shouldn't be called
     assert(0);
+}
+
+CORBA::Boolean
+MICO::SharedMemoryServer::waitfor (CORBA::ORB_ptr, CORBA::ORBMsgId id,
+			   CORBA::ORBCallback::Event ev, CORBA::Long tmout)
+{
+    assert(0);
+    return TRUE;
+}
+
+void
+MICO::SharedMemoryServer::notify (CORBA::ORB_ptr, CORBA::ORBMsgId id,
+			  CORBA::ORBCallback::Event ev)
+{
+    switch (ev) {
+    case CORBA::ORBCallback::Invoke:
+	handle_invoke_reply (id);
+	break;
+
+    case CORBA::ORBCallback::Locate:
+	handle_locate_reply (id);
+	break;
+
+    case CORBA::ORBCallback::Bind:
+	handle_bind_reply (id);
+	break;
+
+    default:
+	assert (0);
+    }
+}
+
+CORBA::Boolean
+MICO::SharedMemoryServer::input_callback (GIOPConn *conn, CORBA::Buffer *inp)
+{
+    if (MICO::Logger::IsLogged (MICO::Logger::GIOP)) {
+	MICOMT::AutoDebugLock __lock;
+	MICO::Logger::Stream (MICO::Logger::GIOP)
+	    << "MICO::Server::input_callback (GIOPConn *conn, CORBA::Buffer *inp)" << endl
+	    << "   conn: " << conn << endl
+	    << "    inp: " << inp << endl;
+    }
+
+    return handle_input( conn, inp );
+}
+
+CORBA::Boolean
+MICO::SharedMemoryServer::callback (GIOPConn *conn, GIOPConnCallback::Event ev)
+{
+    switch (ev) {
+    case GIOPConnCallback::InputReady:
+	return input_callback (conn, conn->input());
+
+    case GIOPConnCallback::Idle:
+	if (MICO::Logger::IsLogged (MICO::Logger::IIOP)) {
+	  MICOMT::AutoDebugLock __lock;
+	  MICO::Logger::Stream (MICO::Logger::IIOP)
+	    << "IIOP: shutting down idle conn to "
+	    << conn->transport()->peer()->stringify() << endl;
+	}
+	conn_closed (conn);
+	kill_conn (conn);
+	return FALSE;
+
+    case GIOPConnCallback::Closed: {
+	if (MICO::Logger::IsLogged (MICO::Logger::IIOP)) {
+	  MICOMT::AutoDebugLock __lock;
+	  MICO::Logger::Stream (MICO::Logger::IIOP)
+	    << "IIOP: connection to "
+	    << conn->transport()->peer()->stringify()
+	    << " closed or broken" << endl;
+	}
+	const CORBA::Address *addr = conn->transport()->peer();
+	assert (addr);
+#ifdef USE_OLD_INTERCEPTORS
+	Interceptor::ConnInterceptor::
+	    _exec_client_disconnect (addr->stringify().c_str());
+#endif // USE_OLD_INTERCEPTORS
+	kill_conn (conn);
+	return FALSE;
+    }
+    default:
+	assert (0);
+    }
+    return TRUE;
+}
+
+void
+MICO::SharedMemoryServer::callback (CORBA::TransportServer *tserv,
+			    CORBA::TransportServerCallback::Event ev)
+{
+    if (MICO::Logger::IsLogged (MICO::Logger::GIOP)) {
+	MICOMT::AutoDebugLock __lock;
+	MICO::Logger::Stream (MICO::Logger::GIOP)
+	    << "MICO::IIOPServer::callback: tserv = " << tserv << ", ev =" << ev << endl;
+    }
+    switch (ev) {
+    case CORBA::TransportServerCallback::Accept: {
+	CORBA::Transport *t = tserv->accept();
+	if (t) {
+	    if (MICO::Logger::IsLogged (MICO::Logger::IIOP)) {
+	      MICOMT::AutoDebugLock __lock;
+	      MICO::Logger::Stream (MICO::Logger::IIOP)
+		<< "IIOP: new connection opened from "
+		<< t->peer()->stringify() << endl;
+	    }
+#ifdef HAVE_THREADS
+	    if ( !_orb->resource_manager ().acquire_connection() ) {
+		//XXX raise Exception - do what ever nessesary
+		delete t;
+		break;
+	    }
+#endif // HAVE_THREADS
+            if (t->bad()) {
+	        if (MICO::Logger::IsLogged (MICO::Logger::IIOP)) {
+		  MICOMT::AutoDebugLock __lock;
+		  MICO::Logger::Stream (MICO::Logger::IIOP)
+		    << "IIOP: connection from "
+		    << t->peer()->stringify()
+		    << " is bad: " << t->errormsg() << endl;
+		}
+                delete t;
+#ifdef HAVE_THREADS
+		_orb->resource_manager ().release_connection ();
+#endif // HAVE_THREADS
+                break;
+            }
+	    const CORBA::Address *addr = t->peer();
+	    assert (addr);
+#ifdef USE_OLD_INTERCEPTORS
+	    CORBA::Boolean r = Interceptor::ConnInterceptor::
+		_exec_client_connect (addr->stringify().c_str());
+	    if (!r) {
+		delete t;
+#ifdef HAVE_THREADS
+		_orb->resource_manager ().release_connection ();
+#endif // HAVE_THREADS
+		break;
+	    }
+#endif // USE_OLD_INTERCEPTORS
+#ifdef HAVE_THREADS
+	    CORBA::Boolean __use_reader_thread = TRUE;
+	    CORBA::Boolean __use_writer_thread = FALSE;
+	    if (MICO::MTManager::thread_pool())
+	      __use_reader_thread = FALSE;
+
+	    GIOPConn *conn =
+		new GIOPConn (Dispatcher(), t, this,
+			      new GIOPCodec (new CDRDecoder,
+					     new CDREncoder,
+					     _iiop_ver),
+			      0L /* no tmout */, _max_message_size,
+                              SERVER_SIDE,
+			      __use_reader_thread, __use_writer_thread);
+#else
+	    GIOPConn *conn =
+	        new GIOPConn (Dispatcher(), t, this,
+			      new GIOPCodec (new CDRDecoder,
+					     new CDREncoder,
+					     _iiop_ver),
+			      0L /* no tmout */, _max_message_size);
+#endif
+#ifdef USE_SL3
+	    CORBA::Object_var secobj = _orb->resolve_initial_references
+		("TransportSecurity::SecurityManager");
+	    assert(!CORBA::is_nil(secobj));
+	    MICOSL3_TransportSecurity::SecurityManager_impl* secman
+		= dynamic_cast<MICOSL3_TransportSecurity::SecurityManager_impl*>(secobj.in());
+	    TransportSecurity::CredentialsCurator_var curator = TransportSecurity::CredentialsCurator::_nil();
+	    TransportSecurity::OwnCredentials_var creds = TransportSecurity::OwnCredentials::_nil();
+	    if (secman != NULL && secman->security_enabled()) {
+		curator = secman->credentials_curator();
+		assert(!CORBA::is_nil(curator));
+		AcceptingContext_var ctx = AcceptingContext::_nil();
+                MICOSL3_TransportSecurity::CredentialsCurator_impl*
+                    curator_impl = dynamic_cast<MICOSL3_TransportSecurity::CredentialsCurator_impl*>
+                    (curator.in());
+                assert(curator_impl != NULL);
+                creds = curator_impl->find_own_credentials_for(t->addr());
+		if (strcmp(t->addr()->proto(), "inet") == 0
+                    && !CORBA::is_nil(creds)) {
+                    ctx = new MICOSL3_SL3TCPIP::TCPIPAcceptingContext
+                        (creds, t->addr(), t->peer());
+		}
+		if (strcmp(t->addr()->proto(), "ssl") == 0
+                    && !CORBA::is_nil(creds)) {
+                    ctx = new MICOSL3_SL3TLS::TLSAcceptingContext
+                        (creds, t);
+                }
+		conn->accepting_context(ctx);
+		conn->own_creds(creds);
+		MICOSL3_TransportSecurity::AcceptingContext_impl* acimpl
+		    = dynamic_cast<MICOSL3_TransportSecurity::AcceptingContext_impl*>
+		    (ctx.in());
+		assert(acimpl != NULL);
+		acimpl->notify_establish_context();
+	    }
+#endif // USE_SL3
+	    // this and kill_conn are the only reasons to lock _conns
+
+	    _conns.lock();
+	    _conns.push_back (conn);
+	    _conns.unlock();
+#ifdef HAVE_THREADS
+	    conn->start();
+#endif // HAVE_THREADS
+	}
+	break;
+    }
+    default:
+	//FIXME: temp solution - a OA should have states like init, init_shutdown, shutdown, etc.
+	//       geting Event::Remove during shutdown is perfectly OK (actualy it is also OK during normal
+	//       operation, although its a sign that something went horrible wrong)
+	//       - we should do the _tservs.remove here !
+	//         - this would acctualy work since _tservers is a FastArray and not an STL type !!
+	// assert (0);
+	break;
+    }
+}
+
+CORBA::Dispatcher*
+MICO::SharedMemoryServer::Dispatcher() {
+#ifndef HAVE_THREADS
+    return _orb->dispatcher();
+#else
+    if (MICO::MTManager::thread_pool()) {
+      return _orb->dispatcher();
+    }
+    else {
+      return MICO::GIOPConnMgr::Dispatcher();
+    }
+#endif
 }
 
 /******************************* SharedMemoryProxy **********************/

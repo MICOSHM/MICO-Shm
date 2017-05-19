@@ -977,7 +977,7 @@ MICO::SharedMemoryProfile::operator== (const CORBA::IORProfile &p) const
 {
     return compare (p) == 0;
 }
-
+ 
 CORBA::Boolean
 MICO::SharedMemoryProfile::operator< (const CORBA::IORProfile &p) const
 {

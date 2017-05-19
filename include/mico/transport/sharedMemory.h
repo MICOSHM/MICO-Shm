@@ -75,6 +75,21 @@ public:
   const CORBA::Address *peer ();
 };
 
+class SharedMemoryTransportServer : public SocketTransportServer {
+
+    SharedMemoryAddress *shmFDAddress;
+public:
+  SharedMemoryTransportServer ();
+
+  CORBA::Boolean bind (const CORBA::Address *);
+  void close();
+
+  CORBA::Transport *accept ();
+  const CORBA::Address *addr ();
+
+  void listen ();
+};
+
 }
 
 #endif // __mico_transport_sharedMemory_h_

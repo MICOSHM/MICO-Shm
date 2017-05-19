@@ -881,17 +881,68 @@ public:
     { return _conn; }
 };
 
-class SharedMemoryServer :  public CORBA::ObjectAdapter {
-  CORBA::UShort _iiop_ver = 0x0100;
+class SharedMemoryServer :  public CORBA::ObjectAdapter,
+		   public CORBA::ORBCallback, public GIOPConnCallback, public GIOPConnMgr,
+		   public CORBA::TransportServerCallback {
+  typedef CORBA::ULong MsgId;
+  typedef std::map<MsgId, SharedMemoryServerInvokeRec *, std::less<MsgId> > MapIdConn;
+  typedef std::list<GIOPConn *> ListConn;
+  typedef std::vector<CORBA::TransportServer*> VecTranspServ;
+
+  MICOMT::Locked<VecTranspServ> _tservers;
+
+  MICOMT::Locked<ListConn> _conns;
+
+  MapIdConn _orbids;
+  MICOMT::Mutex _orbids_mutex;
+
   CORBA::ORB_ptr _orb;
+
+#ifdef USE_IOP_CACHE
+  SharedMemoryServerInvokeRec *_cache_rec;
+  CORBA::Boolean _cache_used;
+#endif
+
+  CORBA::UShort _iiop_ver;
   CORBA::ULong _max_message_size;
+
+  SharedMemoryServerInvokeRec *create_invoke();
+  SharedMemoryServerInvokeRec *pull_invoke_reqid (MsgId, GIOPConn *conn);
+  SharedMemoryServerInvokeRec *pull_invoke_orbid (CORBA::ORBMsgId);
+  void add_invoke (SharedMemoryServerInvokeRec *);
+  void del_invoke_reqid (MsgId, GIOPConn *conn);
+  void del_invoke_orbid (SharedMemoryServerInvokeRec *);
+  void abort_invoke_orbid (SharedMemoryServerInvokeRec *);
+
+  void conn_error (GIOPConn *, CORBA::Boolean send_error = TRUE);
+  void conn_closed (GIOPConn *);
+
+  void deref_conn (GIOPConn *conn, CORBA::Boolean all = FALSE );
+
+  CORBA::Boolean handle_input (GIOPConn *, CORBA::Buffer *);
+  CORBA::ORBMsgId exec_invoke_request (GIOPInContext &, CORBA::Object_ptr,
+           CORBA::ORBRequest *,
+           CORBA::Principal_ptr, CORBA::Boolean resp_exp,
+           GIOPConn *conn,
+           CORBA::ORBMsgId msgid);
+  CORBA::Boolean handle_invoke_request (GIOPConn *conn, GIOPInContext &);
+  CORBA::Boolean handle_locate_request (GIOPConn *conn, GIOPInContext &);
+  CORBA::Boolean handle_cancel_request (GIOPConn *conn, GIOPInContext &);
+
+  void handle_invoke_reply (CORBA::ORBMsgId);
+  void handle_locate_reply (CORBA::ORBMsgId);
+  void handle_bind_reply   (CORBA::ORBMsgId);
 
 public:
   SharedMemoryServer (CORBA::ORB_ptr, CORBA::UShort iiop_ver = 0x0100,
   CORBA::ULong max_size = 0);
+  ~SharedMemoryServer ();
 
   CORBA::Boolean listen(std::vector<std::string>& addr);
+  CORBA::Boolean listen (CORBA::Address*, CORBA::Address*, const CORBA::Address*&);
+  CORBA::Boolean listen (CORBA::Address *, CORBA::Address *);
   CORBA::Boolean listen();
+  void shutdown(CORBA::Address* addr);
 
   // ObjectAdapter methods
   const char *get_oaid () const;
@@ -923,6 +974,27 @@ public:
 
   virtual void
   timedout_invoke(CORBA::ORBMsgId);
+
+  // ORBCallback interface
+  CORBA::Boolean waitfor (CORBA::ORB_ptr, CORBA::ORBMsgId,  CORBA::ORBCallback::Event, CORBA::Long);
+  void notify (CORBA::ORB_ptr, CORBA::ORBMsgId, CORBA::ORBCallback::Event);
+
+  CORBA::Boolean callback (GIOPConn *, GIOPConnCallback::Event);
+  CORBA::Boolean input_callback (GIOPConn *, CORBA::Buffer *);
+  void callback (CORBA::TransportServer *,
+     CORBA::TransportServerCallback::Event);
+
+  void kill_conn (GIOPConn *, CORBA::Boolean redo = FALSE);
+
+  virtual CORBA::Dispatcher* Dispatcher();
+
+  // kcg: needed in SL3 => replace ORB's internal iiop_server_instance
+  // variable
+  static SharedMemoryServer*
+  SharedMemoryServer_instance()
+  { return SharedMemoryServer_instance_; }
+private:
+  static SharedMemoryServer* SharedMemoryServer_instance_;
 };
 
 class IIOPProxyInvokeRec {

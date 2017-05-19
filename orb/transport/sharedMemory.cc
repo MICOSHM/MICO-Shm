@@ -32,6 +32,7 @@
 #include <semaphore.h>
 #include <pthread.h>
 #include <fstream>
+#include <unistd.h>
 
 #include <CORBA-SMALL.h>
 #include <mico/os-net.h>
@@ -178,7 +179,7 @@ MICO::SharedMemoryTransport::read (void *_b, CORBA::Long len)
     void *addr;
 
     addr = mmap(NULL, len, PROT_READ, MAP_SHARED, shm_fd, 0);
-    write(b, addr, len);
+    memcpy(b, addr, len);
 
     return len;
 }
@@ -204,5 +205,45 @@ MICO::SharedMemoryTransport::addr ()
 const CORBA::Address *
 MICO::SharedMemoryTransport::peer ()
 {
-    return NULL;
+    return shmFDAddress;
+}
+
+/*********************** SharedMemoryTransportServer **********************/
+
+
+MICO::SharedMemoryTransportServer::SharedMemoryTransportServer ()
+{
+
+}
+
+void
+MICO::SharedMemoryTransportServer::listen ()
+{
+
+}
+
+void
+MICO::SharedMemoryTransportServer::close ()
+{
+
+}
+
+CORBA::Boolean
+MICO::SharedMemoryTransportServer::bind (const CORBA::Address *a)
+{
+    return TRUE;
+}
+
+CORBA::Transport *
+MICO::SharedMemoryTransportServer::accept ()
+{
+    TCPTransport *ret;
+
+    return ret;
+}
+
+const CORBA::Address *
+MICO::SharedMemoryTransportServer::addr ()
+{
+  return shmFDAddress;
 }
