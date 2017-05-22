@@ -219,7 +219,7 @@ MICO::SharedMemoryTransportServer::SharedMemoryTransportServer ()
 void
 MICO::SharedMemoryTransportServer::listen ()
 {
-
+  listening = TRUE;
 }
 
 void
@@ -237,8 +237,9 @@ MICO::SharedMemoryTransportServer::bind (const CORBA::Address *a)
 CORBA::Transport *
 MICO::SharedMemoryTransportServer::accept ()
 {
-    TCPTransport *ret;
+    SharedMemoryTransport *ret;
 
+    ret = new SharedMemoryTransport ();
     return ret;
 }
 

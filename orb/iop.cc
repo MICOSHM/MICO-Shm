@@ -4359,7 +4359,7 @@ MICO::SharedMemoryServer::callback (CORBA::TransportServer *tserv,
     if (MICO::Logger::IsLogged (MICO::Logger::GIOP)) {
 	MICOMT::AutoDebugLock __lock;
 	MICO::Logger::Stream (MICO::Logger::GIOP)
-	    << "MICO::IIOPServer::callback: tserv = " << tserv << ", ev =" << ev << endl;
+	    << "MICO::SharedMemoryServer::callback: tserv = " << tserv << ", ev =" << ev << endl;
     }
     switch (ev) {
     case CORBA::TransportServerCallback::Accept: {
@@ -4368,7 +4368,7 @@ MICO::SharedMemoryServer::callback (CORBA::TransportServer *tserv,
 	    if (MICO::Logger::IsLogged (MICO::Logger::IIOP)) {
 	      MICOMT::AutoDebugLock __lock;
 	      MICO::Logger::Stream (MICO::Logger::IIOP)
-		<< "IIOP: new connection opened from "
+		<< "SharedMemory: new connection opened from "
 		<< t->peer()->stringify() << endl;
 	    }
 #ifdef HAVE_THREADS
@@ -4427,42 +4427,7 @@ MICO::SharedMemoryServer::callback (CORBA::TransportServer *tserv,
 					     _iiop_ver),
 			      0L /* no tmout */, _max_message_size);
 #endif
-#ifdef USE_SL3
-	    CORBA::Object_var secobj = _orb->resolve_initial_references
-		("TransportSecurity::SecurityManager");
-	    assert(!CORBA::is_nil(secobj));
-	    MICOSL3_TransportSecurity::SecurityManager_impl* secman
-		= dynamic_cast<MICOSL3_TransportSecurity::SecurityManager_impl*>(secobj.in());
-	    TransportSecurity::CredentialsCurator_var curator = TransportSecurity::CredentialsCurator::_nil();
-	    TransportSecurity::OwnCredentials_var creds = TransportSecurity::OwnCredentials::_nil();
-	    if (secman != NULL && secman->security_enabled()) {
-		curator = secman->credentials_curator();
-		assert(!CORBA::is_nil(curator));
-		AcceptingContext_var ctx = AcceptingContext::_nil();
-                MICOSL3_TransportSecurity::CredentialsCurator_impl*
-                    curator_impl = dynamic_cast<MICOSL3_TransportSecurity::CredentialsCurator_impl*>
-                    (curator.in());
-                assert(curator_impl != NULL);
-                creds = curator_impl->find_own_credentials_for(t->addr());
-		if (strcmp(t->addr()->proto(), "inet") == 0
-                    && !CORBA::is_nil(creds)) {
-                    ctx = new MICOSL3_SL3TCPIP::TCPIPAcceptingContext
-                        (creds, t->addr(), t->peer());
-		}
-		if (strcmp(t->addr()->proto(), "ssl") == 0
-                    && !CORBA::is_nil(creds)) {
-                    ctx = new MICOSL3_SL3TLS::TLSAcceptingContext
-                        (creds, t);
-                }
-		conn->accepting_context(ctx);
-		conn->own_creds(creds);
-		MICOSL3_TransportSecurity::AcceptingContext_impl* acimpl
-		    = dynamic_cast<MICOSL3_TransportSecurity::AcceptingContext_impl*>
-		    (ctx.in());
-		assert(acimpl != NULL);
-		acimpl->notify_establish_context();
-	    }
-#endif // USE_SL3
+
 	    // this and kill_conn are the only reasons to lock _conns
 
 	    _conns.lock();
