@@ -4852,7 +4852,38 @@ MICO::SharedMemoryProxy::make_conn (CORBA::Object_ptr obj, CORBA::Boolean& timed
      * Because _prof_conns is nothing more than a cache really, we can
      * simply clear it before it grows beyond an arbitrary limit.
      */
-    {
+		 prof = obj->_ior_fwd()->active_profile();
+
+     if (prof) {
+       MapProfConn::iterator i;
+       GIOPConn* conn=NULL;
+       do { // same hack as above
+ #ifdef HAVE_THREADS
+         MICOMT::AutoLock l(_prof_conns);
+ #endif
+ 	i = _prof_conns.find (prof);
+         conn = ( (i!=_prof_conns.end()) ? (*i).second : NULL );
+         // TODO: add timeout here
+       } while (conn != NULL && conn->check_events());
+
+       /*
+        * If yes, then use it
+        */
+
+       if (conn != NULL) {
+				 return conn;
+       }
+
+       /*
+        * There was an active (connected) profile, but the conn is gone.
+        * Invalidate active profile; we might have to reconnect using an
+        * alternate address
+        */
+
+       obj->_ior_fwd()->active_profile((CORBA::IORProfile *) 0);
+     }
+
+		 {
 #ifdef HAVE_THREADS
      MICOMT::AutoLock l(_prof_conns);
 #endif
@@ -4896,23 +4927,19 @@ MICO::SharedMemoryProxy::make_conn (CORBA::Object_ptr obj, CORBA::Boolean& timed
 	     */
 
 	    version = 0;
-
+			if (prof->id() == CORBA::IORProfile::TAG_SHM_IOP) {
+					MICO::ProfileIIOPVersionProvider* version_provider
+							= dynamic_cast<MICO::ProfileIIOPVersionProvider*>(prof);
+					//assert(version_provider != NULL);
+					if (version_provider != NULL) {
+							version = version_provider->iiop_version();
+					}
+					// Terminal Bridge needs IOR which means IIOP 1.2+
+					if (!_orb->plugged() && version < 0x0102)
+							version = 0x0102;
+			}
             CORBA::ULong timeout = 0;
-#ifdef USE_MESSAGING
-            try {
-                CORBA::Policy_var pol
-                    = obj->_get_policy(MICOPolicy::RELATIVE_CB_TIMEOUT_POLICY_TYPE);
-                MICOPolicy::RelativeConnectionBindingTimeoutPolicy_var tpol
-                    = MICOPolicy::RelativeConnectionBindingTimeoutPolicy::_narrow(pol);
-                assert(!is_nil(tpol));
-                // needs to convert TimeBase::TimeT which is in 0.1us (100 ns)
-                // into ms
-                // There is an assumption that max timeout is 2^31 ms
-                timeout = tpol->relative_expiry() / 10000;
-            }
-            catch (const CORBA::INV_POLICY&) {
-            }
-#endif // USE_MESSAGING
+
 	    GIOPConn *conn = make_conn (addr, timeout, timedout, 1, version
 					);
 	    if (conn) {

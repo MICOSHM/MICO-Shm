@@ -3301,8 +3301,8 @@ CORBA::ORB_init (int &argc, char **argv, const char *_id)
 #endif
 #endif
     PInterceptor::PI::_init();
-		Boolean run_shm = FALSE;
-    Boolean run_iiop_server = TRUE;
+		Boolean run_shm = TRUE;
+    Boolean run_iiop_server = FALSE;
     Boolean run_iiop_proxy = TRUE;
 		Boolean run_shm_proxy = TRUE;
     Boolean iiop_blocking = FALSE;

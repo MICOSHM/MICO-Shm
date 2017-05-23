@@ -85,7 +85,7 @@ MICO::CSharedMemory::Attach()
 bool
 MICO::CSharedMemory::Detach()
 {
-   munmap(m_Ptr, m_nSize);
+   //munmap(m_Ptr, m_nSize);
 }
 
 bool
@@ -163,7 +163,12 @@ MICO::SharedMemoryTransport::connect (const CORBA::Address *a, CORBA::ULong time
 void
 MICO::SharedMemoryTransport::open (CORBA::Long thefd)
 {
+  OSNet::sock_ndelay(3, TRUE);
+  SocketTransport::open(3);
 
+  is_buffering = FALSE;
+  is_blocking = FALSE;
+  state = Open;
 }
 
 void
