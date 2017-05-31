@@ -147,6 +147,16 @@ MICO::SharedMemoryTransport::~SharedMemoryTransport () {
 CORBA::Boolean
 MICO::SharedMemoryTransport::bind (const CORBA::Address *a)
 {
+  //SharedMemoryAddress *shma = (SharedMemoryAddress *)a;
+
+  //try{
+    //MICO::CSharedMemory shmMemory(shma->address());
+    //shmMemory.Create((short)shma->length());
+    //shmMemory.Attach();
+  //} catch(std::exception& e){
+    //cout << "Exception: " << e.what();
+  //}
+
     return TRUE;
 }
 
@@ -156,6 +166,19 @@ MICO::SharedMemoryTransport::connect (const CORBA::Address *a, CORBA::ULong time
     shmFDAddress = (SharedMemoryAddress *)a;
 
     shm_fd = shm_open(shmFDAddress->address().c_str(), O_RDWR, 0);
+
+    OSMisc::TimeVal tm;
+  	int addsec = timeout / 1000;
+  	int addusec = (timeout % 1000) * 1000;
+  	tm.tv_sec  = addsec;
+  	tm.tv_usec = addusec;
+  	fd_set rset;
+  	fd_set wset;
+  	fd_set xset;
+  	FD_ZERO(&rset);
+  	FD_ZERO(&wset);
+  	FD_ZERO(&xset);
+  	FD_SET(fd, &wset);
 
     return TRUE;
 }
@@ -218,7 +241,9 @@ MICO::SharedMemoryTransport::peer ()
 
 MICO::SharedMemoryTransportServer::SharedMemoryTransportServer ()
 {
+    fd = 3;
 
+    is_blocking = FALSE;
 }
 
 void
@@ -243,6 +268,28 @@ CORBA::Transport *
 MICO::SharedMemoryTransportServer::accept ()
 {
     SharedMemoryTransport *ret;
+
+    #if defined(HAVE_THREADS) && defined(HAVE_POLL_H)
+        ::pollfd pfd;
+
+        pfd.fd = fd;
+        pfd.events = POLLIN | POLLOUT | POLLPRI | POLLHUP | POLLERR | POLLNVAL;
+
+        if (poll (&pfd, 1, -1) < 0) {
+    	if (MICO::Logger::IsLogged (MICO::Logger::Transport)) {
+    	    MICOMT::AutoDebugLock __lock;
+    	    MICO::Logger::Stream (MICO::Logger::Transport)
+    		<< "TCPTransportServer::accept () return:" << errno << endl;
+    	}
+    	return 0;
+        }
+        if (MICO::Logger::IsLogged (MICO::Logger::Transport)) {
+    	MICOMT::AutoDebugLock __lock;
+    	MICO::Logger::Stream (MICO::Logger::Transport)
+    	    << "TCPTransportServer::poll () return:" << pfd.revents << endl;
+        }
+
+    #endif // HAVE_THREADS && HAVE_POLL_H
 
     ret = new SharedMemoryTransport ();
     return ret;

@@ -53,6 +53,7 @@ public:
     LocalAddressParser ();
     ~LocalAddressParser ();
     CORBA::Address *parse (const char *, const char *) const;
+    CORBA::Address *parsed (const char *, const char *, const char *) const;
     CORBA::Boolean has_proto (const char *) const;
 };
 
@@ -86,6 +87,15 @@ public:
 
   CORBA::Boolean resolve_host () const;
 
+};
+
+class SharedMemoryAddressParser : public CORBA::AddressParser {
+public:
+    SharedMemoryAddressParser ();
+    ~SharedMemoryAddressParser ();
+    CORBA::Address *parse (const char *, const char *) const;
+    CORBA::Address *parsed (const char *, const char *, const char *) const;
+    CORBA::Boolean has_proto (const char *) const;
 };
 
 class InetAddress : public CORBA::Address {
@@ -166,6 +176,7 @@ public:
     InetAddressParser ();
     ~InetAddressParser ();
     CORBA::Address *parse (const char *, const char *) const;
+    CORBA::Address *parsed (const char *, const char *, const char *) const;
     CORBA::Boolean has_proto (const char *) const;
 };
 
@@ -205,6 +216,7 @@ public:
     UnixAddressParser ();
     ~UnixAddressParser ();
     CORBA::Address *parse (const char *, const char *) const;
+    CORBA::Address *parsed (const char *, const char *, const char *) const;
     CORBA::Boolean has_proto (const char *) const;
 };
 #endif // HAVE_SYS_UN_H

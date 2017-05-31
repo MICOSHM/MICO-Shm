@@ -125,23 +125,28 @@ CORBA::Address::unregister_parser (AddressParser *ap)
     }
 }
 
-std::vector<std::string>
+CORBA::Address *
 CORBA::Address::sharedMemoryParse(const char *_a){
   string semName, length, address, a = _a;
-  std::vector<std::string> addr(3);
+  string proto;
+
+  proto = "-ORBShm";
+
+  ULong i;
+  for (i = 0; i < parsers->size(); ++i) {
+if ((*parsers)[i]->has_proto(proto.c_str()))
+    break;
+  }
 
   int firstIndex = a.find_first_of(":");
   int lastIndex = a.find_last_of(":");
-
-  //Add some kind of error checking for empty a
 
   address = a.substr (0, firstIndex);
   semName = a.substr (firstIndex+1, lastIndex-1);
   length = a.substr(lastIndex+1, a.length());
 
-  addr[0]=address;
-  addr[1]=semName;
-  addr[2]=length;
+  AddressParser *parser = (*parsers)[i];
+  Address *addr = parser->parsed (address.c_str(), semName.c_str(), length.c_str());
 
   return addr;
 }
@@ -249,6 +254,12 @@ MICO::LocalAddressParser::parse (const char *a, const char *) const
     return new LocalAddress;
 }
 
+CORBA::Address *
+MICO::LocalAddressParser::parsed (const char *address, const char *semName, const char *length) const
+{
+    return new LocalAddress;
+}
+
 CORBA::Boolean
 MICO::LocalAddressParser::has_proto (const char *p) const
 {
@@ -328,7 +339,7 @@ MICO::SharedMemoryAddress::make_transport () const
 CORBA::TransportServer *
 MICO::SharedMemoryAddress::make_transport_server () const
 {
-	return 0;
+	return new SharedMemoryTransportServer;
 
 }
 
@@ -387,6 +398,46 @@ MICO::SharedMemoryAddress::resolve_host () const
 
     return TRUE;
 }
+
+/*************************** InetAddressParser *************************/
+
+
+MICO::SharedMemoryAddressParser::SharedMemoryAddressParser ()
+{
+    CORBA::Address::register_parser (this);
+}
+
+MICO::SharedMemoryAddressParser::~SharedMemoryAddressParser ()
+{
+    CORBA::Address::unregister_parser (this);
+}
+
+CORBA::Address *
+MICO::SharedMemoryAddressParser::parse (const char *str, const char *proto) const
+{
+    SharedMemoryAddress *ia;
+    int length = 0;
+
+    ia = new SharedMemoryAddress ("", "", length);
+
+    return ia;
+}
+
+CORBA::Address *
+MICO::SharedMemoryAddressParser::parsed (const char *address, const char *semName, const char *length) const
+{
+    SharedMemoryAddress *shma = new SharedMemoryAddress(std::string(address), std::string(semName), atoi(length));
+    return shma;
+}
+
+CORBA::Boolean
+MICO::SharedMemoryAddressParser::has_proto (const char *p) const
+{
+
+	return !strcmp ("-ORBShm", p);
+}
+
+static MICO::SharedMemoryAddressParser shm_address_parser;
 
 /****************************** InetAddress *****************************/
 
@@ -886,6 +937,12 @@ MICO::InetAddressParser::parse (const char *str, const char *proto) const
     return ia;
 }
 
+CORBA::Address *
+MICO::InetAddressParser::parsed (const char *address, const char *semName, const char *length) const
+{
+    return 0;
+}
+
 CORBA::Boolean
 MICO::InetAddressParser::has_proto (const char *p) const
 {
@@ -1044,6 +1101,12 @@ CORBA::Address *
 MICO::UnixAddressParser::parse (const char *str, const char *) const
 {
     return new UnixAddress (str);
+}
+
+CORBA::Address *
+MICO::UnixAddressParser::parsed (const char *address, const char *semName, const char *length) const
+{
+    return 0;
 }
 
 CORBA::Boolean

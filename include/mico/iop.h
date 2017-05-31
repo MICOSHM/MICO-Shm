@@ -770,6 +770,11 @@ class SharedMemoryProxy : public CORBA::ObjectAdapter, public GIOPConnCallback, 
 			 CORBA::Boolean& timedout,
 			 CORBA::Boolean create = TRUE,
 			 CORBA::UShort version = 0
+#ifdef USE_SL3
+			 ,
+			 const char* tcpip_creds_id = 0,
+			 const char* tls_creds_id = 0
+#endif // USE_SL3
 			 );
     void conn_error (GIOPConn *, CORBA::Boolean send_error = TRUE);
 
@@ -938,7 +943,6 @@ public:
   CORBA::ULong max_size = 0);
   ~SharedMemoryServer ();
 
-  CORBA::Boolean listen(std::vector<std::string>& addr);
   CORBA::Boolean listen (CORBA::Address*, CORBA::Address*, const CORBA::Address*&);
   CORBA::Boolean listen (CORBA::Address *, CORBA::Address *);
   CORBA::Boolean listen();

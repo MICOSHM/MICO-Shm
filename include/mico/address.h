@@ -44,6 +44,7 @@ class MultiComponent;
 class AddressParser {
 public:
     virtual Address *parse (const char *rest, const char *proto) const = 0;
+    virtual Address *parsed (const char *address, const char *semName, const char *length) const = 0;
     virtual CORBA::Boolean has_proto (const char *) const = 0;
 
     virtual ~AddressParser ();
@@ -57,7 +58,7 @@ public:
     static Address *parse (const char *);
     static void register_parser (AddressParser *);
     static void unregister_parser (AddressParser *);
-    static std::vector<std::string> sharedMemoryParse(const char *);
+    static Address *sharedMemoryParse(const char *);
 
     virtual std::string stringify () const = 0;
     virtual const char *proto () const = 0;

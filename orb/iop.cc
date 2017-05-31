@@ -3199,11 +3199,16 @@ MICO::GIOPConnCallback::send_orb_msg (GIOPConn *conn, ORBMsg::Event ev) {
 MICO::SharedMemoryServer::SharedMemoryServer(CORBA::ORB_ptr orb,
                             CORBA::UShort iiop_ver,
 			    CORBA::ULong max_size)
+			:_orbids_mutex(FALSE, MICOMT::Mutex::Recursive)
 {
+	assert(SharedMemoryServer_instance_ == NULL);
+	SharedMemoryServer_instance_ = this;
+
 	_orb = orb;
 
 	_max_message_size = max_size;
 	_iiop_ver = iiop_ver;
+
 	_orb->register_oa (this);
 }
 
@@ -3252,31 +3257,6 @@ MICO::SharedMemoryServer::~SharedMemoryServer ()
 }
 
 CORBA::Boolean
-MICO::SharedMemoryServer::listen (vector<std::string>& addr)
-{
-    CORBA::IORProfile *prof;
-		MICO::SharedMemoryAddress shma =  SharedMemoryAddress(addr[0],addr[1], (short)atoi(addr[2].c_str()));
-
-		if(!addr.empty()){
-			try{
-				MICO::CSharedMemory shmMemory(addr[0]);
-				shmMemory.Create((short)atoi(addr[2].c_str()));
-				shmMemory.Attach();
-			} catch(std::exception& e){
-				cout << "Exception: " << e.what();
-			}
-		}
-
-		prof = shma.make_ior_profile ((CORBA::Octet *)"", 1,CORBA::MultiComponent(),_iiop_ver);
-
-    //bound_addr = tserv->addr();
-
-    _orb->ior_template()->add_profile (prof);
-
-    return TRUE;
-}
-
-CORBA::Boolean
 MICO::SharedMemoryServer::listen (CORBA::Address *addr, CORBA::Address *fwproxyaddr)
 {
     const CORBA::Address* bound_addr;
@@ -3286,6 +3266,7 @@ MICO::SharedMemoryServer::listen (CORBA::Address *addr, CORBA::Address *fwproxya
 CORBA::Boolean
 MICO::SharedMemoryServer::listen (CORBA::Address *addr, CORBA::Address *fwproxyaddr, const CORBA::Address*& bound_addr)
 {
+
     CORBA::IORProfile *prof;
     CORBA::TransportServer *tserv = addr->make_transport_server ();
 #ifdef HAVE_THREADS
@@ -3293,50 +3274,19 @@ MICO::SharedMemoryServer::listen (CORBA::Address *addr, CORBA::Address *fwproxya
 	tserv->create_thread();
 #endif
     if (!tserv->bind (addr)) {
-      if (MICO::Logger::IsLogged (MICO::Logger::IIOP)) {
-	MICOMT::AutoDebugLock __lock;
-	MICO::Logger::Stream (MICO::Logger::IIOP)
-	  << "IIOP: cannot bind to " << addr->stringify() << ": "
-	  << tserv->errormsg() << endl;
-      }
       return FALSE;
     }
+
     tserv->block ( Dispatcher()->isblocking() );
     tserv->aselect ( Dispatcher(), this);
 
     if (!fwproxyaddr) {
-        prof = tserv->addr()->make_ior_profile ((CORBA::Octet *)"", 1,
-						CORBA::MultiComponent(),
-                                                _iiop_ver);
-    } else {
-        prof = fwproxyaddr->make_ior_profile ((CORBA::Octet *)"", 1,
-                                              CORBA::MultiComponent(),
-                                              _iiop_ver);
+					prof = addr->make_ior_profile ((CORBA::Octet *)"", 1,CORBA::MultiComponent(),_iiop_ver);
+
     }
 
+    bound_addr = addr;
 
-    bound_addr = tserv->addr();
-    if (MICO::Logger::IsLogged (MICO::Logger::IIOP)) {
-      MICOMT::AutoDebugLock __lock;
-      MICO::Logger::Stream (MICO::Logger::IIOP)
-	<< "IIOP: server listening on "
-	<< tserv->addr()->stringify()
-	<< " IIOP version "
-	<< (_iiop_ver >> 8) << "." << (_iiop_ver & 255)
-	<< endl;
-    }
-
-    /*
-     * install an IIOP profile tag in the ORB's object template.
-     * object adapters will use this template to generate new object
-     * references...
-     */
-
-    if (MICO::Logger::IsLogged (MICO::Logger::GIOP)) {
-	MICOMT::AutoDebugLock __lock;
-	MICO::Logger::Stream (MICO::Logger::GIOP)
-	    << "binding to " << prof->addr()->stringify() << endl;
-    }
     _orb->ior_template()->add_profile (prof);
 
     _tservers.push_back(tserv);
@@ -3344,6 +3294,7 @@ MICO::SharedMemoryServer::listen (CORBA::Address *addr, CORBA::Address *fwproxya
     if (!MICO::MTManager::thread_pool())
 	tserv->start();
 #endif // HAVE_THREADS
+
     return TRUE;
 }
 
@@ -3356,14 +3307,14 @@ MICO::SharedMemoryServer::listen ()
 		addr.push_back("");
 		addr.push_back("0");
 
-		CORBA::IORProfile *prof;
+		//CORBA::IORProfile *prof;
 		MICO::SharedMemoryAddress shma =  SharedMemoryAddress(addr[0],addr[1], (short)atoi(addr[2].c_str()));
 
-		prof = shma.make_ior_profile ((CORBA::Octet *)"", 1,CORBA::MultiComponent(),_iiop_ver);
+		//prof = shma.make_ior_profile ((CORBA::Octet *)"", 1,CORBA::MultiComponent(),_iiop_ver);
 
-		_orb->ior_template()->add_profile (prof);
+		//_orb->ior_template()->add_profile (prof);
 
-    return TRUE;
+    return listen(&shma, 0);
 }
 
 void
@@ -4703,260 +4654,624 @@ MICO::SharedMemoryProxy::make_conn (const CORBA::Address *addr,
 			    CORBA::Boolean& timedout,
 			    CORBA::Boolean docreate,
 			    CORBA::UShort version
-			    )
-{
-    MICO::GIOPConn *conn;
+					#ifdef USE_SL3
+								    ,
+								    const char* tcpip_creds_id,
+								    const char* tls_creds_id
+					#endif // USE_SL3
+								    )
+					{
+					    //cerr << "IIOPProxy::make_conn: " << addr->stringify() << endl;
+					    if (MICO::Logger::IsLogged(MICO::Logger::Security)) {
+						MICOMT::AutoDebugLock lock;
+						MICO::Logger::Stream(MICO::Logger::Security)
+						    << "SL3TS: IIOPProxy::make_conn: " << addr->stringify() << endl;
+					    }
+					    MICO::GIOPConn *conn;
 
-    MICOMT::AutoLock l(_conns);
-    // kcg: we can receive version == 0 for other than IIOP and SSL transports
-    if (version == 0 || version > _giop_ver) {
-      version = _giop_ver;
-    }
+					    MICOMT::AutoLock l(_conns);
+					    // kcg: we can receive version == 0 for other than IIOP and SSL transports
+					    if (version == 0 || version > _giop_ver) {
+					      version = _giop_ver;
+					    }
 
-    MapAddrConn::iterator i = _conns[version].find (addr);
-    if (i != _conns[version].end()) {
-	assert(version == (*i).second->codec()->version());
-#if 1
-        /*
-         * the check_events() is a workaround for a problem
-         * on Linux and Win32 (and probably other OSes as well):
-         *   if you send something on a TCP connection that has
-         *   been closed by the peer you will get an error on
-         *   the next read() instead of beeing able to read
-         *   the remaining data until you reach EOF.
-         */
-        if ((*i).second->check_events()) {
-            while ((i = _conns[version].find (addr)) != _conns[version].end()) {
-                if (!(*i).second->check_events())
-                {
-                    conn = (*i).second;
-#ifdef HAVE_THREADS
-		    // The connection was created and I have it in _conns map
-		    // so I don't need to increment active ref count
-		    // I'll only test if it's active
-                    //if( conn->active_ref ())
-		    if (conn->state() == MICOMT::StateRefCnt::Active)
-                        return conn;
-                    else
-                        return 0;
-#else // HAVE_THREADS
-		    return conn;
-#endif // HAVE_THREADS
-                }
-            }
-        } else
-#endif // 1
-	{
-            conn = (*i).second;
-#ifdef HAVE_THREADS
-	    // The connection was created and I have it in _conns map
-	    // so I don't need to increment active ref count
-	    // I'll only test if it's active
-	    //if( conn->active_ref ())
-	    if (conn->state() == MICOMT::StateRefCnt::Active)
-                return conn;
-            else
-                return 0;
-#else // HAVE_THREADS
-	    return conn;
-#endif // HAVE_THREADS
-        }
-    }
+					    MapAddrConn::iterator i = _conns[version].find (addr);
+					    if (i != _conns[version].end()) {
+						assert(version == (*i).second->codec()->version());
+					#if 1
+					        /*
+					         * the check_events() is a workaround for a problem
+					         * on Linux and Win32 (and probably other OSes as well):
+					         *   if you send something on a TCP connection that has
+					         *   been closed by the peer you will get an error on
+					         *   the next read() instead of beeing able to read
+					         *   the remaining data until you reach EOF.
+					         */
+					        if ((*i).second->check_events()) {
+					            while ((i = _conns[version].find (addr)) != _conns[version].end()) {
+					                if (!(*i).second->check_events())
+					                {
+					                    conn = (*i).second;
+					#ifdef USE_SL3
+							    CORBA::String_var conn_creds_id = conn->creds_id();
+							    if ((tcpip_creds_id != NULL && strcmp(conn_creds_id.in(), tcpip_creds_id) != 0)
+								|| (tls_creds_id != NULL && strcmp(conn_creds_id.in(), tls_creds_id) != 0))
+								continue;
+					#endif // USE_SL3
+					#ifdef HAVE_THREADS
+							    // The connection was created and I have it in _conns map
+							    // so I don't need to increment active ref count
+							    // I'll only test if it's active
+					                    //if( conn->active_ref ())
+							    if (conn->state() == MICOMT::StateRefCnt::Active)
+					                        return conn;
+					                    else
+					                        return 0;
+					#else // HAVE_THREADS
+							    return conn;
+					#endif // HAVE_THREADS
+					                }
+					            }
+					        } else
+					#endif // 1
+						{
+					            conn = (*i).second;
+					#ifdef USE_SL3
+						    CORBA::String_var conn_creds_id = conn->creds_id();
+						    if ((tcpip_creds_id != NULL && strcmp(conn_creds_id.in(), tcpip_creds_id) == 0)
+							|| (tls_creds_id != NULL && strcmp(conn_creds_id.in(), tls_creds_id) == 0)) {
+							// kcg: this is really ugly code.
+					#endif // USE_SL3
+					#ifdef HAVE_THREADS
+						    // The connection was created and I have it in _conns map
+						    // so I don't need to increment active ref count
+						    // I'll only test if it's active
+						    //if( conn->active_ref ())
+						    if (conn->state() == MICOMT::StateRefCnt::Active)
+					                return conn;
+					            else
+					                return 0;
+					#else // HAVE_THREADS
+						    return conn;
+					#endif // HAVE_THREADS
+					#ifdef USE_SL3
+						    // kcg: close ugly block
+						    }
+					#endif // USE_SL3
+					        }
+					    }
 
-    if (!docreate)
-	return 0;
-#ifdef HAVE_THREADS
-    if ( !_orb->resource_manager ().acquire_connection () ) {
-	// raise Exception - do what ever nessesary
-	if (MICO::Logger::IsLogged (MICO::Logger::GIOP)) {
-	    MICOMT::AutoDebugLock __lock;
-	    MICO::Logger::Stream (MICO::Logger::GIOP)
-		<< "connect: out of connections" << endl;
-	}
-	return 0;
-    }
-#endif
+					    if (!docreate)
+						return 0;
+					#ifdef HAVE_THREADS
+					    if ( !_orb->resource_manager ().acquire_connection () ) {
+						// raise Exception - do what ever nessesary
+						if (MICO::Logger::IsLogged (MICO::Logger::GIOP)) {
+						    MICOMT::AutoDebugLock __lock;
+						    MICO::Logger::Stream (MICO::Logger::GIOP)
+							<< "connect: out of connections" << endl;
+						}
+						return 0;
+					    }
+					#endif
 
-    if (MICO::Logger::IsLogged (MICO::Logger::GIOP)) {
-      MICOMT::AutoDebugLock __lock;
-      MICO::Logger::Stream (MICO::Logger::GIOP)
-	<< "IIOP: making new GIOP "
-	<< (version>>8) << "." << (version&255)
-	<< " connection to " << addr->stringify()
-	<< endl;
-    }
+					    if (MICO::Logger::IsLogged (MICO::Logger::GIOP)) {
+					      MICOMT::AutoDebugLock __lock;
+					      MICO::Logger::Stream (MICO::Logger::GIOP)
+						<< "IIOP: making new GIOP "
+						<< (version>>8) << "." << (version&255)
+						<< " connection to " << addr->stringify()
+						<< endl;
+					    }
 
-    CORBA::Transport *t = addr->make_transport();
+					#ifdef USE_SL3
+					    CORBA::Object_var secobj = _orb->resolve_initial_references
+						("TransportSecurity::SecurityManager");
+					    assert(!CORBA::is_nil(secobj));
+					    MICOSL3_TransportSecurity::SecurityManager_impl* secman
+						= dynamic_cast<MICOSL3_TransportSecurity::SecurityManager_impl*>(secobj.in());
+					    TransportSecurity::CredentialsCurator_var curator = TransportSecurity::CredentialsCurator::_nil();
+					    TransportSecurity::OwnCredentials_var creds = TransportSecurity::OwnCredentials::_nil();
+					    string bind_addr = "";
+					    if (secman != NULL && secman->security_enabled()) {
+						if (MICO::Logger::IsLogged(MICO::Logger::Security)) {
+						    MICOMT::AutoDebugLock lock;
+						    MICO::Logger::Stream(MICO::Logger::Security)
+							<< "SL3TS: address proto: " << addr->proto() << endl;
+						}
+						curator = secman->credentials_curator();
+					        assert(!CORBA::is_nil(curator));
+						if (strcmp(addr->proto(), "inet") == 0) {
+						    bind_addr = "inet:";
+						    creds = curator->get_own_credentials(tcpip_creds_id);
+						}
+						if (strcmp(addr->proto(), "ssl") == 0) {
+					  	    creds = curator->get_own_credentials(tls_creds_id);
+						    bind_addr = "ssl:inet:";
+						    // kcg: this is an ugly "trick" how to propagate certain creds
+						    // down to the SSL transport
+						    MICOSSL::SSLTransport::transp_creds(creds);
+						}
+						assert(!CORBA::is_nil(creds));
+					    }
+					#endif // USE_SL3
 
-    if (!t->connect (addr, timeout, timedout)) {
-      if (MICO::Logger::IsLogged (MICO::Logger::GIOP)) {
-	MICOMT::AutoDebugLock __lock;
-	MICO::Logger::Stream (MICO::Logger::GIOP)
-	  << "IIOP: connect to " << addr->stringify()
-	  << " failed: " << t->errormsg() << endl;
-      }
-      delete t;
-#ifdef HAVE_THREADS
-      _orb->resource_manager ().release_connection ();
-#endif
-      return 0;
-    }
-#ifdef HAVE_THREADS
-    CORBA::Boolean __use_reader_thread = TRUE;
-    CORBA::Dispatcher* disp = NULL;
-    if (MICO::MTManager::reactive_client()) {
-        __use_reader_thread = FALSE;
-        disp = _orb->dispatcher();
-    }
-    else {
-        disp = _orb->create_dispatcher();
-    }
-    CORBA::Boolean __use_writer_thread = FALSE;
-    conn =
-        new GIOPConn (disp, t, this,
-		      new GIOPCodec (new CDRDecoder, new CDREncoder,
-                                     version),
-		      0L /* no tmout */, _max_message_size,
-                      CLIENT_SIDE,
-		      __use_reader_thread, __use_writer_thread);
-#else
-    conn =
-	new GIOPConn (Dispatcher(), t, this,
-		      new GIOPCodec (new CDRDecoder, new CDREncoder,
-                                     version),
-		      0L /* no tmout */, _max_message_size);
-#endif
+					    CORBA::Transport *t = addr->make_transport();
 
-    _conns[version][t->peer()] = conn;
-#ifdef HAVE_THREADS
-    conn->start();
-    if (conn->active_ref ())
-        return conn;
-    else
-        return 0;
-#else // HAVE_THREADS
-    return conn;
-#endif // HAVE_THREADS
-}
+					#ifdef USE_SL3
+					//      MICO::InetAddress* c_addr = new MICO::InetAddress("localhost", 4567);
+					//      assert(t->bind(c_addr));
+					    if (secman != NULL && secman->security_enabled()) {
+						TransportSecurity::CredentialsInitiator_var cinit
+						    = creds->the_initiator();
+						TransportSecurity::TransportInitiator_var initiator
+						    = TransportSecurity::TransportInitiator::_narrow(cinit);
+						assert(!CORBA::is_nil(initiator));
+						CORBA::Boolean binded = FALSE;
+						bind_addr += initiator->host();
+						bind_addr += ":";
+						if (initiator->low_port() != 0) {
+						    if (initiator->low_port() < initiator->high_port()) {
+							// we will try to bind to specified port range
+							for (CORBA::ULong i = initiator->low_port();
+							     i <= initiator->high_port();
+							     i++) {
+							    string naddr = bind_addr + xdec(i);
+							    if (MICO::Logger::IsLogged(MICO::Logger::Security)) {
+								MICOMT::AutoDebugLock lock;
+								MICO::Logger::Stream(MICO::Logger::Security)
+								    << "SL3TS: naddr: " << naddr << endl;
+							    }
+							    CORBA::Address* xaddr = CORBA::Address::parse(naddr.c_str());
+							    assert(xaddr);
+							    if (t->bind(xaddr)) {
+								delete xaddr;
+								binded = TRUE;
+								break;
+							    }
+							    if (MICO::Logger::IsLogged(MICO::Logger::Security)) {
+								MICOMT::AutoDebugLock lock;
+								MICO::Logger::Stream(MICO::Logger::Security)
+								    << "SL3TS: binding to " << naddr << " failed" << endl;
+							    }
+							}
+						    }
+						    else {
+							// high_port < low_port => we will try to bind to low_port
+							string naddr = bind_addr + xdec(initiator->low_port());
+							if (MICO::Logger::IsLogged(MICO::Logger::Security)) {
+							    MICOMT::AutoDebugLock lock;
+							    MICO::Logger::Stream(MICO::Logger::Security)
+								<< "SL3TS: naddr2: " << naddr << endl;
+							}
+							CORBA::Address* xaddr = CORBA::Address::parse(naddr.c_str());
+							assert(xaddr);
+							if (!t->bind(xaddr)) {
+							    if (MICO::Logger::IsLogged(MICO::Logger::Security)) {
+								MICOMT::AutoDebugLock lock;
+								MICO::Logger::Stream(MICO::Logger::Security)
+								    << "SL3TS: binding(2) to " << naddr << " failed" << endl;
+							    }
+							}
+							else {
+							    binded = TRUE;
+							}
+							delete xaddr;
+						    }
+						}
+						else {
+						    // we will try binding to system default.
+						    if (MICO::Logger::IsLogged(MICO::Logger::Security)) {
+							MICOMT::AutoDebugLock lock;
+							MICO::Logger::Stream(MICO::Logger::Security)
+							    << "SL3TS: we will try binding to system default." << endl;
+						    }
+						    binded = TRUE;
+						}
+						if (!binded)
+						    return NULL;
+					    }
+					#endif // USE_SL3
+					    if (!t->connect (addr, timeout, timedout)) {
+					      if (MICO::Logger::IsLogged (MICO::Logger::GIOP)) {
+						MICOMT::AutoDebugLock __lock;
+						MICO::Logger::Stream (MICO::Logger::GIOP)
+						  << "IIOP: connect to " << addr->stringify()
+						  << " failed: " << t->errormsg() << endl;
+					      }
+					      delete t;
+					#ifdef HAVE_THREADS
+					      _orb->resource_manager ().release_connection ();
+					#endif
+					      return 0;
+					    }
+					#ifdef HAVE_THREADS
+					    CORBA::Boolean __use_reader_thread = TRUE;
+					    CORBA::Dispatcher* disp = NULL;
+					    if (MICO::MTManager::reactive_client()) {
+					        __use_reader_thread = FALSE;
+					        disp = _orb->dispatcher();
+					    }
+					    else {
+					        disp = _orb->create_dispatcher();
+					    }
+					    CORBA::Boolean __use_writer_thread = FALSE;
+					    conn =
+					        new GIOPConn (disp, t, this,
+							      new GIOPCodec (new CDRDecoder, new CDREncoder,
+					                                     version),
+							      0L /* no tmout */, _max_message_size,
+					                      CLIENT_SIDE,
+							      __use_reader_thread, __use_writer_thread);
+					#else
+					    conn =
+						new GIOPConn (Dispatcher(), t, this,
+							      new GIOPCodec (new CDRDecoder, new CDREncoder,
+					                                     version),
+							      0L /* no tmout */, _max_message_size);
+					#endif
+					#ifdef USE_SL3
+					    if (secman != NULL && secman->security_enabled()) {
+						CORBA::String_var tmp_id = creds->creds_id();
+						string id = tmp_id.in();
+						conn->creds_id(id.c_str());
+						InitiatingContext_var ctx = InitiatingContext::_nil();
+						if (id.find("TCPIP") != string::npos) {
+						    ctx = new MICOSL3_SL3TCPIP::TCPIPInitiatingContext
+							(creds, t->peer(), t->addr());
+						}
+						else if (id.find("TLS") != string::npos) {
+						    ctx = new MICOSL3_SL3TLS::TLSInitiatingContext
+							(creds, t);
+						}
+						else {
+						    // unknown own credentials type
+						    assert(0);
+						}
+						if (MICO::Logger::IsLogged(MICO::Logger::Security)) {
+						    MICOMT::AutoDebugLock lock;
+						    MICO::Logger::Stream(MICO::Logger::Security)
+							<< "SL3TS: created initiating context: " << ctx << endl;
+						}
+						conn->initiating_context(ctx);
+						conn->own_creds(creds);
+						MICOSL3_TransportSecurity::CredentialsCurator_impl* curator_impl
+						    = dynamic_cast<MICOSL3_TransportSecurity::CredentialsCurator_impl*>(curator.in());
+						assert(curator_impl != NULL);
+						curator_impl->add_init_context(ctx);
+						MICOSL3_TransportSecurity::InitiatingContext_impl* icimpl
+						    = dynamic_cast<MICOSL3_TransportSecurity::InitiatingContext_impl*>
+						    (ctx.in());
+						assert(icimpl != NULL);
+						icimpl->notify_establish_context();
+					    }
+					#endif // USE_SL3
+					    _conns[version][t->peer()] = conn;
+					#ifdef HAVE_THREADS
+					    conn->start();
+					    if (conn->active_ref ())
+					        return conn;
+					    else
+					        return 0;
+					#else // HAVE_THREADS
+					    return conn;
+					#endif // HAVE_THREADS
+					}
 
 MICO::GIOPConn *
 MICO::SharedMemoryProxy::make_conn (CORBA::Object_ptr obj, CORBA::Boolean& timedout)
 {
-    CORBA::IORProfile *prof;
-    const CORBA::Address *addr;
-
-    /*
-     * _prof_conns could grow indefinitely if the same object is created
-     * over and over again to perform operations on it.
-     *
-     * Because _prof_conns is nothing more than a cache really, we can
-     * simply clear it before it grows beyond an arbitrary limit.
-     */
-		 prof = obj->_ior_fwd()->active_profile();
-
-     if (prof) {
-       MapProfConn::iterator i;
-       GIOPConn* conn=NULL;
-       do { // same hack as above
- #ifdef HAVE_THREADS
-         MICOMT::AutoLock l(_prof_conns);
- #endif
- 	i = _prof_conns.find (prof);
-         conn = ( (i!=_prof_conns.end()) ? (*i).second : NULL );
-         // TODO: add timeout here
-       } while (conn != NULL && conn->check_events());
-
-       /*
-        * If yes, then use it
-        */
-
-       if (conn != NULL) {
-				 return conn;
-       }
-
-       /*
-        * There was an active (connected) profile, but the conn is gone.
-        * Invalidate active profile; we might have to reconnect using an
-        * alternate address
-        */
-
-       obj->_ior_fwd()->active_profile((CORBA::IORProfile *) 0);
-     }
-
-		 {
-#ifdef HAVE_THREADS
-     MICOMT::AutoLock l(_prof_conns);
-#endif
-     if (_prof_conns.size() > 1000) {
-       for(MapProfConn::iterator it=_prof_conns.begin(); it!=_prof_conns.end();
-           ++it) {
-	   // we can safely delete profile here, since we have cloned it
-	   // into the map (code below)
-          delete (*it).first;
-       }
-       _prof_conns.clear ();
-     }
-    }
-
-    /*
-     * Open a new connection, or select a profile that matches an open
-     * connection.
-     */
-
-    // kcg: tpp->preferences_nocopy() is probably faster than
-    // tpp->preferences() - so when SL3 is not enabled we will
-    // use faster way
-    CORBA::Policy_var policy =
-	obj->_get_policy (MICOPolicy::TRANSPORTPREF_POLICY_TYPE);
-    MICOPolicy::TransportPrefPolicy_var tpp =
-	MICOPolicy::TransportPrefPolicy::_narrow (policy);
-    assert (!CORBA::is_nil (tpp));
-
-    MICOPolicy::TransportPrefPolicy::ProfileTagSeq *prefs =
-	tpp->preferences_nocopy();
-
-    for (CORBA::ULong i = 0; i < prefs->length(); ++i) {
-        CORBA::UShort version;
-        prof = obj->_ior_fwd()->profile ((*prefs)[i]);
-        while (prof) {
-	    addr = prof->addr ();
-	    assert (addr);
-	    /*
-	     * If the address is not local to this machine and
-	     * redirection is set up, change the address
-	     */
-
-	    version = 0;
-			if (prof->id() == CORBA::IORProfile::TAG_SHM_IOP) {
-					MICO::ProfileIIOPVersionProvider* version_provider
-							= dynamic_cast<MICO::ProfileIIOPVersionProvider*>(prof);
-					//assert(version_provider != NULL);
-					if (version_provider != NULL) {
-							version = version_provider->iiop_version();
-					}
-					// Terminal Bridge needs IOR which means IIOP 1.2+
-					if (!_orb->plugged() && version < 0x0102)
-							version = 0x0102;
+	CORBA::IORProfile *prof;
+	const CORBA::Address *addr;
+#ifdef USE_SL3
+	CORBA::Object_var secobj = _orb->resolve_initial_references
+("TransportSecurity::SecurityManager");
+	assert(!CORBA::is_nil(secobj));
+	MICOSL3_TransportSecurity::SecurityManager_impl* secman
+= dynamic_cast<MICOSL3_TransportSecurity::SecurityManager_impl*>(secobj.in());
+	CORBA::String_var tcpip_creds_id = "";
+	CORBA::String_var tls_creds_id = "";
+	OwnCredentialsList_var creds_list = NULL;
+	OwnCredentialsList tcpip_tls_creds;
+	CORBA::ULong creds_pos = 0;
+	CORBA::Boolean prioritize_tls_creds = FALSE;
+	if (secman != NULL && secman->security_enabled()) {
+ContextEstablishmentPolicy_var policy
+		= ContextEstablishmentPolicy::_nil();
+SecurityLevel3::ContextEstablishmentPolicy_var sl3_policy
+		= SecurityLevel3::ContextEstablishmentPolicy::_nil();
+// we try transport policy first
+try {
+		CORBA::Policy_var p = obj->_get_policy(ContextEstablishmentPolicyType);
+		policy = ContextEstablishmentPolicy::_narrow(p);
+} catch (CORBA::BAD_PARAM&) {
+		// this is thrown by MICO and CORBA 2.2. It seems MICO
+		// is not compliant here with CORBA 2.3.
+} catch (CORBA::SystemException) {
+		// CORBA 2.3 and highers might throw either INV_POLICY
+		// or BAD_INV_ORDER exceptions
+}
+// and security level3 policy as the second
+try {
+		CORBA::Policy_var p = obj->_get_policy
+	(SecurityLevel3::ContextEstablishmentPolicyType);
+		sl3_policy = SecurityLevel3::ContextEstablishmentPolicy::_narrow(p);
+} catch (CORBA::BAD_PARAM&) {
+		// this is thrown by MICO and CORBA 2.2. It seems MICO
+		// is not compliant here with CORBA 2.3.
+} catch (CORBA::SystemException) {
+		// CORBA 2.3 and highers might throw either INV_POLICY
+		// or BAD_INV_ORDER exceptions
+}
+if (!CORBA::is_nil(policy)) {
+		// there are credentials set directly on this object reference
+		//cerr << "use policy's creds list" << endl;
+		creds_list = policy->creds_list();
+}
+else if (!CORBA::is_nil(sl3_policy)) {
+		// there are credentials set directly on this object reference
+		// but in the form of CSI creds => we need to transform this list
+		// to the list of underlaying transport creds
+		//cerr << "use securitylevel3 policy's creds list" << endl;
+		SecurityLevel3::OwnCredentialsList_var sl3_creds_list
+	= sl3_policy->creds_list();
+		//cerr << "sl3_creds_list->length(): " << sl3_creds_list->length()
+		//<< endl;
+		creds_list = new OwnCredentialsList;
+		creds_list->length(0);
+		for (CORBA::ULong i = 0; i < sl3_creds_list->length(); i++) {
+	SecurityLevel3::CredsInitiator_var init
+			= sl3_creds_list[i]->creds_initiator();
+	if (!CORBA::is_nil(init)) {
+			MICOSL3_SL3CSI::CSICredsInitiator* csi_init
+		= dynamic_cast<MICOSL3_SL3CSI::CSICredsInitiator*>
+		(init.in());
+			if (csi_init != NULL) {
+		// so finally we have CSICredsInitiator and we can
+		// obtain underlaying transport credentials
+		creds_list->length(creds_list->length() + 1);
+		creds_list[creds_list->length() - 1]
+				= csi_init->transport_credentials();
+		//cerr << "found: " << creds_list[creds_list->length() - 1]->creds_id() << endl;
 			}
-            CORBA::ULong timeout = 0;
-
-	    GIOPConn *conn = make_conn (addr, timeout, timedout, 1, version
-					);
-	    if (conn) {
-	      obj->_ior_fwd()->active_profile (prof);
-#ifdef HAVE_THREADS
-              MICOMT::AutoLock l(_prof_conns);
-#endif
-              if (_prof_conns.count(prof) == 0) {
-                  // we need to add prof/conn pair to the map
-                  _prof_conns[prof->clone()] = conn;
-              }
-	      return conn;
-	    }
-            prof = obj->_ior_fwd()->profile ((*prefs)[i], FALSE, prof);
 	}
-    }
-    return 0;
+		}
+}
+else {
+		// we will use default credentials
+		//cerr << "default creds list used" << endl;
+		CredentialsCurator_var curator = secman->credentials_curator();
+		assert(!CORBA::is_nil(curator));
+		creds_list = curator->default_creds_list();
+}
+//  	for (CORBA::ULong i = 0; i < creds_list->length(); i++) {
+//  	    cerr << i << ". " << (*creds_list)[i]->creds_id() << endl;
+//  	}
+// try to find TCPIP and/or TLS creds creds_id
+for (CORBA::ULong i = 0; i < creds_list->length(); i++) {
+		CORBA::String_var tmp_id = (*creds_list)[i]->creds_id();
+		string id = tmp_id.in();
+		if (id.find("TCPIP") != string::npos) {
+	tcpip_creds_id = id.c_str();
+	tcpip_tls_creds.length(tcpip_tls_creds.length() + 1);
+	tcpip_tls_creds[tcpip_tls_creds.length() - 1] = (*creds_list)[i];
+	creds_pos = i;
+	break;
+		}
+}
+for (CORBA::ULong i = 0; i < creds_list->length(); i++) {
+		CORBA::String_var tmp_id = (*creds_list)[i]->creds_id();
+		string id = tmp_id.in();
+		if (id.find("TLS") != string::npos) {
+	tls_creds_id = id.c_str();
+	tcpip_tls_creds.length(tcpip_tls_creds.length() + 1);
+	tcpip_tls_creds[tcpip_tls_creds.length() - 1] = (*creds_list)[i];
+	if (i < creds_pos)
+			prioritize_tls_creds = TRUE;
+	break;
+		}
+}
+//  	cerr << "tcpip_creds_id: " << tcpip_creds_id.in() << endl;
+//  	cerr << "tls_creds_id: " << tls_creds_id.in() << endl;
+//  	cerr << "creds_pos: " << creds_pos << endl;
+//  	if (prioritize_tls_creds)
+//  	    cerr << "prioritize_tls_creds" << endl;
+//  	else
+//  	    cerr << "NOT prioritize_tls_creds" << endl;
+	}
+#endif // USE_SL3
+	/*
+	 * See if we have already opened a conn for this profile
+	 */
+
+	prof = obj->_ior_fwd()->active_profile();
+
+	if (prof) {
+		MapProfConn::iterator i;
+		GIOPConn* conn=NULL;
+		do { // same hack as above
+#ifdef HAVE_THREADS
+			MICOMT::AutoLock l(_prof_conns);
+#endif
+i = _prof_conns.find (prof);
+			conn = ( (i!=_prof_conns.end()) ? (*i).second : NULL );
+			// TODO: add timeout here
+		} while (conn != NULL && conn->check_events());
+
+		/*
+		 * If yes, then use it
+		 */
+
+		if (conn != NULL) {
+#ifdef USE_SL3
+	// we need to make sure that the returned connection
+	// was created for the used credentials
+	// or connection uses credentials which are already released
+	CORBA::String_var conn_creds_id = conn->creds_id();
+	CORBA::Object_var obj_creds = conn->own_creds();
+	OwnCredentials_var conn_own_creds = OwnCredentials::_narrow
+			(obj_creds);
+	// conn_own_creds might be null in case of not used SL3
+	// i.e. application is started without -ORBSL3 parameter
+	if (strcmp(conn_creds_id.in(), tcpip_creds_id.in()) == 0
+			||strcmp(conn_creds_id.in(), tls_creds_id.in()) == 0
+			||((!CORBA::is_nil(conn_own_creds))
+	 && conn_own_creds->creds_state() == SL3CM::CS_PendingRelease))
+#endif // USE_SL3
+			return conn;
+		}
+
+		/*
+		 * There was an active (connected) profile, but the conn is gone.
+		 * Invalidate active profile; we might have to reconnect using an
+		 * alternate address
+		 */
+
+		obj->_ior_fwd()->active_profile((CORBA::IORProfile *) 0);
+	}
+
+	/*
+	 * _prof_conns could grow indefinitely if the same object is created
+	 * over and over again to perform operations on it.
+	 *
+	 * Because _prof_conns is nothing more than a cache really, we can
+	 * simply clear it before it grows beyond an arbitrary limit.
+	 */
+	{
+#ifdef HAVE_THREADS
+	 MICOMT::AutoLock l(_prof_conns);
+#endif
+	 if (_prof_conns.size() > 1000) {
+		 for(MapProfConn::iterator it=_prof_conns.begin(); it!=_prof_conns.end();
+				 ++it) {
+	 // we can safely delete profile here, since we have cloned it
+	 // into the map (code below)
+				delete (*it).first;
+		 }
+		 _prof_conns.clear ();
+	 }
+	}
+
+	/*
+	 * Open a new connection, or select a profile that matches an open
+	 * connection.
+	 */
+#ifndef USE_SL3
+	// kcg: tpp->preferences_nocopy() is probably faster than
+	// tpp->preferences() - so when SL3 is not enabled we will
+	// use faster way
+	CORBA::Policy_var policy =
+obj->_get_policy (MICOPolicy::TRANSPORTPREF_POLICY_TYPE);
+	MICOPolicy::TransportPrefPolicy_var tpp =
+MICOPolicy::TransportPrefPolicy::_narrow (policy);
+	assert (!CORBA::is_nil (tpp));
+
+	MICOPolicy::TransportPrefPolicy::ProfileTagSeq *prefs =
+tpp->preferences_nocopy();
+#else // USE_SL3
+	CORBA::Policy_var policy =
+obj->_get_policy (MICOPolicy::TRANSPORTPREF_POLICY_TYPE);
+	MICOPolicy::TransportPrefPolicy_var tpp =
+MICOPolicy::TransportPrefPolicy::_narrow (policy);
+	assert (!CORBA::is_nil (tpp));
+
+	MICOPolicy::TransportPrefPolicy::ProfileTagSeq_var prefs =
+tpp->preferences();
+	if (secman != NULL && secman->security_enabled()) {
+// we need to redefine prefs with used creds list in mind
+if (strcmp(tcpip_creds_id.in(), "") != 0
+		&& strcmp(tls_creds_id.in(), "") != 0) {
+		// Both TCPIP and TLS creds found
+		prefs->length(2);
+		if (!prioritize_tls_creds) {
+	//cerr << "TAG_INTERNET_IOP, TAG_SSL_INTERNET_IOP" << endl;
+	prefs[(CORBA::ULong)0] = CORBA::IORProfile::TAG_INTERNET_IOP;
+	prefs[(CORBA::ULong)1] = CORBA::IORProfile::TAG_SSL_INTERNET_IOP;
+		}
+		else {
+	// TLS should have priority
+	//cerr << "TAG_SSL_INTERNET_IOP, TAG_INTERNET_IOP" << endl;
+	prefs[(CORBA::ULong)0] = CORBA::IORProfile::TAG_SSL_INTERNET_IOP;
+	prefs[(CORBA::ULong)1] = CORBA::IORProfile::TAG_INTERNET_IOP;
+		}
+}
+if (strcmp(tcpip_creds_id.in(), "") != 0
+		&& strcmp(tls_creds_id.in(), "") == 0) {
+		// TCPIP creds found && TLS creds not found
+		prefs->length(1);
+		prefs[(CORBA::ULong)0] = CORBA::IORProfile::TAG_INTERNET_IOP;
+		//cerr << "TAG_INTERNET_IOP" << endl;
+}
+if (strcmp(tcpip_creds_id.in(), "") == 0
+		&& strcmp(tls_creds_id.in(), "") != 0) {
+		// TCPIP creds not found && TLS creds found
+		prefs->length(1);
+		prefs[(CORBA::ULong)0] = CORBA::IORProfile::TAG_SSL_INTERNET_IOP;
+		//cerr << "TAG_SSL_INTERNET_IOP" << endl;
+}
+if (strcmp(tcpip_creds_id.in(), "") == 0
+		&& strcmp(tls_creds_id.in(), "") == 0) {
+		// no TCPIP neither TLS creds found
+		//prefs->length(0);
+		//cerr << "No prefered profile!" << endl;
+		// instead of continuing with prefs->length(0)
+		// which will result in COMM_FAILURE thrown
+		// (because of returned NULL connection)
+		// we throw NO_PERMISSION here
+		mico_throw(CORBA::NO_PERMISSION(10001, CORBA::COMPLETED_NO));
+}
+	}
+#endif // USE_SL3
+
+	for (CORBA::ULong i = 0; i < prefs->length(); ++i) {
+			CORBA::UShort version;
+			prof = obj->_ior_fwd()->profile ((*prefs)[i]);
+			while (prof) {
+		addr = prof->addr ();
+		assert (addr);
+		/*
+		 * If the address is not local to this machine and
+		 * redirection is set up, change the address
+		 */
+		if (_reroute != NULL && !addr->is_here()) {
+	addr = _reroute;
+		}
+
+		version = 0;
+					if (prof->id() == CORBA::IORProfile::TAG_SHM_IOP
+							|| prof->id() == CORBA::IORProfile::TAG_SSL_INTERNET_IOP) {
+							MICO::ProfileIIOPVersionProvider* version_provider
+									= dynamic_cast<MICO::ProfileIIOPVersionProvider*>(prof);
+							//assert(version_provider != NULL);
+							if (version_provider != NULL) {
+									version = version_provider->iiop_version();
+							}
+							// Terminal Bridge needs IOR which means IIOP 1.2+
+							if (!_orb->plugged() && version < 0x0102)
+									version = 0x0102;
+					}
+					CORBA::ULong timeout = 0;
+
+		GIOPConn *conn = make_conn (addr, timeout, timedout, 1, version
+#ifdef USE_SL3
+				, tcpip_creds_id, tls_creds_id
+#endif // USE_SL3
+				);
+		if (conn) {
+			obj->_ior_fwd()->active_profile (prof);
+#ifdef HAVE_THREADS
+						MICOMT::AutoLock l(_prof_conns);
+#endif
+						if (_prof_conns.count(prof) == 0) {
+								// we need to add prof/conn pair to the map
+								_prof_conns[prof->clone()] = conn;
+						}
+			return conn;
+		}
+					prof = obj->_ior_fwd()->profile ((*prefs)[i], FALSE, prof);
+}
+	}
+	return 0;
 }
 
 #ifdef HAVE_THREADS
@@ -5152,108 +5467,105 @@ MICO::SharedMemoryProxy::invoke (CORBA::ORBMsgId id, CORBA::Object_ptr obj,
 			 CORBA::ORBRequest *req,
 			 CORBA::Principal_ptr pr, CORBA::Boolean response_exp)
 {
-    CORBA::Boolean timedout = false;
-    GIOPConn *conn = make_conn (obj, timedout);
-    if (!conn) {
-        if (timedout) {
-            CORBA::TIMEOUT ex;
-            req->set_out_args (&ex);
-            _orb->answer_invoke (id, CORBA::InvokeSysEx, CORBA::Object::_nil(),
-                                 req, 0);
-        }
-	else {
-	    CORBA::COMM_FAILURE ex;
-	    req->set_out_args (&ex);
-	    _orb->answer_invoke (id, CORBA::InvokeSysEx, CORBA::Object::_nil(),
-				 req, 0);
-	}
-	return FALSE;
-    }
-#ifdef HAVE_THREADS
-    CORBA::Boolean ref = conn->active_ref();
-    assert(ref);
-#endif
-    if (!conn->codec()->converter()) {
-#ifdef HAVE_THREADS
-      conn->get_exclusive();
-      if (!conn->codec()->converter()) {
-#endif
-	if (MICO::Logger::IsLogged (MICO::Logger::GIOP)) {
-	  MICOMT::AutoDebugLock __lock;
-	  MICO::Logger::Stream (MICO::Logger::GIOP)
-	    << "GIOP: Codeset negotiation with "
-	    << conn->transport()->peer()->stringify()
-	    << " using GIOP version "
-	    << (conn->codec()->version() >> 8) << "."
-	    << (conn->codec()->version() & 255) << endl;
+	CORBA::Boolean timedout = false;
+	GIOPConn *conn = make_conn (obj, timedout);
+	if (!conn) {
+			if (timedout) {
+					CORBA::TIMEOUT ex;
+					req->set_out_args (&ex);
+					_orb->answer_invoke (id, CORBA::InvokeSysEx, CORBA::Object::_nil(),
+															 req, 0);
+			}
+else {
+		CORBA::COMM_FAILURE ex;
+		req->set_out_args (&ex);
+		_orb->answer_invoke (id, CORBA::InvokeSysEx, CORBA::Object::_nil(),
+			 req, 0);
+}
+return FALSE;
 	}
 
-	if (!conn->codec()->setup_codeset_ids (obj)) {
-	    if (MICO::Logger::IsLogged (MICO::Logger::GIOP)) {
+	if (!conn->codec()->converter()) {
+#ifdef HAVE_THREADS
+		conn->get_exclusive();
+		if (!conn->codec()->converter()) {
+#endif
+if (MICO::Logger::IsLogged (MICO::Logger::GIOP)) {
+	MICOMT::AutoDebugLock __lock;
+	MICO::Logger::Stream (MICO::Logger::GIOP)
+		<< "GIOP: Codeset negotiation with "
+		<< conn->transport()->peer()->stringify()
+		<< " using GIOP version "
+		<< (conn->codec()->version() >> 8) << "."
+		<< (conn->codec()->version() & 255) << endl;
+}
+
+if (!conn->codec()->setup_codeset_ids (obj)) {
+		if (MICO::Logger::IsLogged (MICO::Logger::GIOP)) {
+	MICOMT::AutoDebugLock __lock;
+	MICO::Logger::Stream (MICO::Logger::GIOP)
+			<< "GIOP: Codeset negotiation with "
+			<< conn->transport()->peer()->stringify()
+			<< " has failed" << endl;
+		}
+
+		CORBA::DATA_CONVERSION ex;
+		req->set_out_args (&ex);
+		_orb->answer_invoke (id, CORBA::InvokeSysEx,
+			 CORBA::Object::_nil(),
+			 req, 0);
+		return FALSE;
+}
+#ifdef HAVE_THREADS
+		}
+		conn->release_exclusive();
+#endif
+	}
+
+	// I think that we can allocate for oneway call yet another msgid
+	// so in case of using oneway calls the msgids are scaled after two not after
+	// one because we've already allocated it in ORB::invoke_async and now here
+	CORBA::ORB::MsgId __id = CORBA::ORB::get_msgid(id);
+	if (__id == 0)
+__id = obj->_orbnc()->new_msgid ();
+
+	if (MICO::Logger::IsLogged (MICO::Logger::GIOP)) {
 		MICOMT::AutoDebugLock __lock;
 		MICO::Logger::Stream (MICO::Logger::GIOP)
-		    << "GIOP: Codeset negotiation with "
-		    << conn->transport()->peer()->stringify()
-		    << " has failed" << endl;
-	    }
-
-	    CORBA::DATA_CONVERSION ex;
-	    req->set_out_args (&ex);
-	    _orb->answer_invoke (id, CORBA::InvokeSysEx,
-				 CORBA::Object::_nil(),
-				 req, 0);
-	    return FALSE;
+<< "GIOP: sending Request to "
+<< conn->transport()->peer()->stringify()
+<< " msgid is " << __id << endl;
 	}
+
+	GIOPOutContext out (conn->codec(), conn->codec()->converter());
+	if (!conn->codec()->put_invoke_request (out, __id, response_exp,
+						obj, req, pr)) {
+			CORBA::MARSHAL ex;
+req->set_out_args (&ex);
+_orb->answer_invoke (id, CORBA::InvokeSysEx, CORBA::Object::_nil(),
+				 req, 0);
 #ifdef HAVE_THREADS
-      }
-      conn->release_exclusive();
-#endif
-    }
-
-    // I think that we can allocate for oneway call yet another msgid
-    // so in case of using oneway calls the msgids are scaled after two not after
-    // one because we've already allocated it in ORB::invoke_async and now here
-    CORBA::ORB::MsgId __id = CORBA::ORB::get_msgid(id);
-    if (__id == 0)
-	__id = obj->_orbnc()->new_msgid ();
-
-    if (MICO::Logger::IsLogged (MICO::Logger::GIOP)) {
-      MICOMT::AutoDebugLock __lock;
-      MICO::Logger::Stream (MICO::Logger::GIOP)
-	<< "GIOP: sending Request to "
-	<< conn->transport()->peer()->stringify()
-	<< " msgid is " << __id << endl;
-    }
-
-    GIOPOutContext out (conn->codec(), conn->codec()->converter());
-    if (!conn->codec()->put_invoke_request (out, __id, response_exp,
-					    obj, req, pr)) {
-        CORBA::MARSHAL ex;
-	req->set_out_args (&ex);
-	_orb->answer_invoke (id, CORBA::InvokeSysEx, CORBA::Object::_nil(),
-			     req, 0);
-#ifdef HAVE_THREADS
-        conn->active_deref();
+			conn->active_deref();
 #endif // HAVE_THREADS
-	return FALSE;
-    }
+return FALSE;
+	}
 
-    if (response_exp) {
-	conn->ref();
-	SharedMemoryProxyInvokeRec *rec = create_invoke();
-	rec->init (id, conn, req);
-	add_invoke (rec);
-    }
-    conn->buffering (!response_exp);
-    conn->output (out._retn());
+	if (response_exp) {
+conn->ref();
+SharedMemoryProxyInvokeRec *rec = create_invoke();
+rec->init (id, conn, req);
+add_invoke (rec);
+	}
+	conn->buffering (!response_exp);
+	conn->output (out._retn());
 #ifndef HAVE_THREADS
-    if (response_exp && Dispatcher()->isblocking() )
-	conn->do_read ( Dispatcher()->isblocking() );
+	if (response_exp && Dispatcher()->isblocking() )
+conn->do_read ( Dispatcher()->isblocking() );
 #endif // HAVE_THREADS
 #ifdef HAVE_THREADS
-    conn->active_deref();
+	conn->active_deref();
 #endif // HAVE_THREADS
-    return TRUE;
+	return TRUE;
 }
 
 CORBA::Boolean
