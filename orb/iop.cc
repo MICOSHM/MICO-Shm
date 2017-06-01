@@ -4343,19 +4343,19 @@ MICO::SharedMemoryServer::callback (CORBA::TransportServer *tserv,
 #endif // HAVE_THREADS
                 break;
             }
-	    const CORBA::Address *addr = t->peer();
-	    assert (addr);
-#ifdef USE_OLD_INTERCEPTORS
-	    CORBA::Boolean r = Interceptor::ConnInterceptor::
-		_exec_client_connect (addr->stringify().c_str());
-	    if (!r) {
-		delete t;
-#ifdef HAVE_THREADS
-		_orb->resource_manager ().release_connection ();
-#endif // HAVE_THREADS
-		break;
-	    }
-#endif // USE_OLD_INTERCEPTORS
+	    //const CORBA::Address *addr = t->peer();
+	    //assert (addr);
+//#ifdef USE_OLD_INTERCEPTORS
+	//    CORBA::Boolean r = Interceptor::ConnInterceptor::
+		//_exec_client_connect (addr->stringify().c_str());
+	    //if (!r) {
+		//delete t;
+//#ifdef HAVE_THREADS
+	//	_orb->resource_manager ().release_connection ();
+//#endif // HAVE_THREADS
+	//	break;
+	  //  }
+//#endif // USE_OLD_INTERCEPTORS
 #ifdef HAVE_THREADS
 	    CORBA::Boolean __use_reader_thread = TRUE;
 	    CORBA::Boolean __use_writer_thread = FALSE;

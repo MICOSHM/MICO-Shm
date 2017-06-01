@@ -65,12 +65,12 @@ class OSNet {
 #define WSA_Number_Text_table_n 88
   static WSA_Number_Text_struct WSA_Number_Text_table[WSA_Number_Text_table_n];
 
-  static void PrintWSAError (int n) 
+  static void PrintWSAError (int n)
   {
     int i;
     for( i=0; i < WSA_Number_Text_table_n; i++ ) {
       if (WSA_Number_Text_table[i].Number == n) {
-	std::cout << "WSA: " << 
+	std::cout << "WSA: " <<
 	  WSA_Number_Text_table[i].Number << " = " <<
 	  WSA_Number_Text_table[i].Text << "\n";
 	//break;
@@ -84,7 +84,7 @@ public:
     static void set_errno ()
     {
 	int err = WSAGetLastError();
-  
+
 	switch (err) {
 	case 0:
 	    errno = 0;
@@ -132,9 +132,9 @@ public:
 	    WORD wVersionRequested;
 	    WSADATA wsaData;
 	    int err;
-	
+
 	    wVersionRequested = MAKEWORD( 2, 0 );
-	    
+
 	    err = WSAStartup( wVersionRequested, &wsaData );
 	    assert( err == 0 );
 	    winsock_init = true;
@@ -236,7 +236,7 @@ public:
 	    return 0;
 
 	set_errno();
-	
+
 	return -1;
     }
 

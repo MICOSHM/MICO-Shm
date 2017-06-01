@@ -4007,36 +4007,6 @@ CORBA::ORB_init (int &argc, char **argv, const char *_id)
 				shm_proxy_instance = new MICO::SharedMemoryProxy (orb_instance, giop_ver, max_message_size);
 		}
 
-		// create Shared Memory Segment
-//	if (run_shm) {
-	//	MICO::SharedMemoryServer* shm_server_instance
-		//= new MICO::SharedMemoryServer (orb_instance,
-			//iiop_ver,
-			//max_message_size);
-
-		//	for (mico_vec_size_type i = 0; i < shmaddr.size(); ++i) {
-		//vector<string> addr = Address::sharedMemoryParse (shmaddr[i].c_str());
-		//if (addr.empty()) {
-			//	if (MICO::Logger::IsLogged (MICO::Logger::Error)) {
-			//MICOMT::AutoDebugLock lock;
-			//MICO::Logger::Stream (MICO::Logger::Error)
-				//	<< "Error: ORB_init(): bad address: "
-					//<< shmaddr[i] << endl;
-				//}
-				//mico_throw (CORBA::INITIALIZE());
-		//}
-
-		//if(!shm_server_instance->listen(addr, fwproxyaddr))
-			//	mico_throw (CORBA::INITIALIZE());
-		//delete addr;
-	//}
-		//	if(shmaddr.size() == 0){
-			//		shm_server_instance->listen();
-			//}
-		//} else {
-			//orb_instance->ior_template()->add_profile(new MICO::LocalProfile((Octet *)"", 1));
-	//	}
-
 		if (!use_sl3) {
 	if (run_shm) {
 			MICO::SharedMemoryServer* shm_server_instance

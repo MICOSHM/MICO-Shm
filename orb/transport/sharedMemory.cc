@@ -147,16 +147,6 @@ MICO::SharedMemoryTransport::~SharedMemoryTransport () {
 CORBA::Boolean
 MICO::SharedMemoryTransport::bind (const CORBA::Address *a)
 {
-  //SharedMemoryAddress *shma = (SharedMemoryAddress *)a;
-
-  //try{
-    //MICO::CSharedMemory shmMemory(shma->address());
-    //shmMemory.Create((short)shma->length());
-    //shmMemory.Attach();
-  //} catch(std::exception& e){
-    //cout << "Exception: " << e.what();
-  //}
-
     return TRUE;
 }
 
@@ -188,6 +178,7 @@ MICO::SharedMemoryTransport::open (CORBA::Long thefd)
 {
   OSNet::sock_ndelay(3, TRUE);
   SocketTransport::open(3);
+  shm_fd = thefd;
 
   is_buffering = FALSE;
   is_blocking = FALSE;
@@ -209,7 +200,7 @@ MICO::SharedMemoryTransport::read (void *_b, CORBA::Long len)
     addr = mmap(NULL, len, PROT_READ, MAP_SHARED, shm_fd, 0);
     memcpy(b, addr, len);
 
-    return len;
+    return 0;
 }
 
 CORBA::Long
@@ -221,7 +212,7 @@ MICO::SharedMemoryTransport::write (const void *_b, CORBA::Long len)
     addr = mmap(NULL, len, PROT_READ | PROT_WRITE, MAP_SHARED, shm_fd, 0);
     memcpy(addr, b, len);
 
-    return len;
+    return 0;
 }
 
 const CORBA::Address *
@@ -261,7 +252,19 @@ MICO::SharedMemoryTransportServer::close ()
 CORBA::Boolean
 MICO::SharedMemoryTransportServer::bind (const CORBA::Address *a)
 {
-    return TRUE;
+  SharedMemoryAddress *shma = (SharedMemoryAddress *)a;
+
+  try{
+    MICO::CSharedMemory shmMemory(shma->address());
+    shmMemory.Create((short)shma->length());
+    shmMemory.Attach();
+  } catch(std::exception& e){
+    cout << "Exception: " << e.what();
+  }
+
+  shm_fd = shm_open(shma->address().c_str(), O_RDWR, 0);
+
+  return TRUE;
 }
 
 CORBA::Transport *
@@ -292,6 +295,7 @@ MICO::SharedMemoryTransportServer::accept ()
     #endif // HAVE_THREADS && HAVE_POLL_H
 
     ret = new SharedMemoryTransport ();
+    ret->open(shm_fd);
     return ret;
 }
 
