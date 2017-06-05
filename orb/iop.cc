@@ -2460,7 +2460,7 @@ MICO::GIOPConn::~GIOPConn ()
 	}
     }
 
-    assert (_refcnt == 0);
+    //assert (_refcnt == 0);
 
     delete _transp;
     delete _inbuf;
@@ -4288,12 +4288,12 @@ MICO::SharedMemoryServer::callback (GIOPConn *conn, GIOPConnCallback::Event ev)
 	    << conn->transport()->peer()->stringify()
 	    << " closed or broken" << endl;
 	}
-	const CORBA::Address *addr = conn->transport()->peer();
-	assert (addr);
-#ifdef USE_OLD_INTERCEPTORS
-	Interceptor::ConnInterceptor::
-	    _exec_client_disconnect (addr->stringify().c_str());
-#endif // USE_OLD_INTERCEPTORS
+	//const CORBA::Address *addr = conn->transport()->peer();
+	//assert (addr);
+//#ifdef USE_OLD_INTERCEPTORS
+	//Interceptor::ConnInterceptor::
+	  //  _exec_client_disconnect (addr->stringify().c_str());
+//#endif // USE_OLD_INTERCEPTORS
 	kill_conn (conn);
 	return FALSE;
     }
@@ -4350,11 +4350,11 @@ MICO::SharedMemoryServer::callback (CORBA::TransportServer *tserv,
 		//_exec_client_connect (addr->stringify().c_str());
 	    //if (!r) {
 		//delete t;
-//#ifdef HAVE_THREADS
-	//	_orb->resource_manager ().release_connection ();
-//#endif // HAVE_THREADS
-	//	break;
-	  //  }
+#ifdef HAVE_THREADS
+		_orb->resource_manager ().release_connection ();
+#endif // HAVE_THREADS
+		//break;
+	    //}
 //#endif // USE_OLD_INTERCEPTORS
 #ifdef HAVE_THREADS
 	    CORBA::Boolean __use_reader_thread = TRUE;

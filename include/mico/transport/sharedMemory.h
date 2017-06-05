@@ -79,6 +79,7 @@ class SharedMemoryTransportServer : public SocketTransportServer {
 
     SharedMemoryAddress *shmFDAddress;
     int shm_fd;
+
 public:
   SharedMemoryTransportServer ();
 

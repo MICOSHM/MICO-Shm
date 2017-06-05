@@ -194,25 +194,71 @@ MICO::SharedMemoryTransport::close ()
 CORBA::Long
 MICO::SharedMemoryTransport::read (void *_b, CORBA::Long len)
 {
-    CORBA::Octet *b = (CORBA::Octet *)_b;
-    void *addr;
+  void *addr;
+  addr = mmap(NULL, len, PROT_READ | PROT_WRITE, MAP_SHARED, shm_fd, 0);
 
-    addr = mmap(NULL, len, PROT_READ, MAP_SHARED, shm_fd, 0);
-    memcpy(b, addr, len);
+  //memcpy(addr, b, len);
+  CORBA::Long todo = len;
+  CORBA::Octet *b = (CORBA::Octet *)_b;
+  memcpy(b, addr, len);
 
-    return 0;
+  while (todo > 0) {
+     //memcpy(b, address, len);
+     CORBA::Long r = OSNet::sock_read(shm_fd, b, todo);
+if (r < 0) {
+          OSNet::set_errno();
+    if (state != Open)
+  return r;
+    if (errno == EINTR)
+  continue;
+          // Cygnus CDK sometimes returns errno 0 when read would block
+    if (errno == 0 || errno == EWOULDBLOCK || errno == EAGAIN ||
+              todo != len)
+  break;
+    err = xstrerror (errno);
+    return r;
+} else if (r == 0) {
+    break;
+}
+b += r;
+todo -= r;
+  }
+  return len - todo;
 }
 
 CORBA::Long
 MICO::SharedMemoryTransport::write (const void *_b, CORBA::Long len)
 {
     void *addr;
-
-    CORBA::Octet *b = (CORBA::Octet *)_b;
     addr = mmap(NULL, len, PROT_READ | PROT_WRITE, MAP_SHARED, shm_fd, 0);
+
+    //memcpy(addr, b, len);
+    CORBA::Long todo = len;
+    CORBA::Octet *b = (CORBA::Octet *)_b;
     memcpy(addr, b, len);
 
-    return 0;
+    while (todo > 0) {
+	     //memcpy(addr, b, len);
+       CORBA::Long r = OSNet::sock_write(shm_fd, b, todo);
+	if (r < 0) {
+            OSNet::set_errno();
+	    if (state != Open)
+		return r;
+	    if (errno == EINTR)
+		continue;
+            // Cygnus CDK sometimes returns errno 0 when read would block
+	    if (errno == 0 || errno == EWOULDBLOCK || errno == EAGAIN ||
+                todo != len)
+		break;
+	    err = xstrerror (errno);
+	    return r;
+	} else if (r == 0) {
+	    break;
+	}
+	b += r;
+	//todo -= r;
+    }
+    return len - todo;
 }
 
 const CORBA::Address *
