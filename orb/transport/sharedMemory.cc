@@ -157,18 +157,18 @@ MICO::SharedMemoryTransport::connect (const CORBA::Address *a, CORBA::ULong time
 
     shm_fd = shm_open(shmFDAddress->address().c_str(), O_RDWR, 0);
 
-    OSMisc::TimeVal tm;
-  	int addsec = timeout / 1000;
-  	int addusec = (timeout % 1000) * 1000;
-  	tm.tv_sec  = addsec;
-  	tm.tv_usec = addusec;
-  	fd_set rset;
-  	fd_set wset;
-  	fd_set xset;
-  	FD_ZERO(&rset);
-  	FD_ZERO(&wset);
-  	FD_ZERO(&xset);
-  	FD_SET(fd, &wset);
+    //OSMisc::TimeVal tm;
+  	//int addsec = timeout / 1000;
+  	//int addusec = (timeout % 1000) * 1000;
+  	//tm.tv_sec  = addsec;
+  	//tm.tv_usec = addusec;
+  	//fd_set rset;
+  	//fd_set wset;
+  	//fd_set xset;
+  	//FD_ZERO(&rset);
+  	//FD_ZERO(&wset);
+  	//FD_ZERO(&xset);
+  	//FD_SET(fd, &wset);
 
     return TRUE;
 }
@@ -188,7 +188,8 @@ MICO::SharedMemoryTransport::open (CORBA::Long thefd)
 void
 MICO::SharedMemoryTransport::close ()
 {
-
+    state = Closed;
+    OSNet::sock_close(shm_fd);
 }
 
 CORBA::Long
@@ -197,13 +198,11 @@ MICO::SharedMemoryTransport::read (void *_b, CORBA::Long len)
   void *addr;
   addr = mmap(NULL, len, PROT_READ | PROT_WRITE, MAP_SHARED, shm_fd, 0);
 
-  //memcpy(addr, b, len);
   CORBA::Long todo = len;
   CORBA::Octet *b = (CORBA::Octet *)_b;
   memcpy(b, addr, len);
 
   while (todo > 0) {
-     //memcpy(b, address, len);
      CORBA::Long r = OSNet::sock_read(shm_fd, b, todo);
 if (r < 0) {
           OSNet::set_errno();
@@ -232,13 +231,11 @@ MICO::SharedMemoryTransport::write (const void *_b, CORBA::Long len)
     void *addr;
     addr = mmap(NULL, len, PROT_READ | PROT_WRITE, MAP_SHARED, shm_fd, 0);
 
-    //memcpy(addr, b, len);
     CORBA::Long todo = len;
     CORBA::Octet *b = (CORBA::Octet *)_b;
     memcpy(addr, b, len);
 
     while (todo > 0) {
-	     //memcpy(addr, b, len);
        CORBA::Long r = OSNet::sock_write(shm_fd, b, todo);
 	if (r < 0) {
             OSNet::set_errno();
@@ -256,7 +253,7 @@ MICO::SharedMemoryTransport::write (const void *_b, CORBA::Long len)
 	    break;
 	}
 	b += r;
-	//todo -= r;
+	todo -= r;
     }
     return len - todo;
 }
@@ -292,7 +289,24 @@ MICO::SharedMemoryTransportServer::listen ()
 void
 MICO::SharedMemoryTransportServer::close ()
 {
+  #ifdef HAVE_THREADS
+      if (MICO::Logger::IsLogged (MICO::Logger::Transport)) {
+    MICOMT::AutoDebugLock __lock;
+    MICO::Logger::Stream (MICO::Logger::Transport)
+        << "MICO::TCPTransportServer::close ()" << endl;
+      }
+  #endif // HAVE_THREADS
+      remove_aselect();
 
+      OSNet::sock_shutdown(shm_fd);
+      MICO_Long result = OSNet::sock_close (shm_fd);
+      assert (!result);
+
+      // force blocking mode directly on fd
+      is_blocking = FALSE;
+      this->block(TRUE);
+
+      listening = FALSE;
 }
 
 CORBA::Boolean
