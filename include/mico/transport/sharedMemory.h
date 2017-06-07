@@ -81,14 +81,13 @@ class SharedMemoryTransportServer : public SocketTransportServer {
     int shm_fd;
 
 public:
-  SharedMemoryTransportServer ();
+  SharedMemoryTransportServer (std::string addr, int length);
 
   CORBA::Boolean bind (const CORBA::Address *);
   void close();
 
   CORBA::Transport *accept ();
   const CORBA::Address *addr ();
-
   void listen ();
 };
 

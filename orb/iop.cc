@@ -3268,7 +3268,11 @@ MICO::SharedMemoryServer::listen (CORBA::Address *addr, CORBA::Address *fwproxya
 {
 
     CORBA::IORProfile *prof;
-    CORBA::TransportServer *tserv = addr->make_transport_server ();
+
+		SharedMemoryAddress *shmAddr;
+		shmAddr = (SharedMemoryAddress *)addr;
+
+    CORBA::TransportServer *tserv = shmAddr->make_transport_server_shm (shmAddr->address(), shmAddr->length());
 #ifdef HAVE_THREADS
     if (!MICO::MTManager::thread_pool())
 	tserv->create_thread();
@@ -4292,7 +4296,7 @@ MICO::SharedMemoryServer::callback (GIOPConn *conn, GIOPConnCallback::Event ev)
 	//assert (addr);
 //#ifdef USE_OLD_INTERCEPTORS
 	//Interceptor::ConnInterceptor::
-	  //  _exec_client_disconnect (addr->stringify().c_str());
+	    //_exec_client_disconnect (addr->stringify().c_str());
 //#endif // USE_OLD_INTERCEPTORS
 	kill_conn (conn);
 	return FALSE;

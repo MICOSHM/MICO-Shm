@@ -49,7 +49,7 @@ public:
     virtual void rselect (CORBA::Dispatcher *, CORBA::TransportCallback *);
     virtual void wselect (CORBA::Dispatcher *, CORBA::TransportCallback *);
     virtual void callback (CORBA::Dispatcher *, CORBA::Dispatcher::Event);
- 
+
     virtual void block (CORBA::Boolean doblock = TRUE);
     virtual CORBA::Boolean isblocking ();
     virtual void buffering (CORBA::Boolean dobuffering = TRUE);
@@ -82,7 +82,7 @@ protected:
     void remove_aselect() {
 	if (adisp && acb)
 	    adisp->remove (this, CORBA::Dispatcher::Read);
-	
+
 	adisp = 0;
 	acb = 0;
     };
@@ -116,7 +116,3 @@ public:
 
 }
 #endif // __mico_transport_impl_h__
-
-
-
-

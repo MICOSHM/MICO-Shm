@@ -157,12 +157,12 @@ MICO::SocketTransport::close ()
 
     if (rdisp && rcb)
 	rdisp->remove (this, CORBA::Dispatcher::Read);
-    
+
     rdisp = 0;
     rcb = 0;
     if (wdisp && wcb)
 	wdisp->remove (this, CORBA::Dispatcher::Write);
-    
+
     wdisp = 0;
     wcb = 0;
 }
@@ -371,7 +371,7 @@ MICO::SocketTransportServer::callback (CORBA::Dispatcher *disp,
 
 CORBA::Boolean
 MICO::SocketTransportServer::isblocking () const
-{ 
+{
   return is_blocking;
 }
 
@@ -411,7 +411,7 @@ MICO::SocketTransportServer::copy() const {
 	    << "OP *MICO::SocketTransportServer::copy()" << endl;
     }
     return NULL;
-} 
+}
 
 void
 MICO::SocketTransportServer::_run() {

@@ -2976,13 +2976,12 @@ orb_all.o orb_all.pic.o: security/csi_base.cc security/csiiop.cc security/csiv2.
 orb_all.o orb_all.pic.o: security/csiv2_impl.cc security/gssup.cc security/odm.cc
 orb_all.o orb_all.pic.o: security/security.cc security/securitylevel1.cc
 orb_all.o orb_all.pic.o: security/securitylevel1_impl.cc security/securitylevel2.cc
-orb_all.o orb_all.pic.o: service_info.cc sharedMemory.h ssl.cc ssliop.cc
-orb_all.o orb_all.pic.o: static.cc string.cc tckind.cc timebase.cc transport.cc
-orb_all.o orb_all.pic.o: transport/ltp.cc transport/sharedMemory.cc transport/tcp.cc
-orb_all.o orb_all.pic.o: transport/udp.cc transport/unix.cc typecode.cc
-orb_all.o orb_all.pic.o: typecode_seq.cc uni_conversion.h uni_errors.h uni_strtypes.h
-orb_all.o orb_all.pic.o: uni_types.h util.cc value.cc valuetype.cc valuetype_impl.cc
-orb_all.o orb_all.pic.o: watm.cc
+orb_all.o orb_all.pic.o: service_info.cc ssl.cc ssliop.cc static.cc string.cc
+orb_all.o orb_all.pic.o: tckind.cc timebase.cc transport.cc transport/ltp.cc
+orb_all.o orb_all.pic.o: transport/sharedMemory.cc transport/tcp.cc transport/udp.cc
+orb_all.o orb_all.pic.o: transport/unix.cc typecode.cc typecode_seq.cc uni_conversion.h
+orb_all.o orb_all.pic.o: uni_errors.h uni_strtypes.h uni_types.h util.cc
+orb_all.o orb_all.pic.o: value.cc valuetype.cc valuetype_impl.cc watm.cc
 orb_excepts.o orb_excepts.pic.o: ../include/CORBA.h ../include/mico/address.h
 orb_excepts.o orb_excepts.pic.o: ../include/mico/any.h ../include/mico/array.h
 orb_excepts.o orb_excepts.pic.o: ../include/mico/assert.h ../include/mico/basic.h
@@ -5274,6 +5273,7 @@ transport/ltp.o transport/ltp.pic.o: transport/ltp.cc
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/CORBA-SMALL.h
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/CORBA.h
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/address.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/address_impl.h
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/any.h
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/array.h
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/assert.h
@@ -5281,7 +5281,9 @@ transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/basic.h
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/basic_seq.h
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/buffer.h
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/codec.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/codec_impl.h
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/codeset.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/codeset_impl.h
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/config-win32.h
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/config.h
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/current.h
@@ -5289,24 +5291,35 @@ transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/dii.h
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/dsi.h
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/dynany.h
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/except.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/fast_array.h
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/fixed.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/impl.h
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/imr.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/iop.h
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/ioptypes.h
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/ior.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/ior_impl.h
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/ir.h
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/ir_base.h
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/magic.h
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/memtrace.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/message.h
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/messaging.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/mt_dispatcher.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/mt_manager.h
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/mtdebug.h
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/mtpolicy.h
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/mttypes.h
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/native.h
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/object.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/operation.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/operation_impl.h
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/operators.h
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/orb_excepts.h
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/orb_fwd.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/orb_impl.h
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/orb_mico.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/os-misc.h
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/os-net.h
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/os-thread.h
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/os-thread/dcethreads.h
@@ -5319,6 +5332,10 @@ transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/poa_base.
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/poa_stubs.h
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/policy.h
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/policy2.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/policy_impl.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/poll_dispatcher.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/process.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/process_impl.h
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/security/DomainManager.h
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/security/SecurityAdmin.h
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/security/atlas.h
@@ -5348,9 +5365,12 @@ transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/security/
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/security/transportsecurity_p.h
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/security/trust.h
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/security/userpassword.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/select_dispatcher.h
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/sequence.h
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/sequence_special.h
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/service_info.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/shlib.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/shlib_impl.h
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/static.h
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/string.h
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/sysexc.h
@@ -5361,9 +5381,15 @@ transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/template_
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/throw.h
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/timebase.h
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/transport.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/transport/sharedMemory.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/transport/tcp.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/transport/udp.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/transport/unix.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/transport_impl.h
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/typecode.h
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/typecode_seq.h
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/types.h
+transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/util.h
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/value.h
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/valuetype.h
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/mico/valuetype_impl.h
@@ -5386,7 +5412,7 @@ transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/ministl/simple
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/ministl/string
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/ministl/vector
 transport/sharedMemory.o transport/sharedMemory.pic.o: ../include/ministl/vector.h
-transport/sharedMemory.o transport/sharedMemory.pic.o: sharedMemory.h transport/sharedMemory.cc
+transport/sharedMemory.o transport/sharedMemory.pic.o: transport/sharedMemory.cc
 transport/tcp.o transport/tcp.pic.o: ../include/CORBA-SMALL.h ../include/CORBA.h
 transport/tcp.o transport/tcp.pic.o: ../include/mico/address.h ../include/mico/address_impl.h
 transport/tcp.o transport/tcp.pic.o: ../include/mico/any.h ../include/mico/array.h

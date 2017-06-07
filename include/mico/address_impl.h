@@ -36,7 +36,7 @@ public:
     CORBA::Transport *make_transport () const;
     CORBA::TransportServer *make_transport_server () const;
     CORBA::IORProfile *make_ior_profile (
-	CORBA::Octet *, CORBA::ULong, const CORBA::MultiComponent &,
+	  CORBA::Octet *, CORBA::ULong, const CORBA::MultiComponent &,
         CORBA::UShort version = 0x0100) const;
     CORBA::Boolean is_local () const;
     CORBA::Boolean is_here () const;
@@ -65,9 +65,12 @@ private:
 
 public:
   SharedMemoryAddress (std::string address = "", std::string semName = "", CORBA::UShort length = 0);
+  ~SharedMemoryAddress ();
+
   std::string address() const;
   std::string semName() const;
   int length() const;
+  //mutable CORBA::Long shm_fd;
 
   CORBA::IORProfile *make_ior_profile (
   CORBA::Octet *, CORBA::ULong, const CORBA::MultiComponent &,
@@ -76,6 +79,7 @@ public:
   const char *proto () const;
   CORBA::Transport *make_transport () const;
   CORBA::TransportServer *make_transport_server () const;
+  CORBA::TransportServer *make_transport_server_shm (std::string addr, int length) const;
   CORBA::Boolean is_local () const;
   CORBA::Boolean is_here () const;
 
@@ -134,7 +138,7 @@ public:
     CORBA::Transport *make_transport () const;
     CORBA::TransportServer *make_transport_server () const;
     CORBA::IORProfile *make_ior_profile (
-	CORBA::Octet *, CORBA::ULong, const CORBA::MultiComponent &,
+	     CORBA::Octet *, CORBA::ULong, const CORBA::MultiComponent &,
         CORBA::UShort version = 0x0100) const;
     CORBA::Boolean is_local () const;
     CORBA::Boolean is_here () const;
@@ -193,7 +197,7 @@ public:
     CORBA::Transport *make_transport () const;
     CORBA::TransportServer *make_transport_server () const;
     CORBA::IORProfile *make_ior_profile (
-	CORBA::Octet *, CORBA::ULong, const CORBA::MultiComponent &,
+	  CORBA::Octet *, CORBA::ULong, const CORBA::MultiComponent &,
         CORBA::UShort version = 0x0100) const;
     CORBA::Boolean is_local () const;
     CORBA::Boolean is_here () const;

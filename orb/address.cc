@@ -39,6 +39,9 @@
 #include <mico/impl.h>
 #include <mico/template_impl.h>
 #include <mico/util.h>
+#include <sys/stat.h>        /* For mode constants */
+#include <sys/mman.h>
+#include <fcntl.h>
 
 #endif // FAST_PCH
 
@@ -282,6 +285,10 @@ MICO::SharedMemoryAddress::SharedMemoryAddress(std::string address, std::string 
 {
 }
 
+MICO::SharedMemoryAddress::~SharedMemoryAddress(){
+
+}
+
 std::string
 MICO::SharedMemoryAddress::address() const {
   return _address;
@@ -332,16 +339,33 @@ CORBA::Transport *
 MICO::SharedMemoryAddress::make_transport () const
 {
   CORBA::Transport *ret = new SharedMemoryTransport;
-  ret->open();
+  CORBA::Long shm_fd = shm_open(_address.c_str(), O_CREAT | O_RDWR, 0777);
+  ftruncate(shm_fd, _length);
+  ret->open(shm_fd);
   return ret;
 }
 
 CORBA::TransportServer *
 MICO::SharedMemoryAddress::make_transport_server () const
 {
-	return new SharedMemoryTransportServer;
-
+  //CORBA::Long shm_fd = shm_open(_address.c_str(), O_CREAT | O_RDWR, 0777);
+  //ftruncate(shm_fd, _length);
+  //CORBA::TransportServer *ret = new SharedMemoryTransportServer(_address, _length);
+  return 0;
+  //return ret;
 }
+
+CORBA::TransportServer *
+MICO::SharedMemoryAddress::make_transport_server_shm (std::string addr, int length) const
+{
+  //CORBA::Long shm_fd = shm_open(_address.c_str(), O_CREAT | O_RDWR, 0777);
+  //ftruncate(shm_fd, _length);
+  CORBA::TransportServer *ret = new SharedMemoryTransportServer(_address, _length);
+	//return new SharedMemoryTransportServer(shm_fd);
+  return ret;
+}
+
+
 
 CORBA::Boolean
 MICO::SharedMemoryAddress::is_local () const

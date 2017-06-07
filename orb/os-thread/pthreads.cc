@@ -1,7 +1,7 @@
 /*
  *  MICO --- an Open Source CORBA implementation
  *  Copyright (c) 1997-2008 by The Mico Team
- * 
+ *
  *  OSThread: An abstract Thread class for MICO
  *  Copyright (C) 1999 Andy Kersting & Andreas Schultz
  *
@@ -38,7 +38,7 @@ using namespace std;
 //
 // Global things (used/defined ONLY when HAVE_THREADS is defined)
 //
-#ifdef HAVE_THREADS  
+#ifdef HAVE_THREADS
 
 static pthread_mutex_t __debug_mutex = PTHREAD_MUTEX_INITIALIZER;
 //static pthread_mutex_t __debug_mutex = PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP;
@@ -49,7 +49,7 @@ static pthread_mutex_t __debug_mutex = PTHREAD_MUTEX_INITIALIZER;
  * This function initializes the MICOMT debug module
  */
 void __mtdebug_init()
-{ 
+{
 }
 
 /*!
@@ -266,7 +266,7 @@ MICOMT::Semaphore::Semaphore(unsigned int val)
     __NAME (name ("<UnNamed Semaphore>"));
 #endif // MTDEBUG
     int result = sem_init(&_s, 0, val);
-    assert(result == 0); 
+    assert(result == 0);
 }
 
 /*!
@@ -322,7 +322,7 @@ MICOMT::Semaphore::post()
 
     _condition.signal();
 }
-    
+
 #endif // HAVE_SEMAPHORE_H && !(__APPLE__ && __MACH__)
 
 
@@ -347,7 +347,7 @@ MICOMT::Mutex::Mutex(MICO_Boolean locked, Attribute attr)
 #ifdef MTDEBUG
     if (MICO::Logger::IsLogged(MICO::Logger::Thread)) {
 	__mtdebug_lock();
-	MICO::Logger::Stream (MICO::Logger::Thread) 
+	MICO::Logger::Stream (MICO::Logger::Thread)
 	    << "Mutex::Mutex (initially locked = "
 	    << ((locked == FALSE) ? "FALSE" : "TRUE")
 	    << ", type = "
@@ -382,7 +382,7 @@ MICOMT::Mutex::Mutex(MICO_Boolean locked, Attribute attr)
     }
     result = pthread_mutex_init(&_mutex, &m_attr);
     assert(!result);
-    result = pthread_mutexattr_destroy(&m_attr); 
+    result = pthread_mutexattr_destroy(&m_attr);
     assert(!result);
     if (locked)
 	this->lock();
@@ -392,7 +392,7 @@ MICOMT::Mutex::Mutex(MICO_Boolean locked, Attribute attr)
  * The destructor frees resources used by the mutex.
  */
 MICOMT::Mutex::~Mutex()
-{ 
+{
 #ifdef MTDEBUG
     if (MICO::Logger::IsLogged(MICO::Logger::Thread)) {
 	__mtdebug_lock();
@@ -408,7 +408,7 @@ MICOMT::Mutex::~Mutex()
     int result = pthread_mutex_destroy(&_mutex);
     assert(!result);
 }
-	
+
 //
 // condition variable
 //
@@ -479,7 +479,7 @@ MICOMT::Thread::Thread(MICOMT::Thread::DetachFlag detached)
     _start_error = this->create_thread();
 #endif
 }
- 
+
 //
 // destoying the object that runs our thread is not a good idea
 // kill it first
@@ -490,7 +490,7 @@ MICOMT::Thread::Thread(MICOMT::Thread::DetachFlag detached)
  */
 MICOMT::Thread::~Thread ()
 {
-    // make sure the thread is really finished, before we remove it data structures 
+    // make sure the thread is really finished, before we remove it data structures
     this->wait();
 #ifdef MTDEBUG
     if (MICO::Logger::IsLogged(MICO::Logger::Thread)) {
@@ -510,7 +510,7 @@ MICOMT::Thread::~Thread ()
  *
  * \param arg  Parameters to the thread.
  */
-MICOMT::Thread::ErrorType 
+MICOMT::Thread::ErrorType
 MICOMT::Thread::start(void* arg)
 {
     //FIXME: whats that for ?
@@ -530,7 +530,7 @@ MICOMT::Thread::start(void* arg)
     return this->create_thread();
 #endif // _THR_CREATE_AND_BLOCK
 }
- 
+
 //
 // see if the thread given by ThreadID `id' is the same as this
 // thread:
