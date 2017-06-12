@@ -59,6 +59,8 @@ class SharedMemoryTransport : public SocketTransport {
 
     SharedMemoryAddress *shmFDAddress;
     int shm_fd;
+    int _length;
+    void *_addr;
 
 public:
   virtual ~SharedMemoryTransport ();
@@ -79,6 +81,8 @@ class SharedMemoryTransportServer : public SocketTransportServer {
 
     SharedMemoryAddress *shmFDAddress;
     int shm_fd;
+    int _length;
+    void *_addr;
 
 public:
   SharedMemoryTransportServer (std::string addr, int length);

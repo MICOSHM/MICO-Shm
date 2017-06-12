@@ -174,8 +174,8 @@ MICO::SharedMemoryTransport::connect (const CORBA::Address *a, CORBA::ULong time
   	//FD_SET(fd, &wset);
 
     assert (state == Open);
-    shmFDAddress = (SharedMemoryAddress *)a;
-    shm_fd = shm_open(shmFDAddress->address().c_str(), O_RDWR, 0);
+    //shmFDAddress = (SharedMemoryAddress *)a;
+    //shm_fd = shm_open(shmFDAddress->address().c_str(), O_RDWR, 0);
 
     //if (timeout != 0) {
     // kcg: by default socket is in blocking mode
@@ -215,6 +215,7 @@ MICO::SharedMemoryTransport::close ()
     state = Closed;
     OSNet::sock_shutdown(fd);
     OSNet::sock_close(fd);
+    munmap(_addr, _length);
 
     SocketTransport::close();
 }
@@ -223,11 +224,11 @@ CORBA::Long
 MICO::SharedMemoryTransport::read (void *_b, CORBA::Long len)
 {
   void *addr;
-  addr = mmap(NULL, len, PROT_READ | PROT_WRITE, MAP_SHARED, shm_fd, 0);
+  _addr = mmap(NULL, len, PROT_READ | PROT_WRITE, MAP_SHARED, shm_fd, 0);
 
   CORBA::Long todo = len;
   CORBA::Octet *b = (CORBA::Octet *)_b;
-  memcpy(b, addr, len);
+  memcpy(b, _addr, len);
 
   while (todo > 0) {
      CORBA::Long r = OSNet::sock_read(shm_fd, b, todo);
@@ -255,12 +256,12 @@ todo -= r;
 CORBA::Long
 MICO::SharedMemoryTransport::write (const void *_b, CORBA::Long len)
 {
-    void *addr;
-    addr = mmap(NULL, len, PROT_READ | PROT_WRITE, MAP_SHARED, shm_fd, 0);
+
+    _addr = mmap(NULL, len, PROT_READ | PROT_WRITE, MAP_SHARED, shm_fd, 0);
 
     CORBA::Long todo = len;
     CORBA::Octet *b = (CORBA::Octet *)_b;
-    memcpy(addr, b, len);
+    memcpy(_addr, b, len);
 
     while (todo > 0) {
        CORBA::Long r = OSNet::sock_write(shm_fd, b, todo);
@@ -305,16 +306,17 @@ MICO::SharedMemoryTransportServer::SharedMemoryTransportServer (std::string addr
     OSNet::sock_init();
 
     CORBA::Long shmfd = shm_open("foo", O_CREAT | O_RDWR, 0777);
-    ftruncate(shmfd, 8096);
+    ftruncate(shmfd, length);
     assert(shmfd >= 0);
 
     fd = shmfd;
     shm_fd = shmfd;
+    _length = length;
 
     is_blocking = FALSE;
     this->block(TRUE);
 
-    OSNet::sock_reuse(fd, TRUE);
+    //OSNet::sock_reuse(fd, TRUE);
 }
 
 void
@@ -341,6 +343,7 @@ MICO::SharedMemoryTransportServer::close ()
   OSNet::sock_shutdown(fd);
   MICO_Long result = OSNet::sock_close (fd);
   assert (!result);
+  munmap(_addr, _length);
 
   //fd = ::socket (PF_INET, SOCK_STREAM, 0);
   //assert (fd >= 0);
@@ -349,7 +352,7 @@ MICO::SharedMemoryTransportServer::close ()
   is_blocking = FALSE;
   this->block(TRUE);
 
-  OSNet::sock_reuse (fd, TRUE);
+  //OSNet::sock_reuse (fd, TRUE);
 
   listening = FALSE;
 }

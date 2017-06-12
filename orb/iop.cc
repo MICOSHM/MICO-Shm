@@ -4151,29 +4151,29 @@ MICO::SharedMemoryServer::cancel (CORBA::ORBMsgId)
 void
 MICO::SharedMemoryServer::shutdown (CORBA::Boolean wait_for_completion)
 {
-    //{
-	//MICOMT::AutoLock lock(_tservers);
-	//for (CORBA::ULong i = 0; i < _tservers.size(); i++) {
-	    //_tservers[i]->close();
-	    //delete _tservers[i];
-	    //_tservers[i] = NULL;
-	//}
-	//_tservers.erase(_tservers.begin(), _tservers.end());
-    //}
+    {
+	MICOMT::AutoLock lock(_tservers);
+	for (CORBA::ULong i = 0; i < _tservers.size(); i++) {
+	    _tservers[i]->close();
+	    delete _tservers[i];
+	    _tservers[i] = NULL;
+	}
+	_tservers.erase(_tservers.begin(), _tservers.end());
+    }
     /*
      * the GIOPConn entries in the 'orbids' and 'reqids' maps are just
      * pointers to the entries in the 'conns' list, so do not delete them
      */
 
-    //_conns.lock();
+    _conns.lock();
 
-    //for (ListConn::iterator i0 = _conns.begin(); i0 != _conns.end(); ++i0) {
-	//conn_closed (*i0);
-	//deref_conn(*i0, TRUE);
-    //}
-    //_conns.erase (_conns.begin(), _conns.end());
+    for (ListConn::iterator i0 = _conns.begin(); i0 != _conns.end(); ++i0) {
+	conn_closed (*i0);
+	deref_conn(*i0, TRUE);
+    }
+    _conns.erase (_conns.begin(), _conns.end());
 
-    //_conns.unlock();
+    _conns.unlock();
 
 
 //#ifdef USE_IOP_CACHE
@@ -4181,21 +4181,21 @@ MICO::SharedMemoryServer::shutdown (CORBA::Boolean wait_for_completion)
 	//_orb->cancel (_cache_rec->orbid());
 //#endif
 
-    //{
-	//MICOMT::AutoLock l(_orbids_mutex);
+    {
+	MICOMT::AutoLock l(_orbids_mutex);
 
-	//for (MapIdConn::iterator i1 = _orbids.begin();
-	  //   i1 != _orbids.end(); ++i1) {
-	    //IIOPServerInvokeRec *rec = (*i1).second;
-	    //_orb->cancel ( rec->orbid() );
-	    //delete rec;
-	//}
-	//_orbids.erase (_orbids.begin(), _orbids.end());
-    //}
+	for (MapIdConn::iterator i1 = _orbids.begin();
+	     i1 != _orbids.end(); ++i1) {
+	    SharedMemoryServerInvokeRec *rec = (*i1).second;
+	    _orb->cancel ( rec->orbid() );
+	    delete rec;
+	}
+	_orbids.erase (_orbids.begin(), _orbids.end());
+    }
 //#ifdef USE_IOP_CACHE
     //_cache_used = FALSE;
 //#endif
-    //_orb->answer_shutdown (this);
+    _orb->answer_shutdown (this);
 }
 
 void

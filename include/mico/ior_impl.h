@@ -87,13 +87,18 @@ class SharedMemoryProfile : public CORBA::IORProfile {
   ProfileId tagid;
   CORBA::UShort version;
 
+  struct RegAddr {
+CORBA::Boolean reged;
+CORBA::ULong refcnt;
+  } *object_reg;
+
 public:
   SharedMemoryProfile (CORBA::Octet *objkey, CORBA::ULong length,
    const SharedMemoryAddress &,
    const CORBA::MultiComponent & = CORBA::MultiComponent(),
    CORBA::UShort version = 0x0100,
    ProfileId = TAG_SHM_IOP);
-
+   ~SharedMemoryProfile ();
    void encode (CORBA::DataEncoder &) const;
    const CORBA::Address *addr () const;
    void addr (const SharedMemoryAddress &);

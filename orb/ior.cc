@@ -830,6 +830,10 @@ MICO::SharedMemoryProfile::SharedMemoryProfile (CORBA::Octet *o, CORBA::ULong l,
 {
     version = ver;
 
+    if(version < 0x0101 && mc.size() >0) {
+      version = 0x0101;
+    }
+
     tagid = id;
     comps = mc;
 
@@ -837,6 +841,18 @@ MICO::SharedMemoryProfile::SharedMemoryProfile (CORBA::Octet *o, CORBA::ULong l,
     memcpy (objkey, o, length);
 
     myaddr = shma;
+
+    object_reg = new RegAddr;
+    object_reg->reged = TRUE;
+    object_reg->refcnt = 1;
+}
+
+MICO::SharedMemoryProfile::~SharedMemoryProfile ()
+{
+    //delete[] objkey;
+    //if (--object_reg->refcnt == 0) {
+	//delete object_reg;
+    //}
 }
 
 void
@@ -895,9 +911,50 @@ MICO::SharedMemoryProfile::encode_id () const
 void
 MICO::SharedMemoryProfile::objectkey (CORBA::Octet *o, CORBA::Long l)
 {
+    //delete[] objkey;
+    //objkey = new CORBA::Octet[length = l];
+    //memcpy (objkey, o, length);
+
     delete[] objkey;
     objkey = new CORBA::Octet[length = l];
     memcpy (objkey, o, length);
+    if (!object_reg->reged) {
+  CORBA::ORB_var orb = CORBA::ORB_instance("mico-local-orb");
+  CORBA::Object_var obj =
+      orb->resolve_initial_references("MobileTerminalBridge");
+  /*
+   * XXX - Maybe this needs a custom marshalling routine so we can
+   *       avoid DII
+   */
+  CORBA::Request_var req = obj->_request("register_profile");
+  req->add_in_arg() <<=
+      (CORBA::ULong) CORBA::IORProfile::TAG_SHM_IOP;
+  MICO::CDREncoder ec;
+  encode(ec);
+  CORBA::OctetSeq prof(ec.buffer()->length(), ec.buffer()->length(),
+           ec.buffer()->data(), FALSE);
+  req->add_in_arg() <<= prof;
+  req->set_return_type(CORBA::_tc_string);
+  req->invoke();
+  CORBA::Exception *ex = req->env()->exception();
+  if (ex == NULL) {
+      const char *addr;
+      req->return_value() >>= addr;
+      CORBA::Address *gaddr = CORBA::Address::parse(addr);
+      assert(gaddr != NULL);
+      MICO::SharedMemoryAddress *iaddr =
+    dynamic_cast<MICO::SharedMemoryAddress *>(gaddr);
+      assert(iaddr != NULL);
+      myaddr = *iaddr;
+  } else if (CORBA::UserException::_downcast(ex)) {
+      // The only user exception is AddressNotAvailable
+      // XXX - I don't have a clue what to do now
+  } else {
+       //A system exception
+       //XXX - Maybe we should throw something here?
+  }
+  object_reg->reged = TRUE;
+    }
 }
 
 const CORBA::Octet *
