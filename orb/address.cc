@@ -145,7 +145,7 @@ if ((*parsers)[i]->has_proto(proto.c_str()))
   int lastIndex = a.find_last_of(":");
 
   address = a.substr (0, firstIndex);
-  semName = a.substr (firstIndex+1, lastIndex-1);
+  semName = a.substr (firstIndex+1, lastIndex-4);
   length = a.substr(lastIndex+1, a.length());
 
   AddressParser *parser = (*parsers)[i];
@@ -342,26 +342,20 @@ MICO::SharedMemoryAddress::make_transport () const
   CORBA::Long shm_fd = shm_open(_address.c_str(), O_CREAT | O_RDWR, 0777);
   ftruncate(shm_fd, _length);
   ret->open(shm_fd);
+  ret->open_sem(_semName);
   return ret;
 }
 
 CORBA::TransportServer *
 MICO::SharedMemoryAddress::make_transport_server () const
 {
-  //CORBA::Long shm_fd = shm_open(_address.c_str(), O_CREAT | O_RDWR, 0777);
-  //ftruncate(shm_fd, _length);
-  //CORBA::TransportServer *ret = new SharedMemoryTransportServer(_address, _length);
   return 0;
-  //return ret;
 }
 
 CORBA::TransportServer *
-MICO::SharedMemoryAddress::make_transport_server_shm (std::string addr, int length) const
+MICO::SharedMemoryAddress::make_transport_server_shm (std::string addr, int length, std::string semName) const
 {
-  //CORBA::Long shm_fd = shm_open(_address.c_str(), O_CREAT | O_RDWR, 0777);
-  //ftruncate(shm_fd, _length);
-  CORBA::TransportServer *ret = new SharedMemoryTransportServer(_address, _length);
-	//return new SharedMemoryTransportServer(shm_fd);
+  CORBA::TransportServer *ret = new SharedMemoryTransportServer(addr, length, semName);
   return ret;
 }
 

@@ -104,6 +104,10 @@ public:
     virtual Boolean bind (const Address *) = 0;
     virtual Boolean connect (const Address *, ULong timeout, Boolean& timedout) = 0;
     virtual void open (CORBA::Long fd = -1) = 0;
+    virtual void open_sem (std::string semName) = 0;
+    virtual void post () = 0;
+    virtual void wait () = 0;
+    virtual int get_sem_value () = 0;
     virtual void close () = 0;
     virtual void block (Boolean doblock = TRUE) = 0;
     virtual CORBA::Boolean isblocking () = 0;
@@ -137,6 +141,8 @@ struct TransportCallback {
 
 class TransportServer {
 public:
+    virtual int get_sem_value () = 0;
+
     virtual void aselect (Dispatcher *, TransportServerCallback *) = 0;
 
     virtual Boolean bind (const Address *) = 0;

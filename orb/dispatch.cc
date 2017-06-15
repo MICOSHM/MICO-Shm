@@ -148,13 +148,13 @@ MICO::SelectDispatcher::~SelectDispatcher ()
 	(*j).cb->callback (this, Remove);
 }
 
-void 
+void
 MICO::SelectDispatcher::block (CORBA::Boolean b)
 {
   _isblocking = b;
 }
 
-CORBA::Boolean 
+CORBA::Boolean
 MICO::SelectDispatcher::isblocking ()
 {
   return _isblocking;
@@ -172,7 +172,7 @@ MICO::SelectDispatcher::sleeptime (OSMisc::TimeVal &tm)
 {
     if (tevents.size() == 0) {
 	// wdh: changed sleeptime to 1 second
- 	tm.tv_sec =  1; //10; 
+ 	tm.tv_sec =  1; //10;
 	tm.tv_usec = 0;
 	return;
     }
@@ -314,6 +314,10 @@ MICO::SelectDispatcher::unlock ()
 	}
 	while (again);
     }
+
+    CORBA::Transport *ret = new SharedMemoryTransport;
+    ret->wait();
+
 }
 
 CORBA::Boolean
@@ -440,6 +444,9 @@ MICO::SelectDispatcher::run (CORBA::Boolean infinite)
 	    sleeptime (tm);
 	}
 
+  CORBA::TransportServer *tserv = new SharedMemoryTransportServer();
+  int svalue = tserv->get_sem_value();
+
 	int r = ::select (fd_max+1,
 			  (select_addr_t)&rset,
 			  (select_addr_t)&wset,
@@ -455,7 +462,7 @@ MICO::SelectDispatcher::run (CORBA::Boolean infinite)
 	assert (r >= 0 || errno == EINTR || errno == EAGAIN ||
                 errno == EWOULDBLOCK);
 
-	if (r > 0)
+	if (r > 0 && svalue > 0)
 	    handle_fevents (rset, wset, xset);
 	handle_tevents ();
     } while (infinite);
@@ -589,13 +596,13 @@ MICO::PollDispatcher::~PollDispatcher ()
         (*j).cb->callback (this, Remove);
 }
 
-void 
+void
 MICO::PollDispatcher::block (CORBA::Boolean b)
 {
     _isblocking = b;
 }
 
-CORBA::Boolean 
+CORBA::Boolean
 MICO::PollDispatcher::isblocking ()
 {
     return _isblocking;
@@ -611,7 +618,7 @@ MICO::PollDispatcher::gettime () const
 CORBA::Long
 MICO::PollDispatcher::sleeptime ()
 {
-    if (tevents.empty()) 
+    if (tevents.empty())
         return 1000;
 
     update_tevents();
@@ -630,15 +637,15 @@ MICO::PollDispatcher::build_pollset ()
     list<FileEvent>::iterator cur;
     list<FileEvent>::iterator end = fevents.end();
     for (cur = fevents.begin(); cur != end; ++cur) {
-        if ((*cur).deleted) 
+        if ((*cur).deleted)
             continue;
 
         struct pollfd pollevent;
 
         pollevent.fd = (*cur).fd;
 
-        switch ((*cur).event) { 
-            // XXX: events richtig? 
+        switch ((*cur).event) {
+            // XXX: events richtig?
             case Read:
                 pollevent.events = POLLIN | POLLERR | POLLHUP;
                 break;
@@ -651,7 +658,7 @@ MICO::PollDispatcher::build_pollset ()
             default:
                 assert (0);
         }
-        
+
         (*cur).pollidx = pollset.size();
         pollset.push_back(pollevent);
     }
@@ -704,12 +711,12 @@ MICO::PollDispatcher::handle_fevents()
 
     for (i = fevents.begin(); i != fevents.end(); ++i) {
 
-        if ((*i).deleted) 
+        if ((*i).deleted)
             continue;
 
         if ((*i).pollidx == -1)
             continue;
-        
+
         switch ((*i).event) {
             case Read:
                 if (pollset[(*i).pollidx].revents & (POLLIN | POLLERR | POLLHUP))
@@ -930,7 +937,7 @@ MICO::PollDispatcher::idle () const
 
     if (fevents.size() > 0) {
         ((PollDispatcher *) this)->build_pollset();
-        
+
         int r = ::poll((struct pollfd *)&pollset[0], pollset.size(), 0);
         assert (r >= 0 || errno == EINTR || errno == EAGAIN ||
                 errno == EWOULDBLOCK);

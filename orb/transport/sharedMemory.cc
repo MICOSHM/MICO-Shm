@@ -195,15 +195,48 @@ MICO::SharedMemoryTransport::open (CORBA::Long thefd)
   shm_fd = thefd;
   assert(thefd >= 0);
   OSNet::sock_ndelay(thefd, TRUE);
-  //OSNet::sock_block(thefd, TRUE);
 
   SocketTransport::open(thefd);
 
   is_buffering = FALSE;
 
   is_blocking = FALSE;
-  this->block(TRUE);
   state = Open;
+}
+
+void
+MICO::SharedMemoryTransport::open_sem(std::string semName){
+  _semName = semName;
+  _sem = sem_open("/sem", O_RDWR);
+
+}
+
+void
+MICO::SharedMemoryTransport::post(){
+  sem_t *sem;
+  sem = sem_open("/sem", O_RDWR);
+  sem_post(sem);
+}
+
+void
+MICO::SharedMemoryTransport::wait(){
+  sem_t *sem;
+  sem = sem_open("/sem", O_RDWR);
+  sem_wait(sem);
+}
+
+int
+MICO::SharedMemoryTransport::get_sem_value(){
+
+  int svalue;
+
+  sem_t *sem;
+  sem = sem_open("/sem", O_RDWR);
+
+  sem_getvalue(sem, &svalue);
+
+
+  return svalue;
 }
 
 void
@@ -301,7 +334,7 @@ MICO::SharedMemoryTransport::peer ()
 /*********************** SharedMemoryTransportServer **********************/
 
 
-MICO::SharedMemoryTransportServer::SharedMemoryTransportServer (std::string addr, int length)
+MICO::SharedMemoryTransportServer::SharedMemoryTransportServer (std::string addr, int length, std::string semName)
 {
     OSNet::sock_init();
 
@@ -312,11 +345,27 @@ MICO::SharedMemoryTransportServer::SharedMemoryTransportServer (std::string addr
     fd = shmfd;
     shm_fd = shmfd;
     _length = length;
+    _semName = semName;
 
     is_blocking = FALSE;
-    this->block(TRUE);
+    //this->block(TRUE);
+    sem_unlink("/sem");
+    _sem = sem_open("/sem", O_CREAT | O_EXCL, S_IRUSR | S_IWUSR, 0);
+}
 
-    //OSNet::sock_reuse(fd, TRUE);
+MICO::SharedMemoryTransportServer::SharedMemoryTransportServer (){
+
+}
+
+int
+MICO::SharedMemoryTransportServer::get_sem_value(){
+
+  int svalue;
+  sem_t *sem;
+  sem = sem_open("/sem", O_RDWR);
+  sem_getvalue(sem, &svalue);
+
+  return svalue;
 }
 
 void

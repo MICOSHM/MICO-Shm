@@ -3054,6 +3054,10 @@ MICO::GIOPConn::output_handler (CORBA::Buffer *b)
 	_transp->write (*b, b->length());
 	if (b->length() == 0) {
 	    delete b;
+			CORBA::Transport *ret = new SharedMemoryTransport;
+			int i = ret->get_sem_value();
+			ret->post();
+			int j = ret->get_sem_value();
 	    return;
 	}
 #ifndef HAVE_THREADS
@@ -3094,6 +3098,7 @@ MICO::GIOPConn::output_handler (CORBA::Buffer *b)
 	_outbufs.push_back (b);
 	do_write ();
     }
+
     check_busy ();
 }
 
@@ -3272,7 +3277,7 @@ MICO::SharedMemoryServer::listen (CORBA::Address *addr, CORBA::Address *fwproxya
 		SharedMemoryAddress *shmAddr;
 		shmAddr = (SharedMemoryAddress *)addr;
 
-    CORBA::TransportServer *tserv = shmAddr->make_transport_server_shm (shmAddr->address(), shmAddr->length());
+    CORBA::TransportServer *tserv = shmAddr->make_transport_server_shm (shmAddr->address(), shmAddr->length(), shmAddr->semName());
 #ifdef HAVE_THREADS
     if (!MICO::MTManager::thread_pool())
 	tserv->create_thread();

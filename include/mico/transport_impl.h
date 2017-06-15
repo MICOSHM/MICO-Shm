@@ -44,7 +44,12 @@ public:
     virtual ~SocketTransport ();
 
     virtual void open (CORBA::Long fd = -1);
+		virtual void open_sem (std::string semName);
     virtual void close ();
+
+		virtual void post ();
+		virtual void wait ();
+		virtual int get_sem_value ();
 
     virtual void rselect (CORBA::Dispatcher *, CORBA::TransportCallback *);
     virtual void wselect (CORBA::Dispatcher *, CORBA::TransportCallback *);
@@ -91,6 +96,8 @@ protected:
 public:
     SocketTransportServer ();
     virtual ~SocketTransportServer ();
+
+		int get_sem_value ();
 
     void aselect (CORBA::Dispatcher *,
     		  CORBA::TransportServerCallback *);

@@ -61,6 +61,8 @@ class SharedMemoryTransport : public SocketTransport {
     int shm_fd;
     int _length;
     void *_addr;
+    std::string _semName;
+    sem_t *_sem;
 
 public:
   virtual ~SharedMemoryTransport ();
@@ -68,6 +70,12 @@ public:
   CORBA::Boolean connect (const CORBA::Address *, CORBA::ULong, CORBA::Boolean&);
 
   void open (CORBA::Long fd = -1);
+  void open_sem (std::string semName);
+
+  void post ();
+  void wait ();
+  int get_sem_value();
+
   void close ();
 
   CORBA::Long read (void *, CORBA::Long len);
@@ -83,9 +91,14 @@ class SharedMemoryTransportServer : public SocketTransportServer {
     int shm_fd;
     int _length;
     void *_addr;
+    std::string _semName;
+    sem_t *_sem;
 
 public:
-  SharedMemoryTransportServer (std::string addr, int length);
+  SharedMemoryTransportServer (std::string addr, int length, std::string semName);
+  SharedMemoryTransportServer ();
+
+  int get_sem_value();
 
   CORBA::Boolean bind (const CORBA::Address *);
   void close();

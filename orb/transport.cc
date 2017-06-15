@@ -150,6 +150,26 @@ MICO::SocketTransport::open (CORBA::Long thefd)
 }
 
 void
+MICO::SocketTransport::open_sem(std::string semName){
+
+}
+
+void
+MICO::SocketTransport::post (){
+
+}
+
+void
+MICO::SocketTransport::wait (){
+
+}
+
+int
+MICO::SocketTransport::get_sem_value(){
+
+}
+
+void
 MICO::SocketTransport::close ()
 {
     state = Closed;
@@ -329,6 +349,12 @@ MICO::SocketTransportServer::~SocketTransportServer ()
 #ifdef HAVE_THREADS
     this->finalize_shutdown();
 #endif // HAVE_THREADS
+}
+
+int
+MICO::SocketTransportServer::get_sem_value () {
+
+  return 0;
 }
 
 void
