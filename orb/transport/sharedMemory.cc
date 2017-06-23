@@ -158,31 +158,10 @@ MICO::SharedMemoryTransport::connect (const CORBA::Address *a, CORBA::ULong time
 {
 
 
-    //shm_fd = shm_open(shmFDAddress->address().c_str(), O_RDWR, 0);
-    //OSNet::sock_block(shm_fd, FALSE);
-    //OSMisc::TimeVal tm;
-  	//int addsec = timeout / 1000;
-  	//int addusec = (timeout % 1000) * 1000;
-  	//tm.tv_sec  = addsec;
-  	//tm.tv_usec = addusec;
-  	//fd_set rset;
-  	//fd_set wset;
-  	//fd_set xset;
-  	//FD_ZERO(&rset);
-  	//FD_ZERO(&wset);
-  	//FD_ZERO(&xset);
-  	//FD_SET(fd, &wset);
+
 
     assert (state == Open);
-    //shmFDAddress = (SharedMemoryAddress *)a;
-    //shm_fd = shm_open(shmFDAddress->address().c_str(), O_RDWR, 0);
 
-    //if (timeout != 0) {
-    // kcg: by default socket is in blocking mode
-    // for connect call, but we need to switch it
-    // to the non-blocking mode for a timeout implementation
-    //OSNet::sock_block(shm_fd, FALSE);
-    //}
 
     return TRUE;
 }
@@ -334,18 +313,28 @@ MICO::SharedMemoryTransport::peer ()
 /*********************** SharedMemoryTransportServer **********************/
 
 
-MICO::SharedMemoryTransportServer::SharedMemoryTransportServer (std::string addr, int length, std::string semName)
+MICO::SharedMemoryTransportServer::SharedMemoryTransportServer (CORBA::Address *addr)
 {
     OSNet::sock_init();
 
+    SharedMemoryAddress *shmAddr;
+    shmAddr = (SharedMemoryAddress *)addr;
+
+    std::string _addr = shmAddr->address();
+    int _len = shmAddr->length();
+    std::string sem = shmAddr->semName();
+    //std::string __addr = _addr;
+
+    const char* foo = _addr.c_str();
+
     CORBA::Long shmfd = shm_open("foo", O_CREAT | O_RDWR, 0777);
-    ftruncate(shmfd, length);
+    ftruncate(shmfd, 8096);
     assert(shmfd >= 0);
 
     fd = shmfd;
     shm_fd = shmfd;
-    _length = length;
-    _semName = semName;
+    //_length = length;
+    //_semName = semName;
 
     is_blocking = FALSE;
     //this->block(TRUE);

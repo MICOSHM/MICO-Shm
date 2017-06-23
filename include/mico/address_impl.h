@@ -79,7 +79,7 @@ public:
   const char *proto () const;
   CORBA::Transport *make_transport () const;
   CORBA::TransportServer *make_transport_server () const;
-  CORBA::TransportServer *make_transport_server_shm (std::string addr, int length, std::string semName) const;
+  CORBA::TransportServer *make_transport_server_shm (CORBA::Address *) const;
   CORBA::Boolean is_local () const;
   CORBA::Boolean is_here () const;
 

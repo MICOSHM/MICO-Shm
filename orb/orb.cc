@@ -197,14 +197,21 @@ CORBA::ORBInvokeRec::init_invoke (ORB_ptr orb,
     _adapter = oa;
     _cb = callback;
     _active = TRUE;
+		const char *_oaid = oa->get_oaid();
 #ifdef USE_MESSAGING
     relative_roundtrip_timeout_ = o->relative_roundtrip_timeout();
 #endif // USE_MESSAGING
     //
     // kcg: we need to create server request info only when object's oa
     // is local - so it's either BOA or POA. Otherwise (IIOPServer) we have
-    // to run w/o any PI invocation
-    //
+    // to run w/o any PI invocationinvo
+
+		//Because shm does not use a socket connection, the client never knows when to close.  The client
+		//when using shm directly calls answer_invoke to indicate an InvokeOk response
+		if(_oaid == "mico-shm-proxy") {
+			_orb->answer_invoke(this, CORBA::InvokeOk, _obj, r, 0);
+		}
+
     if (oa && oa->is_local()) {
 	_sri = PInterceptor::PI::_create_sri
 	    (o, r->op_name(), _myid, response, r->context());
@@ -2825,13 +2832,19 @@ CORBA::ORB::wait (ORBMsgId id, Long tmout)
     //       we have to behave the old way, when the ORB thread calls us !!!
 #ifdef HAVE_THREADS
     MICO::IIOPProxyInvokeRec* proxy_invoke_rec = NULL;
+		MICO::SharedMemoryProxyInvokeRec* shm_proxy_invoke_rec = NULL;
     MICO::GIOPConn *invoke_rec_conn = NULL;
+		MICO::GIOPConn *shm_invoke_rec_conn = NULL;
 
     if (rec != NULL) {
         proxy_invoke_rec = (MICO::IIOPProxyInvokeRec*)rec->get_invoke_hint();
+				shm_proxy_invoke_rec = (MICO::SharedMemoryProxyInvokeRec*)rec->get_invoke_hint();
         if (proxy_invoke_rec != NULL) {
             invoke_rec_conn = proxy_invoke_rec->conn();
         }
+				if(shm_proxy_invoke_rec != NULL){
+						shm_invoke_rec_conn = shm_proxy_invoke_rec->conn();
+				}
     }
 
     if (rec
@@ -2865,11 +2878,18 @@ CORBA::ORB::wait (ORBMsgId id, Long tmout)
 
 #ifdef HAVE_THREADS
     Dispatcher* disp_for_waiting = NULL;
+		Dispatcher* shm_disp_for_waiting = NULL;
 
     if (proxy_invoke_rec != NULL)
         disp_for_waiting = proxy_invoke_rec->conn()->dispatcher();
     else
         disp_for_waiting = this->_disp;
+
+		if(shm_proxy_invoke_rec != NULL)
+				shm_disp_for_waiting = shm_proxy_invoke_rec->conn()->dispatcher();
+		else
+				shm_disp_for_waiting = this->_disp;
+
 #else // HAVE_THREADS
     Dispatcher* disp_for_waiting = this->_disp;
 #endif // HAVE_THREADS
@@ -2897,6 +2917,7 @@ CORBA::ORB::wait (ORBMsgId id, Long tmout)
         return FALSE;
 #endif // USE_MESSAGING
       disp_for_waiting->run (FALSE);
+			shm_disp_for_waiting->run(FALSE);
       rec = get_invoke (id);
     }
 #ifdef HAVE_THREADS

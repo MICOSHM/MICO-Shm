@@ -291,6 +291,7 @@ MICO::SharedMemoryAddress::~SharedMemoryAddress(){
 
 std::string
 MICO::SharedMemoryAddress::address() const {
+
   return _address;
 }
 
@@ -353,9 +354,10 @@ MICO::SharedMemoryAddress::make_transport_server () const
 }
 
 CORBA::TransportServer *
-MICO::SharedMemoryAddress::make_transport_server_shm (std::string addr, int length, std::string semName) const
+MICO::SharedMemoryAddress::make_transport_server_shm (CORBA::Address *addr) const
 {
-  CORBA::TransportServer *ret = new SharedMemoryTransportServer(addr, length, semName);
+
+  CORBA::TransportServer *ret = new SharedMemoryTransportServer(addr);
   return ret;
 }
 
@@ -364,7 +366,7 @@ MICO::SharedMemoryAddress::make_transport_server_shm (std::string addr, int leng
 CORBA::Boolean
 MICO::SharedMemoryAddress::is_local () const
 {
-    return FALSE;
+    return TRUE;
 }
 
 CORBA::Boolean

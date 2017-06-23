@@ -95,7 +95,7 @@ class SharedMemoryTransportServer : public SocketTransportServer {
     sem_t *_sem;
 
 public:
-  SharedMemoryTransportServer (std::string addr, int length, std::string semName);
+  SharedMemoryTransportServer (CORBA::Address *);
   SharedMemoryTransportServer ();
 
   int get_sem_value();
