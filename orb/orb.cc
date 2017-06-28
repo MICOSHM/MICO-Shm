@@ -1306,7 +1306,8 @@ CORBA::ORB::http_to_object (const char * str)
   char buf[257];
 
   while (!trans->eof() && !trans->bad()) {
-    CORBA::Long got = trans->read (buf, 256);
+		CORBA::Boolean _msgRecv = FALSE;
+    CORBA::Long got = trans->read (buf, 256, _msgRecv);
     if (got > 0) {
       buf[got] = '\0';
       data += buf;

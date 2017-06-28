@@ -91,7 +91,7 @@ MICO::UnixTransport::open (CORBA::Long thefd)
 void
 MICO::UnixTransport::close ()
 {
-    if (state != Open) 
+    if (state != Open)
 	return;
 
     state = Closed;
@@ -103,7 +103,7 @@ MICO::UnixTransport::close ()
 }
 
 CORBA::Long
-MICO::UnixTransport::read (void *_b, CORBA::Long len)
+MICO::UnixTransport::read (void *_b, CORBA::Long len, CORBA::Boolean _msgRecv)
 {
     CORBA::Long todo = len;
     CORBA::Octet *b = (CORBA::Octet *)_b;

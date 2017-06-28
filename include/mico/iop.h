@@ -388,6 +388,7 @@ class GIOPConn : public CORBA::TransportCallback,
     GIOPInContext _inctx;
     CORBA::ULong _max_message_size;
     CORBA::ULong _id;
+    CORBA::Boolean _msgRecv = FALSE;
 
     CORBA::ULong _total_fragsize;
     std::map<CORBA::ULong, CORBA::Buffer *, std::less<CORBA::ULong> > _fragments;

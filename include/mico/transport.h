@@ -115,8 +115,8 @@ public:
     virtual CORBA::Boolean isbuffering ();
     virtual CORBA::Boolean isreadable () = 0;
 
-    Long read (Buffer &, Long len);
-    virtual Long read (void *, Long len) = 0;
+    Long read (Buffer &, Long len, CORBA::Boolean _msgRecv);
+    virtual Long read (void *, Long len, CORBA::Boolean _msgRecv) = 0;
     Long write (Buffer &, Long len, Boolean eat = TRUE);
     virtual Long write (const void *, Long len) = 0;
 

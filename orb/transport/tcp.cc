@@ -175,7 +175,7 @@ MICO::TCPTransport::open (CORBA::Long thefd)
     if (thefd < 0) {
 	thefd = ::socket (PF_INET, SOCK_STREAM, 0);
 	assert (thefd >= 0);
-    } 
+    }
     OSNet::sock_ndelay (thefd, TRUE);
 
     SocketTransport::open( thefd );
@@ -191,7 +191,7 @@ MICO::TCPTransport::open (CORBA::Long thefd)
 void
 MICO::TCPTransport::close ()
 {
-    if (state != Open) 
+    if (state != Open)
     	return;
 
     state = Closed;
@@ -203,7 +203,7 @@ MICO::TCPTransport::close ()
 }
 
 CORBA::Long
-MICO::TCPTransport::read (void *_b, CORBA::Long len)
+MICO::TCPTransport::read (void *_b, CORBA::Long len, CORBA::Boolean _msgRecv)
 {
     CORBA::Long todo = len;
     CORBA::Octet *b = (CORBA::Octet *)_b;
@@ -368,7 +368,7 @@ CORBA::Transport *
 MICO::TCPTransportServer::accept ()
 {
     TCPTransport *ret;
- 
+
     listen ();
 
 #if defined(HAVE_THREADS) && defined(HAVE_POLL_H)
@@ -419,4 +419,3 @@ MICO::TCPTransportServer::addr ()
     local_addr.sockaddr (sin);
     return &local_addr;
 }
-

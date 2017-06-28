@@ -188,7 +188,7 @@ MICO::UDPTransport::open (CORBA::Long thefd)
 void
 MICO::UDPTransport::close ()
 {
-    if (state != Open) 
+    if (state != Open)
 	return;
 
     state = Closed;
@@ -207,7 +207,7 @@ MICO::UDPTransport::read_dgram (CORBA::Buffer &buf)
     // XXX somehow get real dgram size ...
     CORBA::ULong dgram_size = 10000;
     buf.reset (dgram_size);
-	
+
     while (42) {
 	CORBA::Long r = OSNet::sock_read (fd, buf.buffer(), dgram_size);
 	if (r < 0) {
@@ -230,7 +230,7 @@ MICO::UDPTransport::read_dgram (CORBA::Buffer &buf)
 }
 
 CORBA::Long
-MICO::UDPTransport::read (void *b, CORBA::Long len)
+MICO::UDPTransport::read (void *b, CORBA::Long len, CORBA::Boolean _msgRecv)
 {
     assert(len > 0);
     if (dgram.length() == 0) {
@@ -458,4 +458,3 @@ MICO::UDPTransportServer::addr ()
     }
     return &local_addr;
 }
-

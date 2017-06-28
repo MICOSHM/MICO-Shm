@@ -2593,7 +2593,7 @@ MICO::GIOPConn::do_read ( const CORBA::Boolean break_after_read )
 {
     while (42) {
 	assert (_inlen > 0);
-	CORBA::Long r = _transp->read (*_inbuf, _inlen);
+	CORBA::Long r = _transp->read (*_inbuf, _inlen, _msgRecv);
 #if 1
 	if (r < 0) {
             /*
@@ -2604,7 +2604,7 @@ MICO::GIOPConn::do_read ( const CORBA::Boolean break_after_read )
              *   the next read() instead of beeing able to read
              *   the remaining data until you reach EOF.
              */
-            r = _transp->read (*_inbuf, _inlen);
+            r = _transp->read (*_inbuf, _inlen, _msgRecv);
         }
 #endif
 	if (r < 0 || (r == 0 && _transp->eof())) {
@@ -2700,7 +2700,7 @@ MICO::GIOPConn::do_read ( const CORBA::Boolean break_after_read )
 	    if (_inlen == 0) {
 	      // message completely received
 	      // check if it is a fragment message
-
+				_msgRecv = TRUE;
 	      CORBA::Octet mt;
 	      _inbuf->rseek_beg (7);
 	      _inbuf->get1 (&mt);

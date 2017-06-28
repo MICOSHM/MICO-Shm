@@ -68,10 +68,10 @@ CORBA::Transport::~Transport ()
 }
 
 CORBA::Long
-CORBA::Transport::read (Buffer &b, Long len)
+CORBA::Transport::read (Buffer &b, Long len, CORBA::Boolean _msgRecv)
 {
     b.resize (len);
-    Long r = read (b.buffer()+b.wpos(), len);
+    Long r = read (b.buffer()+b.wpos(), len, _msgRecv);
     if (r > 0)
 	b.wseek_rel (r);
     return r;

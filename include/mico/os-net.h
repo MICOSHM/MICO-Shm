@@ -167,11 +167,11 @@ public:
 #endif
     }
 
-    static MICO_Long sock_read (MICO_Long fd, void *buf, MICO_ULong count)
+    static MICO_Long sock_read (MICO_Long _fd, void *_buf, MICO_ULong _count)
     {
 	WSASetLastError(0);
 
-	int ret = recv(fd,(char*)buf,count,0);
+	int ret = read(_fd,(char*)_buf,_count);
 	if (ret != SOCKET_ERROR)
 	    return ret;
 

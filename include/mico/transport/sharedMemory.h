@@ -63,6 +63,7 @@ class SharedMemoryTransport : public SocketTransport {
     void *_addr;
     std::string _semName;
     sem_t *_sem;
+    int offset = 0;
 
 public:
   virtual ~SharedMemoryTransport ();
@@ -78,7 +79,7 @@ public:
 
   void close ();
 
-  CORBA::Long read (void *, CORBA::Long len);
+  CORBA::Long read (void *, CORBA::Long len, CORBA::Boolean _msgRecv);
   CORBA::Long write (const void *, CORBA::Long len);
 
   const CORBA::Address *addr ();

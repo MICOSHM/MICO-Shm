@@ -37,13 +37,13 @@ public:
 
     void open (CORBA::Long fd = -1);
     void close ();
-    
-    CORBA::Long read (void *, CORBA::Long len);
+
+    CORBA::Long read (void *, CORBA::Long len, CORBA::Boolean _msgRecv);
     CORBA::Long write (const void *, CORBA::Long len);
-    
+
     const CORBA::Address *addr ();
     const CORBA::Address *peer ();
-    
+
 };
 
 class TCPTransportServer: public SocketTransportServer {
@@ -54,11 +54,11 @@ public:
 
     CORBA::Boolean bind (const CORBA::Address *);
     void close ();
-    
+
     CORBA::Transport *accept ();
     const CORBA::Address *addr ();
 
-    void listen ();    
+    void listen ();
 };
 
 }

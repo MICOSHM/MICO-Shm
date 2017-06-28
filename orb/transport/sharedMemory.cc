@@ -233,17 +233,25 @@ MICO::SharedMemoryTransport::close ()
 }
 
 CORBA::Long
-MICO::SharedMemoryTransport::read (void *_b, CORBA::Long len)
+MICO::SharedMemoryTransport::read (void *_b, CORBA::Long len, CORBA::Boolean _msgRecv)
 {
-  void *addr;
-  _addr = mmap(NULL, len, PROT_READ | PROT_WRITE, MAP_SHARED, shm_fd, 0);
+  void *__addr;
+  __addr = mmap(NULL, len, PROT_READ | PROT_WRITE, MAP_SHARED, shm_fd, 0);
+
+  //Added a boolean after msg received statment in do_read
+  //Variable to be added to all read methods, this is so shm knows when to
+  //stop reading
+
+  //add an offset to the mmap ptr to function like read, as reading sequentially
+  //with read moves the file offset by bytes read
 
   CORBA::Long todo = len;
   CORBA::Octet *b = (CORBA::Octet *)_b;
-  memcpy(b, _addr, len);
 
   while (todo > 0) {
-     CORBA::Long r = OSNet::sock_read(shm_fd, b, todo);
+     memmove(b, __addr+offset, todo);
+     CORBA::Long r = todo;
+     offset+=todo;
 if (r < 0) {
           OSNet::set_errno();
     if (state != Open)
@@ -256,7 +264,10 @@ if (r < 0) {
   break;
     err = xstrerror (errno);
     return r;
-} else if (r == 0) {
+} else if (r == 0 || _msgRecv == TRUE) {
+    len = 0;
+    todo = 0;
+    ateof = TRUE;
     break;
 }
 b += r;
@@ -273,10 +284,10 @@ MICO::SharedMemoryTransport::write (const void *_b, CORBA::Long len)
 
     CORBA::Long todo = len;
     CORBA::Octet *b = (CORBA::Octet *)_b;
-    memcpy(_addr, b, len);
 
     while (todo > 0) {
-       CORBA::Long r = OSNet::sock_write(shm_fd, b, todo);
+       memmove(_addr, b, todo);
+       CORBA::Long r = todo;
 	if (r < 0) {
             OSNet::set_errno();
 	    if (state != Open)
