@@ -40,105 +40,6 @@
 
 using namespace std;
 
-/************************* CSharedMemory ***************************/
-
-MICO::CSharedMemory::CSharedMemory() {
-
-}
-
-MICO::CSharedMemory::CSharedMemory( const string& sName ):m_sName(sName),m_Ptr(NULL),m_iD(-1),
-m_nSize(0)
-{
-  m_SemiD = NULL;
-}
-
-std::string MICO::CSharedMemory::sLockSemaphoreName;
-
-bool
-MICO::CSharedMemory::openSem(std::string sem)
-{
-  sLockSemaphoreName = sem;
-
-  m_SemiD = sem_open(sLockSemaphoreName.c_str(), O_CREAT, S_IRUSR | S_IWUSR, 1);
-  return true;
-}
-
-bool
-MICO::CSharedMemory::Create( size_t nSize)
-{
-   m_nSize = nSize;
-   m_iD = shm_open(m_sName.c_str(), O_CREAT | O_RDWR, 0777);
-
-   /* adjusting mapped file size (make room for the whole segment to map)      --  ftruncate() */
-   ftruncate(m_iD, m_nSize);
-   return true;
-}
-
-bool
-MICO::CSharedMemory::Attach()
-{
-   /* requesting the shared segment    --  mmap() */
-   m_Ptr = mmap(NULL, m_nSize, PROT_READ | PROT_WRITE, MAP_SHARED, m_iD, 0);
-   return true;
-}
-
-bool
-MICO::CSharedMemory::Detach()
-{
-   //munmap(m_Ptr, m_nSize);
-}
-
-bool
-MICO::CSharedMemory::Lock()
-{
-   sem_wait(m_SemiD);
-}
-
-bool
-MICO::CSharedMemory::UnLock()
-{
-   sem_post(m_SemiD);
-}
-
-//Destructor, why is it called after Create.  Have commented out, shm works now
-
-//MICO::CSharedMemory::~CSharedMemory()
-//{
-  // Clear();
-//}
-
-void
-MICO::CSharedMemory::Clear()
-{
-   if(m_iD != -1)
-   {
-      if ( shm_unlink(m_sName.c_str()) < 0 )
-      {
-         perror("shm_unlink");
-      }
-   }
-   /**
-   * Semaphore unlink: Remove a named semaphore  from the system.
-   */
-   if(m_SemiD != NULL)
-   {
-      /**
-      * Semaphore Close: Close a named semaphore
-      */
-      if ( sem_close(m_SemiD) < 0 )
-      {
-         perror("sem_close");
-      }
-      /**
-      * Semaphore unlink: Remove a named semaphore  from the system.
-      */
-      if ( sem_unlink(sLockSemaphoreName.c_str()) < 0 )
-      {
-         perror("sem_unlink");
-      }
-   }
-}
-
 /***************************** SharedMemoryTransport **********************************/
 MICO::SharedMemoryTransport::~SharedMemoryTransport () {
     close();
@@ -193,27 +94,43 @@ MICO::SharedMemoryTransport::open_sem(std::string semName){
 void
 MICO::SharedMemoryTransport::post(){
   sem_t *sem;
-  sem = sem_open("/sem", O_RDWR);
-  sem_post(sem);
+
+  if((sem = sem_open("/sem", O_RDWR)) == NULL){
+    return;
+  } else {
+      sem_post(sem);
+      sem_close(sem);
+  }
 }
 
 void
 MICO::SharedMemoryTransport::wait(){
   sem_t *sem;
-  sem = sem_open("/sem", O_RDWR);
-  sem_wait(sem);
+
+  if((sem = sem_open("/sem", O_RDWR)) == NULL){
+    return;
+  } else {
+      int svalue;
+      sem_getvalue(sem, &svalue);
+        if(svalue > 0){
+          sem_wait(sem);
+    }
+  }
+
+  sem_close(sem);
 }
 
 int
 MICO::SharedMemoryTransport::get_sem_value(){
-
-  int svalue;
-
+  int svalue = -1;
   sem_t *sem;
-  sem = sem_open("/sem", O_RDWR);
 
-  sem_getvalue(sem, &svalue);
-
+  if((sem = sem_open("/sem", O_RDWR)) == NULL){
+    return svalue;
+  } else {
+      sem_getvalue(sem, &svalue);
+      sem_close(sem);
+  }
 
   return svalue;
 }
@@ -359,11 +276,15 @@ MICO::SharedMemoryTransportServer::SharedMemoryTransportServer (){
 
 int
 MICO::SharedMemoryTransportServer::get_sem_value(){
-
-  int svalue;
+  int svalue = -1;
   sem_t *sem;
-  sem = sem_open("/sem", O_RDWR);
-  sem_getvalue(sem, &svalue);
+
+  if((sem = sem_open("/sem", O_RDWR)) == NULL){
+    return svalue;
+  } else {
+      sem_getvalue(sem, &svalue);
+      sem_close(sem);
+  }
 
   return svalue;
 }
@@ -393,6 +314,9 @@ MICO::SharedMemoryTransportServer::close ()
   MICO_Long result = OSNet::sock_close (fd);
   assert (!result);
   munmap(_addr, _length);
+  shm_unlink("foo");
+  sem_close(_sem);
+
 
   //fd = ::socket (PF_INET, SOCK_STREAM, 0);
   //assert (fd >= 0);

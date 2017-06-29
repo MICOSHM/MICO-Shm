@@ -1709,7 +1709,7 @@ CORBA::ORB::do_shutdown ()
 	    if (_wait_for_completion) {
 		// FIXME this might be unsafe
 		while (_shutting_down_adapters.size() > 0)
-		    _disp->run (FALSE);
+		    _disp->run (FALSE, FALSE);
 	    }
 	    _is_shutdown = 2;
 #ifdef HAVE_THREADS
@@ -1760,7 +1760,7 @@ CORBA::ORB::perform_work ()
     if (_is_shutdown > 1)
         mico_throw (CORBA::BAD_INV_ORDER (4, CORBA::COMPLETED_NO));
 
-    _disp->run (FALSE);
+    _disp->run (FALSE, FALSE);
 }
 
 void
@@ -1782,8 +1782,11 @@ CORBA::ORB::run ()
 #endif // HAVE_THREADS
     _is_running = TRUE;
     _is_stopped = FALSE;
+
+		//This boolean allows us to get past the fact that even when running shm, ::select will always return 1 because
+		//disk files are always ready to be read
     while (!_is_stopped) {
-	_disp->run (FALSE);
+	_disp->run (FALSE, _run_shm);
     }
     do_shutdown ();
 }
@@ -2381,6 +2384,11 @@ CORBA::ORB::is_local (Object_ptr o)
 }
 
 void
+CORBA::ORB::is_shm(CORBA::Boolean run_shm){
+		_run_shm = run_shm;
+}
+
+void
 CORBA::ORB::register_oa (ObjectAdapter *oa)
 {
   MICOMT::AutoWRLock l(_adapters);
@@ -2917,8 +2925,8 @@ CORBA::ORB::wait (ORBMsgId id, Long tmout)
       if (t.done())
         return FALSE;
 #endif // USE_MESSAGING
-      disp_for_waiting->run (FALSE);
-			shm_disp_for_waiting->run(FALSE);
+      disp_for_waiting->run (FALSE, FALSE);
+			shm_disp_for_waiting->run(FALSE, FALSE);
       rec = get_invoke (id);
     }
 #ifdef HAVE_THREADS
@@ -3323,8 +3331,8 @@ CORBA::ORB_init (int &argc, char **argv, const char *_id)
 #endif
 #endif
     PInterceptor::PI::_init();
-		Boolean run_shm = TRUE;
-    Boolean run_iiop_server = FALSE;
+		Boolean run_shm = FALSE;
+    Boolean run_iiop_server = TRUE;
     Boolean run_iiop_proxy = TRUE;
 		Boolean run_shm_proxy = TRUE;
     Boolean iiop_blocking = FALSE;
@@ -3503,7 +3511,7 @@ CORBA::ORB_init (int &argc, char **argv, const char *_id)
 	    run_iiop_proxy = FALSE;
 	} else if (arg == "-ORBIIOPAddr") {
 	    iiopaddrs.push_back (val);
-			//run_iiop_server = TRUE;
+			run_iiop_server = TRUE;
         } else if (arg == "-ORBIIOPProxy") {
           fwproxyaddr = Address::parse (val.c_str());
         } else if (arg == "-ORBIIOPBlocking") {
@@ -3534,6 +3542,7 @@ CORBA::ORB_init (int &argc, char **argv, const char *_id)
 	} else if (arg == "-ORBShm"){
 		shmaddr.push_back (val);
 		run_shm = TRUE;
+		run_iiop_server = FALSE;
 	} else if (arg == "-ORBInitRef") {
 	    InitRefs.push_back (val);
 	} else if (arg == "-ORBDefaultInitRef") {
@@ -4024,13 +4033,13 @@ CORBA::ORB_init (int &argc, char **argv, const char *_id)
     }
 
 		//create SHM client
-
 		if(run_shm_proxy) {
 				shm_proxy_instance = new MICO::SharedMemoryProxy (orb_instance, giop_ver, max_message_size);
 		}
 
 		if (!use_sl3) {
 	if (run_shm) {
+			orb_instance->is_shm(run_shm);
 			MICO::SharedMemoryServer* shm_server_instance
 		= new MICO::SharedMemoryServer (orb_instance,
 					iiop_ver,

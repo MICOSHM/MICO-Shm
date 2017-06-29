@@ -33,14 +33,14 @@ class FL_MicoDispatcher : public CORBA::Dispatcher {
     CORBA::DispatcherCallback *cb;
     Event ev;
     int fd;
-    
+
     FileEvent (FL_MicoDispatcher *_disp, CORBA::DispatcherCallback *_cb, Event _ev, int _fd)
       : disp (_disp), cb (_cb), ev (_ev), fd(_fd) {}
-    
+
   private:
     FileEvent () {}
   };
-  
+
   struct TimerEvent {
     FL_MicoDispatcher *disp;
     CORBA::DispatcherCallback *cb;
@@ -52,13 +52,13 @@ class FL_MicoDispatcher : public CORBA::Dispatcher {
   private:
     TimerEvent () {}
   };
-  
+
   list<FileEvent *> fevents;
   list<TimerEvent *> tevents;
 
   static void input_callback (int, void *);
   static void timer_callback (void *);
-  
+
 protected:
   int isShuttingDown;
   int shutdownOnLastWindowClose;
@@ -72,7 +72,7 @@ public:
   virtual void ex_event (CORBA::DispatcherCallback *, CORBA::Long fd);
   virtual void tm_event (CORBA::DispatcherCallback *, CORBA::ULong tmout);
   virtual void remove (CORBA::DispatcherCallback *, Event);
-  virtual void run (CORBA::Boolean infinite = TRUE);
+  virtual void run (CORBA::Boolean infinite = TRUE, CORBA::Boolean _runShm = FALSE);
   virtual void move (CORBA::Dispatcher *);
   virtual CORBA::Boolean idle () const;
 
@@ -80,4 +80,3 @@ public:
 };
 
 #endif  // _FL_MICO_DISPATCHER_HEADER_
-

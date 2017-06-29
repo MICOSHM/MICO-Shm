@@ -36,7 +36,7 @@ class GtkDispatcher : public CORBA::Dispatcher {
 	Event ev;
 
 	FileEvent () {}
-	FileEvent (GtkDispatcher *_disp, gint _tag, 
+	FileEvent (GtkDispatcher *_disp, gint _tag,
 		   CORBA::DispatcherCallback *_cb, Event _ev)
 	    : disp (_disp), tag (_tag), cb (_cb), ev (_ev)
 	{}
@@ -47,7 +47,7 @@ class GtkDispatcher : public CORBA::Dispatcher {
 	CORBA::DispatcherCallback *cb;
 
 	TimerEvent () {}
-	TimerEvent (GtkDispatcher *_disp, gint _tag, 
+	TimerEvent (GtkDispatcher *_disp, gint _tag,
 		    CORBA::DispatcherCallback *_cb)
 	    : disp (_disp), tag (_tag), cb (_cb)
 	{}
@@ -66,7 +66,7 @@ public:
     virtual void ex_event (CORBA::DispatcherCallback *, CORBA::Long fd);
     virtual void tm_event (CORBA::DispatcherCallback *, CORBA::ULong tmout);
     virtual void remove (CORBA::DispatcherCallback *, Event);
-    virtual void run (CORBA::Boolean infinite = TRUE);
+    virtual void run (CORBA::Boolean infinite = TRUE, CORBA::Boolean _runShm = FALSE);
     virtual void move (CORBA::Dispatcher *);
     virtual CORBA::Boolean idle () const;
 };

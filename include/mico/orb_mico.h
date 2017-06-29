@@ -172,6 +172,7 @@ public:
 class ORB : public ServerlessObject {
 public:
     typedef CORBA::ULong MsgId;
+    void is_shm(CORBA::Boolean run_shm);
 private:
 #ifdef HAVE_THREADS
     class ResourceManager {
@@ -273,6 +274,7 @@ private:
     Boolean _is_running;
     Boolean _is_shutdown;
     Boolean _is_stopped;
+    Boolean _run_shm;
     Boolean _wait_for_completion;
     OAVec _shutting_down_adapters;
 

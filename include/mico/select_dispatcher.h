@@ -24,8 +24,8 @@
 #ifndef __mico_select_dispatcher_h__
 #define __mico_select_dispatcher_h__
 
-namespace MICO {	
-	
+namespace MICO {
+
 class SelectDispatcher : public CORBA::Dispatcher {
     typedef fd_set FDSet;
 
@@ -83,7 +83,7 @@ public:
     virtual void tm_event (CORBA::DispatcherCallback *, CORBA::ULong tmout);
     virtual void remove (CORBA::DispatcherCallback *, Event);
     virtual void move (CORBA::Dispatcher *);
-    virtual void run (CORBA::Boolean infinite = TRUE);
+    virtual void run (CORBA::Boolean infinite = TRUE, CORBA::Boolean _runShm = FALSE);
     virtual CORBA::Boolean idle () const;
 
     virtual void block (CORBA::Boolean b);

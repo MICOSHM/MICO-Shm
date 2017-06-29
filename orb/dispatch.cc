@@ -429,7 +429,7 @@ MICO::SelectDispatcher::remove (CORBA::DispatcherCallback *cb, Event e)
 }
 
 void
-MICO::SelectDispatcher::run (CORBA::Boolean infinite)
+MICO::SelectDispatcher::run (CORBA::Boolean infinite, CORBA::Boolean _runShm)
 {
     FDSet rset, wset, xset;
     OSMisc::TimeVal tm;
@@ -444,14 +444,22 @@ MICO::SelectDispatcher::run (CORBA::Boolean infinite)
 	    sleeptime (tm);
 	}
 
-  CORBA::TransportServer *tserv = new SharedMemoryTransportServer();
-  int svalue = tserv->get_sem_value();
+  int r = 0;
+  int svalue = -1;
 
-	int r = ::select (fd_max+1,
+  if(_runShm == TRUE) {
+    CORBA::TransportServer *tserv = new SharedMemoryTransportServer();
+    svalue = tserv->get_sem_value();
+    delete tserv;
+    }
+
+  if(_runShm == FALSE) {
+	   r = ::select (fd_max+1,
 			  (select_addr_t)&rset,
 			  (select_addr_t)&wset,
 			  (select_addr_t)&xset,
 			  &tm);
+    }
 #ifdef HAVE_THREADS
         if (r == -1 && errno == EBADF) {
             // worker thread already closed some fd
@@ -462,7 +470,8 @@ MICO::SelectDispatcher::run (CORBA::Boolean infinite)
 	assert (r >= 0 || errno == EINTR || errno == EAGAIN ||
                 errno == EWOULDBLOCK);
 
-	if (r > 0 && svalue > 0)
+  //When using shm, ::select always assumes ready to read as disk based files are considered always ready to read
+	if (r > 0 || svalue > 0)
 	    handle_fevents (rset, wset, xset);
 	handle_tevents ();
     } while (infinite);
@@ -864,7 +873,7 @@ MICO::PollDispatcher::remove (CORBA::DispatcherCallback *cb, Event e)
 }
 
 void
-MICO::PollDispatcher::run (CORBA::Boolean infinite)
+MICO::PollDispatcher::run (CORBA::Boolean infinite, CORBA::Boolean _runShm)
 {
     do {
         build_pollset();

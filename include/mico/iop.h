@@ -625,7 +625,7 @@ public:
     void ex_event (CORBA::DispatcherCallback *, CORBA::Long fd) {};
     void tm_event (CORBA::DispatcherCallback *, CORBA::ULong tmout) {};
     void remove (CORBA::DispatcherCallback *, CORBA::Dispatcher::Event) {};
-    void run (CORBA::Boolean infinite = TRUE) {};
+    void run (CORBA::Boolean infinite = TRUE, CORBA::Boolean _runShm = FALSE) {};
     void move (CORBA::Dispatcher *) {};
     CORBA::Boolean idle () const { return TRUE; };
 

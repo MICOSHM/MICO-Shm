@@ -41,7 +41,7 @@ class TclDispatcher : public CORBA::Dispatcher {
 	CORBA::Long handle;
 
 	FileEvent () {}
-	FileEvent (TclDispatcher *_disp, CORBA::Long _handle, 
+	FileEvent (TclDispatcher *_disp, CORBA::Long _handle,
 		   CORBA::DispatcherCallback *_cb, Event _ev)
 	    : disp (_disp), cb (_cb), ev (_ev), handle (_handle)
 	{}
@@ -74,7 +74,7 @@ public:
     virtual void ex_event (CORBA::DispatcherCallback *, CORBA::Long fd);
     virtual void tm_event (CORBA::DispatcherCallback *, CORBA::ULong tmout);
     virtual void remove (CORBA::DispatcherCallback *, Event);
-    virtual void run (CORBA::Boolean infinite = TRUE);
+    virtual void run (CORBA::Boolean infinite = TRUE, CORBA::Boolean _runShm = FALSE);
     virtual void move (CORBA::Dispatcher *);
     virtual CORBA::Boolean idle () const;
 };

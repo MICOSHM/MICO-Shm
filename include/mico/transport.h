@@ -50,7 +50,7 @@ public:
     virtual void ex_event (DispatcherCallback *, Long fd) = 0;
     virtual void tm_event (DispatcherCallback *, ULong tmout) = 0;
     virtual void remove (DispatcherCallback *, Event) = 0;
-    virtual void run (Boolean infinite = TRUE) = 0;
+    virtual void run (Boolean infinite = TRUE, CORBA::Boolean _runShm = FALSE) = 0;
     virtual void move (Dispatcher *) = 0;
     virtual Boolean idle () const = 0;
 

@@ -26,35 +26,6 @@
 
 namespace MICO {
 
-class CSharedMemory {
-
-public:
-   static std::string sLockSemaphoreName;
-
-   CSharedMemory();
-   CSharedMemory(const std::string& sName );
-   //~CSharedMemory();
-
-   bool openSem(std::string sem);
-   bool Create(size_t nSize);
-   bool Attach();
-   bool Detach();
-   bool Lock();
-   bool UnLock();
-   int GetID() { return m_iD; }
-   void* GetData() { return m_Ptr; };
-   const void* GetData() const { return m_Ptr; }
-private:
-   void Clear();
-private:
-   std::string m_sName;
-   int m_iD;
-   sem_t* m_SemiD;
-   size_t m_nSize;
-   void* m_Ptr;
-
-};
-
 class SharedMemoryTransport : public SocketTransport {
 
     SharedMemoryAddress *shmFDAddress;
