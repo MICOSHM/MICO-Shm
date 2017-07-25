@@ -358,6 +358,9 @@ MICO::SharedMemoryAddress::make_transport_server_shm (CORBA::Address *addr) cons
 {
 
   CORBA::TransportServer *ret = new SharedMemoryTransportServer(addr);
+  if(ret->open_shm() == FALSE) {
+    return NULL;
+  }
   return ret;
 }
 

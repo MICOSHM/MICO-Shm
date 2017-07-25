@@ -70,6 +70,8 @@ public:
   SharedMemoryTransportServer (CORBA::Address *);
   SharedMemoryTransportServer ();
 
+  CORBA::Boolean open_shm ();
+
   int get_sem_value();
 
   CORBA::Boolean bind (const CORBA::Address *);

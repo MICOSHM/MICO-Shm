@@ -142,6 +142,7 @@ struct TransportCallback {
 class TransportServer {
 public:
     virtual int get_sem_value () = 0;
+    virtual CORBA::Boolean open_shm () = 0;
 
     virtual void aselect (Dispatcher *, TransportServerCallback *) = 0;
 

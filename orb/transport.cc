@@ -196,10 +196,15 @@ MICO::SocketTransport::rselect (CORBA::Dispatcher *disp,
 	rdisp = 0;
 	rcb = 0;
     }
-    if (cb) {
+    if (cb && fd > 0) {
 	disp->rd_event (this, fd);
 	rdisp = disp;
 	rcb = cb;
+    }
+    if(cb && fd < 1){
+    disp->rd_event(this, 0);
+    rdisp = disp;
+    rcb = cb;
     }
 }
 
@@ -212,10 +217,15 @@ MICO::SocketTransport::wselect (CORBA::Dispatcher *disp,
 	wdisp = 0;
 	wcb = 0;
     }
-    if (cb) {
+    if (cb && fd > 0) {
 	disp->wr_event (this, fd);
 	wdisp = disp;
 	wcb = cb;
+    }
+    if(cb && fd < 1){
+    disp->wr_event(this, fd);
+    wdisp = disp;
+    wcb = cb;
     }
 }
 
@@ -355,6 +365,12 @@ int
 MICO::SocketTransportServer::get_sem_value () {
 
   return 0;
+}
+
+CORBA::Boolean
+MICO::SocketTransportServer::open_shm ()
+{
+  return TRUE;
 }
 
 void

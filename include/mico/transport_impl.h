@@ -99,6 +99,8 @@ public:
 
 		int get_sem_value ();
 
+		CORBA::Boolean open_shm ();
+
     void aselect (CORBA::Dispatcher *,
     		  CORBA::TransportServerCallback *);
     void callback (CORBA::Dispatcher *, CORBA::Dispatcher::Event);

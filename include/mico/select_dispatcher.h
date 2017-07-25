@@ -61,7 +61,9 @@ class SelectDispatcher : public CORBA::Dispatcher {
     CORBA::Boolean modified;
     FDSet curr_wset, curr_rset, curr_xset;
     CORBA::Long fd_max;
-
+    int r;
+    int svalue;
+    
     void lock ();
     void unlock ();
     CORBA::Boolean islocked () const;

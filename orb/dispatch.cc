@@ -259,6 +259,8 @@ MICO::SelectDispatcher::handle_fevents (FDSet &rset, FDSet &wset, FDSet &xset)
     lock ();
     list<FileEvent>::iterator i;
 
+
+    if(r > 0){
     for (i = fevents.begin(); i != fevents.end(); ++i) {
 	if (!(*i).deleted) {
 	    switch ((*i).event) {
@@ -279,6 +281,30 @@ MICO::SelectDispatcher::handle_fevents (FDSet &rset, FDSet &wset, FDSet &xset)
 	    }
 	}
     }
+  }
+
+  if(svalue > 0){
+  for (i = fevents.begin(); i != fevents.end(); ++i) {
+if (!(*i).deleted) {
+    switch ((*i).event) {
+    case Read:
+  if (FD_ISSET ((*i).fd, &rset))
+      (*i).cb->callback (this, Read);
+  break;
+    case Write:
+  if (FD_ISSET ((*i).fd, &wset))
+      (*i).cb->callback (this, Write);
+  break;
+    case Except:
+  if (FD_ISSET ((*i).fd, &xset))
+      (*i).cb->callback (this, Except);
+  break;
+    default:
+  assert (0);
+    }
+  }
+    }
+  }
 
     unlock ();
 }
@@ -444,8 +470,8 @@ MICO::SelectDispatcher::run (CORBA::Boolean infinite, CORBA::Boolean _runShm)
 	    sleeptime (tm);
 	}
 
-  int r = 0;
-  int svalue = -1;
+  r = 0;
+  svalue = -1;
 
   if(_runShm == TRUE) {
     CORBA::TransportServer *tserv = new SharedMemoryTransportServer();
@@ -453,22 +479,21 @@ MICO::SelectDispatcher::run (CORBA::Boolean infinite, CORBA::Boolean _runShm)
     delete tserv;
     }
 
-  if(_runShm == FALSE) {
 	   r = ::select (fd_max+1,
 			  (select_addr_t)&rset,
 			  (select_addr_t)&wset,
 			  (select_addr_t)&xset,
 			  &tm);
-    }
+
 #ifdef HAVE_THREADS
-        if (r == -1 && errno == EBADF) {
+        if (r == -1 && errno == EBADF && svalue == -1) {
             // worker thread already closed some fd
             // let's loop and build fd set again
             continue;
         }
 #endif // HAVE_THREADS
-	assert (r >= 0 || errno == EINTR || errno == EAGAIN ||
-                errno == EWOULDBLOCK);
+	//assert (r >= 0 || errno == EINTR || errno == EAGAIN ||
+    //            errno == EWOULDBLOCK);
 
   //When using shm, ::select always assumes ready to read as disk based files are considered always ready to read
 	if (r > 0 || svalue > 0)
