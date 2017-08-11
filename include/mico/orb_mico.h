@@ -277,6 +277,7 @@ private:
     Boolean _run_shm;
     Boolean _wait_for_completion;
     OAVec _shutting_down_adapters;
+    int shmFD = 0;
 
     OctetSeq _terminal_id;
 
@@ -292,6 +293,7 @@ private:
 
     Boolean is_local (Object_ptr);
     ObjectAdapter *get_oa (Object_ptr);
+    ObjectAdapter *get_shm_oa (ObjectAdapter *);
     ORBInvokeRec *create_invoke (MsgId);
     void add_invoke (ORBInvokeRec *);
     ORBInvokeRec *get_invoke (MsgId);

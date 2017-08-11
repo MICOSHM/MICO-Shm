@@ -793,6 +793,8 @@ public:
     SharedMemoryProxy (CORBA::ORB_ptr,
                CORBA::UShort giop_ver = 0x0100,
 	       CORBA::ULong max_size = 0);
+
+    SharedMemoryProxy ();
     ~SharedMemoryProxy ();
 
     void register_profile_id (CORBA::ULong id);

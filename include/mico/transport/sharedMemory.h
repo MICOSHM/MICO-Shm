@@ -41,7 +41,7 @@ public:
   CORBA::Boolean bind (const CORBA::Address *);
   CORBA::Boolean connect (const CORBA::Address *, CORBA::ULong, CORBA::Boolean&);
 
-  void open (CORBA::Long fd = -1);
+  void open (CORBA::Long shm_fd = -1);
   void open_sem (std::string semName);
 
   void post ();

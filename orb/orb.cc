@@ -30,6 +30,9 @@
 #ifndef FAST_PCH
 
 #include <CORBA.h>
+#include <sys/mman.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 #ifndef _WIN32
 #include <string.h>
 #endif
@@ -2486,6 +2489,19 @@ CORBA::ORB::get_oa (Object_ptr o)
   return NULL;
 }
 
+//Retrieves the shm OA stored in _adapters
+CORBA::ObjectAdapter *
+CORBA::ORB::get_shm_oa (ObjectAdapter *_oa)
+{
+	MICOMT::AutoRDLock l(_adapters);
+
+  for (ULong i = 0; i < _adapters.size(); ++i) {
+    if (_adapters[i] == _oa)
+      return _adapters[i];
+  }
+  return NULL;
+}
+
 CORBA::Boolean
 CORBA::ORB::builtin_invoke (ORBMsgId id, Object_ptr obj,
                             ORBRequest *req, Principal_ptr pr)
@@ -2531,6 +2547,30 @@ CORBA::ORB::invoke_async (Object_ptr obj,
 {
     MsgId msgid;
     ORBInvokeRec *rec;
+		ORBInvokeRec *_rec;
+
+		//We grab the address for the shared memory file from the imported ior fill
+		//int shmfd = 0;
+		const CORBA::Address *addr = obj->_ior()->addr(20006, FALSE, 0);
+
+		//Then run shm_open to check for the existence of the specificed shared memory file
+		//If it exists shm_open returns a non negative fd, if it returns -1 we remove the
+		//shared memory object adapter from the _adapters list and proceed
+		const MICO::SharedMemoryAddress *shmAddr;
+		shmAddr = static_cast<const MICO::SharedMemoryAddress*> (addr);
+
+		//We create a new SharedMemoryProxy object to create an ObjectAdapter
+		//We then use the method get_shm_oa() to return the shm object adapter stored in _adapters
+		CORBA::UShort giop_ver = 0x0100;
+		CORBA::ULong max_size = 0;
+		ObjectAdapter *_oa = new MICO::SharedMemoryProxy(obj->_orb(), giop_ver, max_size);
+		ObjectAdapter *shm_oa = get_shm_oa(_oa);
+
+		try{
+			shmFD = shm_open("foo", O_RDONLY, 0777);
+		} catch (...) {
+			shmFD = -1;
+		}
 
     if (!id) {
 	msgid = new_msgid();
@@ -2564,7 +2604,17 @@ CORBA::ORB::invoke_async (Object_ptr obj,
     // we need to know OA before calling
     // receive_request_service_context start point
     // - it's called from init_invoke
-    ObjectAdapter *oa = get_oa (obj);
+
+		try{
+			if(shmFD == -1 && shm_oa != NULL)
+			{
+				unregister_oa(shm_oa);
+			}
+		} catch(...) {
+			}
+
+    ObjectAdapter *oa = get_oa(obj);
+
 #ifdef HAVE_THREADS
 	if (!cb && response_exp)
 	    cb = new ORBAsyncCallback;
@@ -2577,9 +2627,18 @@ CORBA::ORB::invoke_async (Object_ptr obj,
 //  	    rec->free();
 //  	    return msgid;
 //  	}
-    try {
+
+		try {
+			if(shmFD > 0)
 	rec->init_invoke (this, obj, req, pr, response_exp, cb, oa);
-    } catch (...) {
+		} catch (...) {
+		return id;
+		}
+
+    try {
+			if(shmFD < 0)
+	rec->init_invoke (this, obj, req, pr, response_exp, cb, oa);
+  	} catch (...) {
 	return id;
     }
 
@@ -2597,14 +2656,23 @@ CORBA::ORB::invoke_async (Object_ptr obj,
 #endif // USE_SL3
 
     if (!builtin_invoke (rec, obj, req, pr)) {
-	if (!oa) {
+	if (!oa && !shm_oa) {
             CORBA::OBJECT_NOT_EXIST ex;
 	    req->set_out_args (&ex);
 	    answer_invoke (rec, InvokeSysEx, Object::_nil(), req, 0);
 	    return rec;
 	}
-	rec->oa (oa);
-        oa->invoke (rec, obj, req, pr, response_exp);
+
+	if(shmFD > -1) {
+		rec->oa (oa);
+		oa->invoke (rec, obj, req, pr, response_exp);
+	}
+
+	if(shmFD < 0) {
+		rec->oa (oa);
+		oa->invoke(rec, obj, req, pr, response_exp);
+	}
+
 	if (!response_exp) {
 #ifdef USE_SL3
           del_invoke(rec->id());
@@ -3542,7 +3610,7 @@ CORBA::ORB_init (int &argc, char **argv, const char *_id)
 	} else if (arg == "-ORBShm"){
 		shmaddr.push_back (val);
 		run_shm = TRUE;
-		run_iiop_server = FALSE;
+		run_iiop_server = TRUE;
 	} else if (arg == "-ORBInitRef") {
 	    InitRefs.push_back (val);
 	} else if (arg == "-ORBDefaultInitRef") {

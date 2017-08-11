@@ -422,7 +422,7 @@ MICO::SharedMemoryAddress::resolve_host () const
     return TRUE;
 }
 
-/*************************** InetAddressParser *************************/
+/*************************** SharedMemoryAddressParser *************************/
 
 
 MICO::SharedMemoryAddressParser::SharedMemoryAddressParser ()

@@ -1,4 +1,4 @@
-   /*
+/*
  *  MICO --- an Open Source CORBA implementation
  *  Copyright (c) 1997-2008 by The Mico Team
  *
@@ -3286,7 +3286,7 @@ MICO::SharedMemoryServer::listen (CORBA::Address *addr, CORBA::Address *fwproxya
       return FALSE;
     }
 
-    tserv->block ( Dispatcher()->isblocking() );
+		//tserv->block(Dispatcher()->isblocking());
     tserv->aselect ( Dispatcher(), this);
 
     if (!fwproxyaddr) {
@@ -3316,12 +3316,7 @@ MICO::SharedMemoryServer::listen ()
 		addr.push_back("");
 		addr.push_back("0");
 
-		//CORBA::IORProfile *prof;
 		MICO::SharedMemoryAddress shma =  SharedMemoryAddress(addr[0],addr[1], (short)atoi(addr[2].c_str()));
-
-		//prof = shma.make_ior_profile ((CORBA::Octet *)"", 1,CORBA::MultiComponent(),_iiop_ver);
-
-		//_orb->ior_template()->add_profile (prof);
 
     return listen(&shma, 0);
 }
@@ -4297,12 +4292,7 @@ MICO::SharedMemoryServer::callback (GIOPConn *conn, GIOPConnCallback::Event ev)
 	    << conn->transport()->peer()->stringify()
 	    << " closed or broken" << endl;
 	}
-	//const CORBA::Address *addr = conn->transport()->peer();
-	//assert (addr);
-//#ifdef USE_OLD_INTERCEPTORS
-	//Interceptor::ConnInterceptor::
-	    //_exec_client_disconnect (addr->stringify().c_str());
-//#endif // USE_OLD_INTERCEPTORS
+
 	kill_conn (conn);
 	return FALSE;
     }
@@ -4447,6 +4437,10 @@ MICO::SharedMemoryProxy::SharedMemoryProxy (CORBA::ORB_ptr orb,
     _giop_ver = giop_ver;
     _orb->register_oa (this);
     _reroute = NULL;
+}
+
+MICO::SharedMemoryProxy::SharedMemoryProxy () {
+
 }
 
 MICO::SharedMemoryProxy::~SharedMemoryProxy ()
@@ -4972,6 +4966,7 @@ MICO::SharedMemoryProxy::make_conn (CORBA::Object_ptr obj, CORBA::Boolean& timed
 {
 	CORBA::IORProfile *prof;
 	const CORBA::Address *addr;
+
 #ifdef USE_SL3
 	CORBA::Object_var secobj = _orb->resolve_initial_references
 ("TransportSecurity::SecurityManager");
@@ -5235,7 +5230,7 @@ if (strcmp(tcpip_creds_id.in(), "") == 0
 	for (CORBA::ULong i = 0; i < prefs->length(); ++i) {
 			CORBA::UShort version;
 			prof = obj->_ior_fwd()->profile ((*prefs)[i]);
-			while (prof) {
+			while (prof && prof->id() == CORBA::IORProfile::TAG_SHM_IOP) {
 		addr = prof->addr ();
 		assert (addr);
 		/*
@@ -5247,8 +5242,7 @@ if (strcmp(tcpip_creds_id.in(), "") == 0
 		}
 
 		version = 0;
-					if (prof->id() == CORBA::IORProfile::TAG_SHM_IOP
-							|| prof->id() == CORBA::IORProfile::TAG_SSL_INTERNET_IOP) {
+					if (prof->id() == CORBA::IORProfile::TAG_SHM_IOP) {
 							MICO::ProfileIIOPVersionProvider* version_provider
 									= dynamic_cast<MICO::ProfileIIOPVersionProvider*>(prof);
 							//assert(version_provider != NULL);
@@ -5454,7 +5448,7 @@ MICO::SharedMemoryProxy::has_object (CORBA::Object_ptr obj)
 CORBA::Boolean
 MICO::SharedMemoryProxy::is_local () const
 {
-    return FALSE;
+    return TRUE;
 }
 
 #ifdef USE_CSL2

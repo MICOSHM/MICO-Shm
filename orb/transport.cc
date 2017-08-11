@@ -202,9 +202,9 @@ MICO::SocketTransport::rselect (CORBA::Dispatcher *disp,
 	rcb = cb;
     }
     if(cb && fd < 1){
-    disp->rd_event(this, 0);
-    rdisp = disp;
-    rcb = cb;
+  disp->rd_event(this, 0);
+  rdisp = disp;
+  rcb = cb;
     }
 }
 
@@ -223,9 +223,9 @@ MICO::SocketTransport::wselect (CORBA::Dispatcher *disp,
 	wcb = cb;
     }
     if(cb && fd < 1){
-    disp->wr_event(this, fd);
-    wdisp = disp;
-    wcb = cb;
+  disp->wr_event(this, fd);
+  wdisp = disp;
+  wcb = cb;
     }
 }
 
@@ -388,6 +388,12 @@ MICO::SocketTransportServer::aselect (CORBA::Dispatcher *disp,
 	adisp = disp;
 	acb = cb;
     }
+    if(cb && fd < 0){
+  listen ();
+  disp->rd_event(this, 0);
+  adisp = disp;
+  acb = cb;
+    }
 }
 
 void
@@ -425,7 +431,6 @@ MICO::SocketTransportServer::block (CORBA::Boolean doblock)
 	OSNet::sock_block (fd, doblock);
     }
 }
-
 
 CORBA::Boolean
 MICO::SocketTransportServer::bad () const

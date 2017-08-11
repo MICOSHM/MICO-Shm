@@ -171,6 +171,9 @@ public:
 
     ORB_ptr _orbnc ();
 
+    ORB_ptr _orb ()
+    { return orb; }
+
     IOR *_ior ()
     { return ior; }
 
