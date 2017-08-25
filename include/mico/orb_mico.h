@@ -172,7 +172,7 @@ public:
 class ORB : public ServerlessObject {
 public:
     typedef CORBA::ULong MsgId;
-    void is_shm(CORBA::Boolean run_shm);
+    void run_shm(CORBA::Boolean run_shm);
 private:
 #ifdef HAVE_THREADS
     class ResourceManager {
@@ -291,6 +291,7 @@ private:
     CORBA::DispatcherFactory* dispatcher_factory_;
 
     Boolean is_local (Object_ptr);
+    Boolean is_shm ();
     ObjectAdapter *get_oa (Object_ptr);
     ORBInvokeRec *create_invoke (MsgId);
     void add_invoke (ORBInvokeRec *);
@@ -601,6 +602,7 @@ public:
     virtual const char *get_oaid () const = 0;
     virtual Boolean has_object (Object_ptr) = 0;
     virtual Boolean is_local () const = 0;
+    virtual Boolean is_shm () const = 0;
 
 #ifdef USE_CSL2
     virtual CORBA::Principal_ptr get_principal (CORBA::Object_ptr) = 0;

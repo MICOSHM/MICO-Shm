@@ -53,6 +53,7 @@ class SelectDispatcher : public CORBA::Dispatcher {
     };
 
     std::list<FileEvent> fevents;
+    std::list<FileEvent> shm_events;
     std::list<TimerEvent> tevents;
 
     CORBA::Long last_update;
@@ -63,7 +64,7 @@ class SelectDispatcher : public CORBA::Dispatcher {
     CORBA::Long fd_max;
     int r;
     int svalue;
-    
+
     void lock ();
     void unlock ();
     CORBA::Boolean islocked () const;
@@ -73,6 +74,7 @@ class SelectDispatcher : public CORBA::Dispatcher {
     void handle_tevents ();
     void handle_fevents (FDSet &rset, FDSet &wset, FDSet &xset);
     void update_fevents ();
+    void update_shm_events ();
     void sleeptime (OSMisc::TimeVal &);
 
     static CORBA::Boolean _isblocking;
@@ -80,6 +82,8 @@ public:
     SelectDispatcher ();
     virtual ~SelectDispatcher ();
     virtual void rd_event (CORBA::DispatcherCallback *, CORBA::Long fd);
+    virtual void shm_rd_event (CORBA::DispatcherCallback *, CORBA::Long fd);
+    virtual void shm_wr_event (CORBA::DispatcherCallback *, CORBA::Long fd);
     virtual void wr_event (CORBA::DispatcherCallback *, CORBA::Long fd);
     virtual void ex_event (CORBA::DispatcherCallback *, CORBA::Long fd);
     virtual void tm_event (CORBA::DispatcherCallback *, CORBA::ULong tmout);

@@ -50,9 +50,10 @@ public:
 		virtual void post ();
 		virtual void wait ();
 		virtual int get_sem_value ();
+		virtual int get_shm_fd ();
 
-    virtual void rselect (CORBA::Dispatcher *, CORBA::TransportCallback *);
-    virtual void wselect (CORBA::Dispatcher *, CORBA::TransportCallback *);
+    virtual void rselect (CORBA::Dispatcher *, CORBA::TransportCallback *, CORBA::Boolean is_shm);
+    virtual void wselect (CORBA::Dispatcher *, CORBA::TransportCallback *, CORBA::Boolean is_shm);
     virtual void callback (CORBA::Dispatcher *, CORBA::Dispatcher::Event);
 
     virtual void block (CORBA::Boolean doblock = TRUE);
@@ -98,11 +99,12 @@ public:
     virtual ~SocketTransportServer ();
 
 		int get_sem_value ();
+		int get_shm_fd ();
 
 		CORBA::Boolean open_shm ();
 
     void aselect (CORBA::Dispatcher *,
-    		  CORBA::TransportServerCallback *);
+    		  CORBA::TransportServerCallback *, CORBA::Boolean is_shm);
     void callback (CORBA::Dispatcher *, CORBA::Dispatcher::Event);
 
     CORBA::Boolean isblocking () const;

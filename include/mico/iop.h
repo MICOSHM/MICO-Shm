@@ -621,6 +621,8 @@ public:
     virtual ~DummyDispatcher () {};
 
     void rd_event (CORBA::DispatcherCallback *, CORBA::Long fd) {};
+    void shm_rd_event (CORBA::DispatcherCallback *, CORBA::Long fd) {};
+    void shm_wr_event (CORBA::DispatcherCallback *, CORBA::Long fd) {};
     void wr_event (CORBA::DispatcherCallback *, CORBA::Long fd) {};
     void ex_event (CORBA::DispatcherCallback *, CORBA::Long fd) {};
     void tm_event (CORBA::DispatcherCallback *, CORBA::ULong tmout) {};
@@ -801,6 +803,7 @@ public:
     const char *get_oaid () const;
     CORBA::Boolean has_object (CORBA::Object_ptr);
     CORBA::Boolean is_local () const;
+    CORBA::Boolean is_shm () const;
 
 #ifdef USE_CSL2
     CORBA::Principal_ptr get_principal (CORBA::Object_ptr);
@@ -953,6 +956,7 @@ public:
   const char *get_oaid () const;
   CORBA::Boolean has_object (CORBA::Object_ptr);
   CORBA::Boolean is_local () const;
+  CORBA::Boolean is_shm () const;
 
 #ifdef USE_CSL2
   CORBA::Principal_ptr get_principal (CORBA::Object_ptr);
@@ -1146,6 +1150,7 @@ public:
     const char *get_oaid () const;
     CORBA::Boolean has_object (CORBA::Object_ptr);
     CORBA::Boolean is_local () const;
+    CORBA::Boolean is_shm () const;
 
 #ifdef USE_CSL2
     CORBA::Principal_ptr get_principal (CORBA::Object_ptr);
@@ -1298,6 +1303,7 @@ public:
     const char *get_oaid () const;
     CORBA::Boolean has_object (CORBA::Object_ptr);
     CORBA::Boolean is_local () const;
+    CORBA::Boolean is_shm () const;
 
 #ifdef USE_CSL2
     CORBA::Principal_ptr get_principal (CORBA::Object_ptr);

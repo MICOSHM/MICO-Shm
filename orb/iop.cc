@@ -2319,6 +2319,8 @@ MICO::GIOPConn::GIOPConn (CORBA::Dispatcher *disp, CORBA::Transport *transp,
     _inbufs = 0;
     _total_fragsize = 0;
 
+		CORBA::Boolean is_shm = FALSE;
+
     _refcnt = 0;
     _idle_tmout = tmout;
     _have_tmout = FALSE;
@@ -2331,8 +2333,14 @@ MICO::GIOPConn::GIOPConn (CORBA::Dispatcher *disp, CORBA::Transport *transp,
         _disp->block(TRUE);
     }
 #endif // HAVE_THREADS
+
+		if(_transp->get_shm_fd() > 0)
+		{
+			is_shm = TRUE;
+		}
+
     _transp->block ( _disp->isblocking() );
-    _transp->rselect (_disp, this);
+    _transp->rselect (_disp, this, is_shm);
 
 #ifdef HAVE_THREADS
     _reader = NULL;
@@ -2409,6 +2417,8 @@ MICO::GIOPConn::initialize_reader_key()
 void
 MICO::GIOPConn::terminate ()
 {
+		CORBA::Boolean is_shm = FALSE;
+
     if (MICO::Logger::IsLogged (MICO::Logger::GIOP)) {
 	MICOMT::AutoDebugLock __lock;
 	MICO::Logger::Stream (MICO::Logger::GIOP)
@@ -2431,8 +2441,13 @@ MICO::GIOPConn::terminate ()
 
     _transp->close();
 
-    _transp->rselect (_disp, 0);
-    _transp->wselect (_disp, 0);
+		if(_transp->get_shm_fd() > 0)
+		{
+			is_shm = TRUE;
+		}
+
+    _transp->rselect (_disp, 0, is_shm);
+    _transp->wselect (_disp, 0, is_shm);
 
     if (_M_use_writer_thread) {
       _writer->finalize_shutdown();
@@ -2591,6 +2606,14 @@ MICO::GIOPConn::close_connection()
 void
 MICO::GIOPConn::do_read ( const CORBA::Boolean break_after_read )
 {
+
+	CORBA::Boolean is_shm = FALSE;
+
+	if(_transp->get_shm_fd() > 0)
+	{
+		is_shm = TRUE;
+	}
+
     while (42) {
 	assert (_inlen > 0);
 	CORBA::Long r = _transp->read (*_inbuf, _inlen, _msgRecv);
@@ -2609,8 +2632,8 @@ MICO::GIOPConn::do_read ( const CORBA::Boolean break_after_read )
 #endif
 	if (r < 0 || (r == 0 && _transp->eof())) {
 	    // connection broken or EOF
-	    _transp->rselect (_disp, 0);
-	    _transp->wselect (_disp, 0);
+	    _transp->rselect (_disp, 0, is_shm);
+	    _transp->wselect (_disp, 0, is_shm);
 	    this->close_connection();
 	    // _cb->callback (this, GIOPConnCallback::Closed);
 	    break;
@@ -2627,8 +2650,8 @@ MICO::GIOPConn::do_read ( const CORBA::Boolean break_after_read )
 		    _inbufs = _inbuf;
 		    _inbuf = new CORBA::Buffer;
 		    _inlen = _codec->header_length ();
-		    _transp->rselect (_disp, 0);
-		    _transp->wselect (_disp, 0);
+		    _transp->rselect (_disp, 0, is_shm);
+		    _transp->wselect (_disp, 0, is_shm);
 		    this->input_ready();
 		    break;
 		}
@@ -2644,8 +2667,8 @@ MICO::GIOPConn::do_read ( const CORBA::Boolean break_after_read )
                       << "larger than threshold (" << _max_message_size
                       << ")" << endl;
                   }
-                  _transp->rselect (_disp, 0);
-                  _transp->wselect (_disp, 0);
+                  _transp->rselect (_disp, 0, is_shm);
+                  _transp->wselect (_disp, 0, is_shm);
 		  this->close_connection();
                   //_cb->callback (this, GIOPConnCallback::Closed);
                   break;
@@ -2665,8 +2688,8 @@ MICO::GIOPConn::do_read ( const CORBA::Boolean break_after_read )
 			<< "larger than threshold (" << _max_message_size
 			<< ")" << endl;
 		    }
-		    _transp->rselect (_disp, 0);
-		    _transp->wselect (_disp, 0);
+		    _transp->rselect (_disp, 0, is_shm);
+		    _transp->wselect (_disp, 0, is_shm);
 		    //_cb->callback (this, GIOPConnCallback::Closed);
 		    this->close_connection();
 		    break;
@@ -2685,8 +2708,8 @@ MICO::GIOPConn::do_read ( const CORBA::Boolean break_after_read )
 			MICO::Logger::Stream (MICO::Logger::GIOP)
 			  << "GIOP: got unexpected fragment" << endl;
 		      }
-		      _transp->rselect (_disp, 0);
-		      _transp->wselect (_disp, 0);
+		      _transp->rselect (_disp, 0, is_shm);
+		      _transp->wselect (_disp, 0, is_shm);
 		      //_cb->callback (this, GIOPConnCallback::Closed);
 		      this->close_connection();
 		      break;
@@ -2719,8 +2742,8 @@ MICO::GIOPConn::do_read ( const CORBA::Boolean break_after_read )
 		      << "GIOP: short fragment error"
 		      << endl;
 		  }
-		  _transp->rselect (_disp, 0);
-		  _transp->wselect (_disp, 0);
+		  _transp->rselect (_disp, 0, is_shm);
+		  _transp->wselect (_disp, 0, is_shm);
 		  //_cb->callback (this, GIOPConnCallback::Closed);
 		  this->close_connection();
 		  break;
@@ -2736,8 +2759,8 @@ MICO::GIOPConn::do_read ( const CORBA::Boolean break_after_read )
 		      << "GIOP: got fragment with unknown request id "
 		      << reqid << endl;
 		  }
-		  _transp->rselect (_disp, 0);
-		  _transp->wselect (_disp, 0);
+		  _transp->rselect (_disp, 0, is_shm);
+		  _transp->wselect (_disp, 0, is_shm);
 		  //_cb->callback (this, GIOPConnCallback::Closed);
 		  this->close_connection();
 		  break;
@@ -2795,8 +2818,8 @@ MICO::GIOPConn::do_read ( const CORBA::Boolean break_after_read )
 			<< "GIOP: message fragmented before request id"
 			<< endl;
 		    }
-		    _transp->rselect (_disp, 0);
-		    _transp->wselect (_disp, 0);
+		    _transp->rselect (_disp, 0, is_shm);
+		    _transp->wselect (_disp, 0, is_shm);
 		    //_cb->callback (this, GIOPConnCallback::Closed);
 		    this->close_connection();
 		    break;
@@ -2812,8 +2835,8 @@ MICO::GIOPConn::do_read ( const CORBA::Boolean break_after_read )
 			<< "larger than threshold (" << _max_message_size
 			<< ")" << endl;
 		    }
-		    _transp->rselect (_disp, 0);
-		    _transp->wselect (_disp, 0);
+		    _transp->rselect (_disp, 0, is_shm);
+		    _transp->wselect (_disp, 0, is_shm);
 		    //_cb->callback (this, GIOPConnCallback::Closed);
 		    this->close_connection();
 		    break;
@@ -2829,8 +2852,8 @@ MICO::GIOPConn::do_read ( const CORBA::Boolean break_after_read )
 			<< "GIOP: got first fragment for request id "
 			<< reqid << " which is already there" << endl;
 		    }
-		    _transp->rselect (_disp, 0);
-		    _transp->wselect (_disp, 0);
+		    _transp->rselect (_disp, 0, is_shm);
+		    _transp->wselect (_disp, 0, is_shm);
 		    //_cb->callback (this, GIOPConnCallback::Closed);
 		    this->close_connection();
 		    break;
@@ -2856,8 +2879,8 @@ MICO::GIOPConn::do_read ( const CORBA::Boolean break_after_read )
 			<< "GIOP: got fragment while still in fragment"
 			<< endl;
 		    }
-		    _transp->rselect (_disp, 0);
-		    _transp->wselect (_disp, 0);
+		    _transp->rselect (_disp, 0, is_shm);
+		    _transp->wselect (_disp, 0, is_shm);
 		    //_cb->callback (this, GIOPConnCallback::Closed);
 		    this->close_connection();
 		    break;
@@ -2889,6 +2912,13 @@ MICO::GIOPConn::do_write ()
 {
     MICOMT::AutoLock lock(write_lock_);
 
+		CORBA::Boolean is_shm = FALSE;
+
+		if(_transp->get_shm_fd() > 0)
+		{
+			is_shm = TRUE;
+		}
+
     while (42) {
 	assert (_outbufs.size() > 0);
 	CORBA::Buffer *b = _outbufs.front();
@@ -2905,8 +2935,8 @@ MICO::GIOPConn::do_write ()
 	    }
 	} else if (r < 0) {
 	    // connection broken
-	    _transp->rselect (_disp, 0);
-	    _transp->wselect (_disp, 0);
+	    _transp->rselect (_disp, 0, is_shm);
+	    _transp->wselect (_disp, 0, is_shm);
 	    this->close_connection();
 	    // _cb->callback (this, GIOPConnCallback::Closed);
 	    break;
@@ -2957,6 +2987,13 @@ MICO::GIOPConn::callback (CORBA::Dispatcher *d,
 void
 MICO::GIOPConn::check_idle ()
 {
+	CORBA::Boolean is_shm = FALSE;
+
+	if(_transp->get_shm_fd > 0)
+	{
+		is_shm = TRUE;
+	}
+
     if (_idle_tmout > 0 && _refcnt == 0 && _outbufs.size() == 0) {
         if (_have_tmout)
             _disp->remove (this, CORBA::Dispatcher::Timer);
@@ -2964,7 +3001,7 @@ MICO::GIOPConn::check_idle ()
 	_have_tmout = TRUE;
     }
     if (_have_wselect && _outbufs.size() == 0) {
-        _transp->wselect (_disp, 0);
+        _transp->wselect (_disp, 0, is_shm);
         _have_wselect = FALSE;
     }
 }
@@ -2972,12 +3009,19 @@ MICO::GIOPConn::check_idle ()
 void
 MICO::GIOPConn::check_busy ()
 {
+	CORBA::Boolean is_shm = FALSE;
+
+	if(_transp->get_shm_fd > 0)
+	{
+		is_shm = TRUE;
+	}
+
     if (_have_tmout && (_refcnt > 0 || _outbufs.size() > 0)) {
 	_disp->remove (this, CORBA::Dispatcher::Timer);
 	_have_tmout = FALSE;
     }
     if (!_have_wselect && _outbufs.size() > 0) {
-        _transp->wselect (_disp, this);
+        _transp->wselect (_disp, this, is_shm);
         _have_wselect = TRUE;
     }
 }
@@ -3044,6 +3088,14 @@ MICO::GIOPConn::output_handler (CORBA::Buffer *b)
 {
     MICOMT::AutoLock lock(write_lock_);
 
+		CORBA::Boolean is_shm = FALSE;
+
+		if(_transp->get_shm_fd() > 0)
+		{
+			is_shm = TRUE;
+		}
+
+
     if (MICO::Logger::IsLogged (MICO::Logger::Transport)) {
 	MICOMT::AutoDebugLock __lock;
 	b->dump ("Out Data", MICO::Logger::Stream (MICO::Logger::Transport));
@@ -3055,8 +3107,8 @@ MICO::GIOPConn::output_handler (CORBA::Buffer *b)
 	if (b->length() == 0) {
 	    delete b;
 			CORBA::Transport *ret = new SharedMemoryTransport;
-			//int i = ret->get_sem_value();
 			ret->post();
+			delete ret;
 			//int j = ret->get_sem_value();
 	    return;
 	}
@@ -3085,8 +3137,8 @@ MICO::GIOPConn::output_handler (CORBA::Buffer *b)
 		CORBA::Long r = _transp->write (*b, b->length());
 		if (r < 0) {
 		    // connection broken
-		    _transp->rselect (_disp, 0);
-		    _transp->wselect (_disp, 0);
+		    _transp->rselect (_disp, 0, is_shm);
+		    _transp->wselect (_disp, 0, is_shm);
 		    this->close_connection();
 		    break;
 		}
@@ -3251,7 +3303,7 @@ MICO::SharedMemoryServer::~SharedMemoryServer ()
     {
 	MICOMT::AutoLock lock(_tservers);
 	for (CORBA::ULong i = 0; i < _tservers.size(); i++) {
-	    _tservers[i]->aselect(this->Dispatcher(), NULL);
+	    _tservers[i]->aselect(this->Dispatcher(), NULL, TRUE);
 	    delete _tservers[i];
 	    _tservers[i] = NULL;
 	}
@@ -3286,8 +3338,8 @@ MICO::SharedMemoryServer::listen (CORBA::Address *addr, CORBA::Address *fwproxya
       return FALSE;
     }
 
-    tserv->block ( Dispatcher()->isblocking() );
-    tserv->aselect ( Dispatcher(), this);
+    //tserv->block ( Dispatcher()->isblocking() );
+    tserv->aselect ( Dispatcher(), this, TRUE);
 
     if (!fwproxyaddr) {
 					prof = addr->make_ior_profile ((CORBA::Octet *)"", 1,CORBA::MultiComponent(),_iiop_ver);
@@ -3329,7 +3381,7 @@ MICO::SharedMemoryServer::listen ()
 void
 MICO::SharedMemoryServer::shutdown(CORBA::Address* addr)
 {
-    // stop listening on the specified address
+     //stop listening on the specified address
     MICOMT::AutoLock lock(_tservers);
     for (vector<CORBA::TransportServer*>::iterator iter = _tservers.begin();
 	 iter != _tservers.end();
@@ -4110,6 +4162,14 @@ MICO::SharedMemoryServer::get_principal(CORBA::Object_ptr obj){
 
 CORBA::Boolean
 MICO::SharedMemoryServer::is_local () const
+{
+    // so we shutdown() after all local adapters which might
+    // need IIOPServer for shutdown ...
+    return FALSE;
+}
+
+CORBA::Boolean
+MICO::SharedMemoryServer::is_shm () const
 {
     // so we shutdown() after all local adapters which might
     // need IIOPServer for shutdown ...
@@ -5235,7 +5295,7 @@ if (strcmp(tcpip_creds_id.in(), "") == 0
 	for (CORBA::ULong i = 0; i < prefs->length(); ++i) {
 			CORBA::UShort version;
 			prof = obj->_ior_fwd()->profile ((*prefs)[i]);
-			while (prof) {
+			while (prof && prof->id() == CORBA::IORProfile::TAG_SHM_IOP) {
 		addr = prof->addr ();
 		assert (addr);
 		/*
@@ -5455,6 +5515,12 @@ CORBA::Boolean
 MICO::SharedMemoryProxy::is_local () const
 {
     return FALSE;
+}
+
+CORBA::Boolean
+MICO::SharedMemoryProxy::is_shm () const
+{
+    return TRUE;
 }
 
 #ifdef USE_CSL2
@@ -7320,6 +7386,12 @@ MICO::IIOPProxy::is_local () const
     return FALSE;
 }
 
+CORBA::Boolean
+MICO::IIOPProxy::is_shm () const
+{
+    return FALSE;
+}
+
 #ifdef USE_CSL2
 CORBA::Principal_ptr
 MICO::IIOPProxy::get_principal (CORBA::Object_ptr obj){
@@ -8194,7 +8266,7 @@ MICO::IIOPServer::~IIOPServer ()
     {
 	MICOMT::AutoLock lock(_tservers);
 	for (CORBA::ULong i = 0; i < _tservers.size(); i++) {
-	    _tservers[i]->aselect(this->Dispatcher(), NULL);
+	    _tservers[i]->aselect(this->Dispatcher(), NULL, FALSE);
 	    delete _tservers[i];
 	    _tservers[i] = NULL;
 	}
@@ -8230,7 +8302,7 @@ MICO::IIOPServer::listen (CORBA::Address *addr, CORBA::Address *fwproxyaddr, con
       return FALSE;
     }
     tserv->block ( Dispatcher()->isblocking() );
-    tserv->aselect ( Dispatcher(), this);
+    tserv->aselect ( Dispatcher(), this, FALSE);
 
     if (!fwproxyaddr) {
         prof = tserv->addr()->make_ior_profile ((CORBA::Octet *)"", 1,
@@ -8267,7 +8339,7 @@ MICO::IIOPServer::listen (CORBA::Address *addr, CORBA::Address *fwproxyaddr, con
     }
     _orb->ior_template()->add_profile (prof);
 
-    _tservers.push_back(tserv);
+    //_tservers.push_back(tserv);
 #ifdef HAVE_THREADS
     if (!MICO::MTManager::thread_pool())
 	tserv->start();
@@ -9066,6 +9138,14 @@ MICO::IIOPServer::get_principal(CORBA::Object_ptr obj){
 
 CORBA::Boolean
 MICO::IIOPServer::is_local () const
+{
+    // so we shutdown() after all local adapters which might
+    // need IIOPServer for shutdown ...
+    return FALSE;
+}
+
+CORBA::Boolean
+MICO::IIOPServer::is_shm () const
 {
     // so we shutdown() after all local adapters which might
     // need IIOPServer for shutdown ...

@@ -79,6 +79,8 @@ public:
     PollDispatcher ();
     virtual ~PollDispatcher ();
     virtual void rd_event (CORBA::DispatcherCallback *, CORBA::Long fd);
+    virtual void shm_rd_event (CORBA::DispatcherCallback *, CORBA::Long fd);
+    virtual void shm_wr_event (CORBA::DispatcherCallback *, CORBA::Long fd);
     virtual void wr_event (CORBA::DispatcherCallback *, CORBA::Long fd);
     virtual void ex_event (CORBA::DispatcherCallback *, CORBA::Long fd);
     virtual void tm_event (CORBA::DispatcherCallback *, CORBA::ULong tmout);

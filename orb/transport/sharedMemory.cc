@@ -42,7 +42,7 @@ using namespace std;
 
 /***************************** SharedMemoryTransport **********************************/
 MICO::SharedMemoryTransport::~SharedMemoryTransport () {
-    close();
+    //close();
 }
 
 CORBA::Boolean
@@ -50,19 +50,13 @@ MICO::SharedMemoryTransport::bind (const CORBA::Address *a)
 {
     assert(state == Open);
     shmFDAddress = (SharedMemoryAddress *)a;
-    //shm_fd = shm_open(shmFDAddress->address().c_str(), O_RDWR, 0);
     return TRUE;
 }
 
 CORBA::Boolean
 MICO::SharedMemoryTransport::connect (const CORBA::Address *a, CORBA::ULong timeout, CORBA::Boolean& timedout)
 {
-
-
-
-
     assert (state == Open);
-
 
     return TRUE;
 }
@@ -74,9 +68,6 @@ MICO::SharedMemoryTransport::open (CORBA::Long thefd)
 
   shm_fd = thefd;
   assert(thefd >= 0);
-  //OSNet::sock_ndelay(thefd, TRUE);
-
-  //SocketTransport::open(thefd);
 
   is_buffering = FALSE;
 
@@ -106,16 +97,20 @@ MICO::SharedMemoryTransport::post(){
 void
 MICO::SharedMemoryTransport::wait(){
   sem_t *sem;
+  int svalue;
 
   if((sem = sem_open("/sem", O_RDWR)) == NULL){
     return;
-  } else {
-      int svalue;
-      sem_getvalue(sem, &svalue);
-        if(svalue > 0){
-          sem_wait(sem);
-    }
   }
+
+  sem_getvalue(sem, &svalue);
+
+  while(svalue != 0) {
+      //int svalue;
+      //sem_getvalue(sem, &svalue);
+      sem_wait(sem);
+      sem_getvalue(sem, &svalue);
+    }
 
   sem_close(sem);
 }
@@ -135,6 +130,12 @@ MICO::SharedMemoryTransport::get_sem_value(){
   return svalue;
 }
 
+int
+MICO::SharedMemoryTransport::get_shm_fd()
+{
+  return shm_fd;
+}
+
 void
 MICO::SharedMemoryTransport::close ()
 {
@@ -142,11 +143,7 @@ MICO::SharedMemoryTransport::close ()
       return;
 
     state = Closed;
-    //OSNet::sock_shutdown(fd);
-    //OSNet::sock_close(fd);
     munmap(_addr, _length);
-
-    //SocketTransport::close();
 }
 
 CORBA::Long
@@ -243,15 +240,12 @@ MICO::SharedMemoryTransport::peer ()
 
 MICO::SharedMemoryTransportServer::SharedMemoryTransportServer (CORBA::Address *addr)
 {
-    //OSNet::sock_init();
-
     SharedMemoryAddress *shmAddr;
     shmAddr = (SharedMemoryAddress *)addr;
 
     std::string _addr = shmAddr->address();
     int _len = shmAddr->length();
     std::string sem = shmAddr->semName();
-    //std::string __addr = _addr;
 }
 
 MICO::SharedMemoryTransportServer::SharedMemoryTransportServer (){
@@ -273,9 +267,13 @@ MICO::SharedMemoryTransportServer::open_shm()
       is_blocking = FALSE;
       sem_unlink("/sem");
       _sem = sem_open("/sem", O_CREAT | O_EXCL, S_IRUSR | S_IWUSR, 0);
-    } catch (...) {
+  } catch (...) {
       return FALSE;
     }
+    //if(shmfd < 0) {
+      //return FALSE;
+    //}
+
     return TRUE;
 }
 
@@ -285,13 +283,22 @@ MICO::SharedMemoryTransportServer::get_sem_value(){
   sem_t *sem;
 
   if((sem = sem_open("/sem", O_RDWR)) == NULL){
-    return svalue;
-  } else {
-      sem_getvalue(sem, &svalue);
-      sem_close(sem);
-  }
+    return -1;
+  } //else {
+      //sem_getvalue(sem, &svalue);
+      //sem_close(sem);
+  //}
+
+  sem_getvalue(sem, &svalue);
+  sem_close(sem);
 
   return svalue;
+}
+
+int
+MICO::SharedMemoryTransportServer::get_shm_fd()
+{
+  return shm_fd;
 }
 
 void
@@ -315,22 +322,13 @@ MICO::SharedMemoryTransportServer::close ()
 
   remove_aselect();
 
-  //OSNet::sock_shutdown(fd);
-  //MICO_Long result = OSNet::sock_close (fd);
-  //assert (!result);
   munmap(_addr, _length);
   shm_unlink("foo");
   sem_close(_sem);
 
-
-  //fd = ::socket (PF_INET, SOCK_STREAM, 0);
-  //assert (fd >= 0);
-
   // force blocking mode directly on fd
   is_blocking = FALSE;
   this->block(TRUE);
-
-  //OSNet::sock_reuse (fd, TRUE);
 
   listening = FALSE;
 }
@@ -338,17 +336,6 @@ MICO::SharedMemoryTransportServer::close ()
 CORBA::Boolean
 MICO::SharedMemoryTransportServer::bind (const CORBA::Address *a)
 {
-  //SharedMemoryAddress *shma = (SharedMemoryAddress *)a;
-
-  //try{
-    //MICO::CSharedMemory shmMemory(shma->address());
-    //shmMemory.Create((short)shma->length());
-    //shmMemory.Attach();
-  //} catch(std::exception& e){
-    //cout << "Exception: " << e.what();
-  //}
-
-  //shm_fd = shm_open(shma->address().c_str(), O_RDWR, 0);
 
   return TRUE;
 }
@@ -359,28 +346,6 @@ MICO::SharedMemoryTransportServer::accept ()
     SharedMemoryTransport *ret;
 
     listen();
-
-    //#if defined(HAVE_THREADS) && defined(HAVE_POLL_H)
-      //  ::pollfd pfd;
-
-        //pfd.fd = shm_fd;
-        //pfd.events = POLLIN | POLLOUT | POLLPRI | POLLHUP | POLLERR | POLLNVAL;
-
-        //if (poll (&pfd, 1, -1) < 0) {
-    	//if (MICO::Logger::IsLogged (MICO::Logger::Transport)) {
-    	  //  MICOMT::AutoDebugLock __lock;
-    	  //  MICO::Logger::Stream (MICO::Logger::Transport)
-    		//<< "TCPTransportServer::accept () return:" << errno << endl;
-    	//}
-    	//return 0;
-        //}
-        //if (MICO::Logger::IsLogged (MICO::Logger::Transport)) {
-    	//MICOMT::AutoDebugLock __lock;
-    	//MICO::Logger::Stream (MICO::Logger::Transport)
-    	  //  << "TCPTransportServer::poll () return:" << pfd.revents << endl;
-        //}
-
-    //#endif // HAVE_THREADS && HAVE_POLL_H
 
     ret = new SharedMemoryTransport ();
     ret->open(shm_fd);

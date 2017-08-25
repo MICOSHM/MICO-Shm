@@ -54,6 +54,9 @@
 #include <mico/poa_impl.h>
 #include <mico/dynany_impl.h>
 #include <mico/pi_impl.h>
+#include <sys/mman.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 #ifdef USE_CSL2
 #  include <mico/security/securitylevel1.h>
@@ -208,7 +211,7 @@ CORBA::ORBInvokeRec::init_invoke (ORB_ptr orb,
 
 		//Because shm does not use a socket connection, the client never knows when to close.  The client
 		//when using shm directly calls answer_invoke to indicate an InvokeOk response
-		if(_oaid == "mico-shm-proxy") {
+		if(strcmp(_oaid, "mico-shm-proxy") == 0) {
 			_orb->answer_invoke(this, CORBA::InvokeOk, _obj, r, 0);
 		}
 
@@ -2383,9 +2386,15 @@ CORBA::ORB::is_local (Object_ptr o)
   return FALSE;
 }
 
+CORBA::Boolean
+CORBA::ORB::is_shm () {
+
+	return TRUE;
+}
+
 void
-CORBA::ORB::is_shm(CORBA::Boolean run_shm){
-		_run_shm = run_shm;
+CORBA::ORB::run_shm(CORBA::Boolean run_shm_server){
+		_run_shm = run_shm_server;
 }
 
 void
@@ -2478,12 +2487,26 @@ CORBA::ORB::get_oa (Object_ptr o)
 {
   MICOMT::AutoRDLock l(_adapters);
 
+	int shm_FD = 0;
+	int _adapter = 0;
+	int shm_adapter = 0;
+	shm_FD = shm_open("foo", O_RDWR, 0777);
+
   Boolean local = is_local (o);
+	shm_FD = -1;
+
   for (ULong i0 = 0; i0 < _adapters.size(); ++i0) {
+		if(shm_FD > -1 && _adapters[i0]->is_shm() == TRUE)
+			shm_adapter = i0;
     if (_adapters[i0]->is_local() == local && _adapters[i0]->has_object (o))
-      return _adapters[i0];
+			_adapter = i0;
   }
-  return NULL;
+
+	if(shm_FD > -1) {
+  return _adapters[shm_adapter];
+		}
+
+	return _adapters[_adapter];
 }
 
 CORBA::Boolean
@@ -2565,6 +2588,7 @@ CORBA::ORB::invoke_async (Object_ptr obj,
     // receive_request_service_context start point
     // - it's called from init_invoke
     ObjectAdapter *oa = get_oa (obj);
+
 #ifdef HAVE_THREADS
 	if (!cb && response_exp)
 	    cb = new ORBAsyncCallback;
@@ -2603,8 +2627,10 @@ CORBA::ORB::invoke_async (Object_ptr obj,
 	    answer_invoke (rec, InvokeSysEx, Object::_nil(), req, 0);
 	    return rec;
 	}
+
 	rec->oa (oa);
-        oa->invoke (rec, obj, req, pr, response_exp);
+	oa->invoke (rec, obj, req, pr, response_exp);
+
 	if (!response_exp) {
 #ifdef USE_SL3
           del_invoke(rec->id());
@@ -3331,7 +3357,7 @@ CORBA::ORB_init (int &argc, char **argv, const char *_id)
 #endif
 #endif
     PInterceptor::PI::_init();
-		Boolean run_shm = FALSE;
+		Boolean run_shm_server = FALSE;
     Boolean run_iiop_server = TRUE;
     Boolean run_iiop_proxy = TRUE;
 		Boolean run_shm_proxy = TRUE;
@@ -3541,8 +3567,8 @@ CORBA::ORB_init (int &argc, char **argv, const char *_id)
 	    bindaddrs.push_back (val);
 	} else if (arg == "-ORBShm"){
 		shmaddr.push_back (val);
-		run_shm = TRUE;
-		run_iiop_server = FALSE;
+		run_shm_server = TRUE;
+		run_iiop_server = TRUE;
 	} else if (arg == "-ORBInitRef") {
 	    InitRefs.push_back (val);
 	} else if (arg == "-ORBDefaultInitRef") {
@@ -4038,8 +4064,8 @@ CORBA::ORB_init (int &argc, char **argv, const char *_id)
 		}
 
 		if (!use_sl3) {
-	if (run_shm) {
-			orb_instance->is_shm(run_shm);
+	if (run_shm_server) {
+			orb_instance->run_shm(run_shm_server);
 			MICO::SharedMemoryServer* shm_server_instance
 		= new MICO::SharedMemoryServer (orb_instance,
 					iiop_ver,

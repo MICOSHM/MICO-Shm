@@ -143,6 +143,10 @@ MICO::SelectDispatcher::~SelectDispatcher ()
     for (i = fevents.begin(); i != fevents.end(); ++i)
 	(*i).cb->callback (this, Remove);
 
+  list<FileEvent>::iterator k;
+  for (k = shm_events.begin(); k != shm_events.end(); ++k)
+(*k).cb->callback (this, Remove);
+
     list<TimerEvent>::iterator j;
     for (j = tevents.begin(); j != tevents.end(); ++j)
 	(*j).cb->callback (this, Remove);
@@ -195,6 +199,38 @@ MICO::SelectDispatcher::update_fevents ()
 
     list<FileEvent>::iterator i;
     for (i = fevents.begin(); i != fevents.end(); ++i) {
+	if (!(*i).deleted) {
+	    switch ((*i).event) {
+	    case Read:
+		FD_SET ((*i).fd, &curr_rset);
+		break;
+	    case Write:
+		FD_SET ((*i).fd, &curr_wset);
+		break;
+	    case Except:
+		FD_SET ((*i).fd, &curr_xset);
+		break;
+	    default:
+		assert (0);
+	    }
+            if ((*i).fd > fd_max)
+                fd_max = (*i).fd;
+	}
+    }
+}
+
+void
+MICO::SelectDispatcher::update_shm_events ()
+{
+    modified = TRUE;
+
+    FD_ZERO (&curr_rset);
+    FD_ZERO (&curr_wset);
+    FD_ZERO (&curr_xset);
+    fd_max = 0;
+
+    list<FileEvent>::iterator i;
+    for (i = shm_events.begin(); i != shm_events.end(); ++i) {
 	if (!(*i).deleted) {
 	    switch ((*i).event) {
 	    case Read:
@@ -284,7 +320,7 @@ MICO::SelectDispatcher::handle_fevents (FDSet &rset, FDSet &wset, FDSet &xset)
   }
 
   if(svalue > 0){
-  for (i = fevents.begin(); i != fevents.end(); ++i) {
+  for (i = shm_events.begin(); i != shm_events.end(); ++i) {
 if (!(*i).deleted) {
     switch ((*i).event) {
     case Read:
@@ -324,9 +360,11 @@ MICO::SelectDispatcher::unlock ()
 	return;
     assert (locked == 0);
 
-    if (modified) {
+    if (modified && svalue < 0) {
 	list<FileEvent>::iterator i;
+  list<FileEvent>::iterator _i;
 	bool again;
+  bool _again;
 
 	do {
 	  again = false;
@@ -341,8 +379,27 @@ MICO::SelectDispatcher::unlock ()
 	while (again);
     }
 
+    if (modified > 0) {
+  list<FileEvent>::iterator _i;
+  bool _again;
+
+    do {
+      _again = false;
+      for (_i = shm_events.begin(); _i != shm_events.end(); _i++) {
+        if ((*_i).deleted) {
+          shm_events.erase (_i);
+          _again = true;
+          break;
+        }
+      }
+    }
+    while (_again);
+      }
+
     CORBA::Transport *ret = new SharedMemoryTransport;
     ret->wait();
+    delete ret;
+    //svalue = 0;
 
 }
 
@@ -363,6 +420,16 @@ MICO::SelectDispatcher::rd_event (CORBA::DispatcherCallback *cb,
 }
 
 void
+MICO::SelectDispatcher::shm_rd_event (CORBA::DispatcherCallback *cb,
+				  CORBA::Long fd)
+{
+    SignalBlocker __sb;
+
+    shm_events.push_back (FileEvent (Read, fd, cb));
+    update_shm_events ();
+}
+
+void
 MICO::SelectDispatcher::wr_event (CORBA::DispatcherCallback *cb,
 				  CORBA::Long fd)
 {
@@ -370,6 +437,16 @@ MICO::SelectDispatcher::wr_event (CORBA::DispatcherCallback *cb,
 
     fevents.push_back (FileEvent (Write, fd, cb));
     update_fevents ();
+}
+
+void
+MICO::SelectDispatcher::shm_wr_event (CORBA::DispatcherCallback *cb,
+				  CORBA::Long fd)
+{
+    SignalBlocker __sb;
+
+    shm_events.push_back (FileEvent (Write, fd, cb));
+    update_shm_events ();
 }
 
 void
@@ -430,7 +507,8 @@ MICO::SelectDispatcher::remove (CORBA::DispatcherCallback *cb, Event e)
 	}
 	while (again);
     }
-    if (e == All || e == Read || e == Write || e == Except) {
+
+    if (e == All || e == Read || e == Write || e == Except && svalue < 0) {
 	list<FileEvent>::iterator i;
 	bool again;
 
@@ -451,6 +529,29 @@ MICO::SelectDispatcher::remove (CORBA::DispatcherCallback *cb, Event e)
 	while (again);
 
 	update_fevents ();
+    }
+
+    if (e == All || e == Read || e == Write || e == Except && svalue > 0) {
+  list<FileEvent>::iterator j;
+  bool _again;
+
+  do {
+    _again = false;
+    for (j = shm_events.begin(); j != shm_events.end(); j++) {
+      if ((*j).cb == cb && (e == All || (*j).event == e)) {
+    if (islocked()) {
+        (*j).deleted = TRUE;
+    } else {
+        shm_events.erase (j);
+        _again = true;
+        break;
+    }
+      }
+    }
+  }
+  while (_again);
+
+  update_shm_events ();
     }
 }
 
@@ -817,7 +918,27 @@ MICO::PollDispatcher::rd_event (CORBA::DispatcherCallback *cb,
 }
 
 void
+MICO::PollDispatcher::shm_rd_event (CORBA::DispatcherCallback *cb,
+                CORBA::Long fd)
+{
+    SignalBlocker __sb;
+
+    fevents.push_back (FileEvent (Read, fd, cb));
+    must_rebuild_pollset = TRUE;
+}
+
+void
 MICO::PollDispatcher::wr_event (CORBA::DispatcherCallback *cb,
+                CORBA::Long fd)
+{
+    SignalBlocker __sb;
+
+    fevents.push_back (FileEvent (Write, fd, cb));
+    must_rebuild_pollset = TRUE;
+}
+
+void
+MICO::PollDispatcher::shm_wr_event (CORBA::DispatcherCallback *cb,
                 CORBA::Long fd)
 {
     SignalBlocker __sb;

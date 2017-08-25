@@ -99,7 +99,8 @@ public:
   const char *get_oaid () const;
   CORBA::Boolean has_object (CORBA::Object_ptr);
   CORBA::Boolean is_local () const;
-    
+	CORBA::Boolean is_shm 	() const;
+
 #ifdef USE_CSL2
   CORBA::Principal_ptr get_principal (CORBA::Object_ptr);
 #endif /* USE_CSL2  */
@@ -114,7 +115,7 @@ public:
   CORBA::Object_ptr skeleton (CORBA::Object_ptr);
   void cancel (CORBA::ORBMsgId);
   void shutdown (CORBA::Boolean wait_for_completion);
-    
+
   void answer_invoke (CORBA::ORBMsgId, CORBA::Object_ptr,
 		      CORBA::ORBRequest *,
 		      CORBA::InvokeStatus);

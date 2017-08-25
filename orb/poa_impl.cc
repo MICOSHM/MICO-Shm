@@ -3307,6 +3307,12 @@ MICOPOA::POA_impl::is_local () const
   return TRUE;
 }
 
+CORBA::Boolean
+MICOPOA::POA_impl::is_shm () const
+{
+  return TRUE;
+}
+
 #ifdef USE_CSL2
 CORBA::Principal_ptr
 MICOPOA::POA_impl::get_principal(CORBA::Object_ptr obj){

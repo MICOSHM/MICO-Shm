@@ -502,6 +502,11 @@ POAMediatorImpl::is_local () const
     return TRUE;
 }
 
+CORBA::Boolean
+POAMediatorImpl::is_shm () const
+{
+    return TRUE;
+}
 
 #ifdef USE_CSL2
 CORBA::Principal_ptr
@@ -703,7 +708,7 @@ POAMediatorImpl::bind (CORBA::ORBMsgId id, const char *repoid,
    */
 
   MapSvInf::iterator it;
-  
+
   /*
    * allocate slots for all bind requests, so that we can decide in
    * the callback() whether there are more outstanding requests or

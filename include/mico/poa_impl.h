@@ -80,7 +80,7 @@ class POAOptions {
 public:
   CORBA::Boolean parse (CORBA::ORB_ptr, const std::vector<std::string>&);
   const char * operator[] (const char *);
-  
+
 private:
   std::map<std::string, std::string, std::less<std::string> > options;
 };
@@ -202,7 +202,7 @@ public:
   ~POAObjectReference ();
 
   bool is_legal ();
-  
+
   POAObjectReference & operator= (const CORBA::Object_ptr);
   POAObjectReference & operator= (const POAObjectReference &);
 
@@ -221,7 +221,7 @@ public:
   bool in_poa (const char *);
   bool in_descendant_poa (const char *, const char *);
   char * next_descendant_poa (const char *, const char *);
-  
+
 private:
   MICOMT::Mutex _ref_lock;
 
@@ -231,7 +231,7 @@ private:
   /*
    * Our POA
    */
-  
+
   POA_impl * poa;
 
   /*
@@ -359,7 +359,7 @@ public:
   class InvocationRecord;
   typedef InvocationRecord *InvocationRecord_ptr;
   typedef ObjVar<InvocationRecord> InvocationRecord_var;
-  
+
   class InvocationRecord : public CORBA::ServerlessObject {
   public:
     InvocationRecord (CORBA::ORBMsgId,
@@ -512,7 +512,7 @@ private:
 	    POA_impl *,
 	    CORBA::ORB_ptr);
 
-  
+
   /*
    * private object activation and deactivation
    */
@@ -589,7 +589,7 @@ public:
   CORBA::Object_ptr create_reference (const char *);
   CORBA::Object_ptr create_reference_with_id (const PortableServer::ObjectId &,
 					      const char *);
-  
+
   /*
    * Perform activation upon _this();
    */
@@ -634,6 +634,7 @@ public:
   const char *   get_oaid   () const;
   CORBA::Boolean has_object (CORBA::Object_ptr);
   CORBA::Boolean is_local   () const;
+  CORBA::Boolean is_shm     () const;
 
 #ifdef USE_CSL2
   CORBA::Principal_ptr get_principal (CORBA::Object_ptr);
@@ -738,7 +739,7 @@ public:
 #ifndef HAVE_THREADS
   //
   // In single thread mode, only one POA can be active at any given time
-  // a stack of POA/Currents is OK here, because nested invocation are not possible 
+  // a stack of POA/Currents is OK here, because nested invocation are not possible
   //
   CurrentStateStack* get_current()
   { return state_stack_; }
@@ -749,8 +750,8 @@ public:
 #else // HAVE_THREADS
   //
   // In multi threaded mode, more than one POA can be active (doing invocations),
-  // but there can be only one active Object per thread 
-  // 
+  // but there can be only one active Object per thread
+  //
   CurrentStateStack* get_current()
   { return static_cast<CurrentStateStack *>(MICOMT::Thread::get_specific(current_key_)); }
 

@@ -169,6 +169,11 @@ MICO::SocketTransport::get_sem_value(){
 
 }
 
+int
+MICO::SocketTransport::get_shm_fd () {
+
+}
+
 void
 MICO::SocketTransport::close ()
 {
@@ -189,28 +194,28 @@ MICO::SocketTransport::close ()
 
 void
 MICO::SocketTransport::rselect (CORBA::Dispatcher *disp,
-			     CORBA::TransportCallback *cb)
+			     CORBA::TransportCallback *cb, CORBA::Boolean is_shm)
 {
     if (rcb && rdisp) {
 	rdisp->remove (this, CORBA::Dispatcher::Read);
 	rdisp = 0;
 	rcb = 0;
     }
-    if (cb && fd > 0) {
+    if (cb) {
 	disp->rd_event (this, fd);
 	rdisp = disp;
 	rcb = cb;
     }
-    if(cb && fd < 1){
-    disp->rd_event(this, 0);
-    rdisp = disp;
-    rcb = cb;
+    if(cb && fd < 0){
+  disp->shm_rd_event(this, 0);
+  rdisp = disp;
+  rcb = cb;
     }
 }
 
 void
 MICO::SocketTransport::wselect (CORBA::Dispatcher *disp,
-			     CORBA::TransportCallback *cb)
+			     CORBA::TransportCallback *cb, CORBA::Boolean is_shm)
 {
     if (wcb && wdisp) {
 	wdisp->remove (this, CORBA::Dispatcher::Write);
@@ -223,7 +228,7 @@ MICO::SocketTransport::wselect (CORBA::Dispatcher *disp,
 	wcb = cb;
     }
     if(cb && fd < 1){
-    disp->wr_event(this, fd);
+    disp->shm_wr_event(this, fd);
     wdisp = disp;
     wcb = cb;
     }
@@ -367,6 +372,11 @@ MICO::SocketTransportServer::get_sem_value () {
   return 0;
 }
 
+int
+MICO::SocketTransportServer::get_shm_fd () {
+  return 0;
+}
+
 CORBA::Boolean
 MICO::SocketTransportServer::open_shm ()
 {
@@ -375,7 +385,7 @@ MICO::SocketTransportServer::open_shm ()
 
 void
 MICO::SocketTransportServer::aselect (CORBA::Dispatcher *disp,
-				      CORBA::TransportServerCallback *cb)
+				      CORBA::TransportServerCallback *cb, CORBA::Boolean is_shm)
 {
     if (acb && adisp) {
 	adisp->remove (this, CORBA::Dispatcher::Read);
@@ -387,6 +397,12 @@ MICO::SocketTransportServer::aselect (CORBA::Dispatcher *disp,
 	disp->rd_event (this, fd);
 	adisp = disp;
 	acb = cb;
+    }
+    if (cb && is_shm) {
+  listen ();
+  disp->shm_rd_event (this, 0);
+  adisp = disp;
+  acb = cb;
     }
 }
 

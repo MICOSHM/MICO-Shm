@@ -45,6 +45,8 @@ class Buffer;
 class Dispatcher {
 public:
     enum Event { Timer, Read, Write, Except, All, Remove, Moved };
+    virtual void shm_rd_event (DispatcherCallback *, Long fd) = 0;
+    virtual void shm_wr_event (DispatcherCallback *, Long fd) = 0;
     virtual void rd_event (DispatcherCallback *, Long fd) = 0;
     virtual void wr_event (DispatcherCallback *, Long fd) = 0;
     virtual void ex_event (DispatcherCallback *, Long fd) = 0;
@@ -98,8 +100,8 @@ class Transport {
 public:
     enum State { Closed, Open };
 
-    virtual void rselect (Dispatcher *, TransportCallback *) = 0;
-    virtual void wselect (Dispatcher *, TransportCallback *) = 0;
+    virtual void rselect (Dispatcher *, TransportCallback *, CORBA::Boolean is_shm) = 0;
+    virtual void wselect (Dispatcher *, TransportCallback *, CORBA::Boolean is_shm) = 0;
 
     virtual Boolean bind (const Address *) = 0;
     virtual Boolean connect (const Address *, ULong timeout, Boolean& timedout) = 0;
@@ -108,6 +110,7 @@ public:
     virtual void post () = 0;
     virtual void wait () = 0;
     virtual int get_sem_value () = 0;
+    virtual int get_shm_fd () = 0;
     virtual void close () = 0;
     virtual void block (Boolean doblock = TRUE) = 0;
     virtual CORBA::Boolean isblocking () = 0;
@@ -142,9 +145,10 @@ struct TransportCallback {
 class TransportServer {
 public:
     virtual int get_sem_value () = 0;
+    virtual int get_shm_fd () = 0;
     virtual CORBA::Boolean open_shm () = 0;
 
-    virtual void aselect (Dispatcher *, TransportServerCallback *) = 0;
+    virtual void aselect (Dispatcher *, TransportServerCallback *, CORBA::Boolean shm) = 0;
 
     virtual Boolean bind (const Address *) = 0;
     virtual void close () = 0;
