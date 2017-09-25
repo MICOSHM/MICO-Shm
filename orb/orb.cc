@@ -636,6 +636,7 @@ CORBA::ORBInvokeRec::timedout(Boolean val)
 
 
 static CORBA::ORB_ptr orb_instance = CORBA::ORB::_nil();
+static CORBA::ORB_ptr shm_orb_instance = CORBA::ORB::_nil();
 static MICO::IIOPProxy *iiop_proxy_instance = 0;
 static MICO::SharedMemoryProxy *shm_proxy_instance = 0;
 
@@ -1789,7 +1790,7 @@ CORBA::ORB::run ()
 		//This boolean allows us to get past the fact that even when running shm, ::select will always return 1 because
 		//disk files are always ready to be read
     while (!_is_stopped) {
-	_disp->run (FALSE, _run_shm);
+	_disp->run (FALSE, TRUE);
     }
     do_shutdown ();
 }
@@ -2394,7 +2395,7 @@ CORBA::ORB::is_shm () {
 
 void
 CORBA::ORB::run_shm(CORBA::Boolean run_shm_server){
-		_run_shm = run_shm_server;
+		_run_shm = TRUE;
 }
 
 void
@@ -2496,10 +2497,11 @@ CORBA::ORB::get_oa (Object_ptr o)
 	shm_FD = -1;
 
   for (ULong i0 = 0; i0 < _adapters.size(); ++i0) {
-		if(shm_FD > -1 && _adapters[i0]->is_shm() == TRUE)
+		if(shm_FD > -1 && _adapters[i0]->is_shm() == TRUE) {
 			shm_adapter = i0;
-    if (_adapters[i0]->is_local() == local && _adapters[i0]->has_object (o))
+		} else if (_adapters[i0]->is_local() == local && _adapters[i0]->has_object (o)) {
 			_adapter = i0;
+		}
   }
 
 	if(shm_FD > -1) {
@@ -3722,8 +3724,12 @@ CORBA::ORB_init (int &argc, char **argv, const char *_id)
     if (!CORBA::is_nil (orb_instance))
 	return ORB::_duplicate (orb_instance);
 
+	 if (!CORBA::is_nil (shm_orb_instance))
+  return ORB::_duplicate (shm_orb_instance);
+
     // create ORB
     orb_instance = new ORB (argc, argv, rcfile.c_str());
+		shm_orb_instance = new ORB (argc, argv, rcfile.c_str());
 
     // use poll dispatcher?
 #ifdef HAVE_POLL_H
@@ -3733,16 +3739,21 @@ CORBA::ORB_init (int &argc, char **argv, const char *_id)
     else {
 #endif // HAVE_POLL_H
         orb_instance->dispatcher_factory(new MICO::SelectDispatcherFactory);
+				shm_orb_instance->dispatcher_factory(new MICO::SelectDispatcherFactory);
 #ifdef HAVE_POLL_H
     }
 #endif // HAVE_POLL_H
 
     orb_instance->dispatcher(orb_instance->create_dispatcher());
+		shm_orb_instance->dispatcher(orb_instance->create_dispatcher());
+
 
 #ifdef HAVE_THREADS
     // seting main thread id is important for perform_work operation
     // which can be invoked only in main thread
     orb_instance->set_main_thread_id(MICOMT::Thread::self());
+		shm_orb_instance->set_main_thread_id(MICOMT::Thread::self());
+
 
     orb_instance->resource_manager ().connection_limit (conn_limit);
     orb_instance->resource_manager ().request_limit (request_limit);
@@ -3996,6 +4007,7 @@ CORBA::ORB_init (int &argc, char **argv, const char *_id)
 #endif // USE_SL3
     // set default bind addresses
     orb_instance->bindaddrs (bindaddrs);
+		shm_orb_instance->bindaddrs (bindaddrs);
 
 
 #ifdef USE_CSIV2
@@ -4063,39 +4075,6 @@ CORBA::ORB_init (int &argc, char **argv, const char *_id)
 				shm_proxy_instance = new MICO::SharedMemoryProxy (orb_instance, giop_ver, max_message_size);
 		}
 
-		if (!use_sl3) {
-	if (run_shm_server) {
-			orb_instance->run_shm(run_shm_server);
-			MICO::SharedMemoryServer* shm_server_instance
-		= new MICO::SharedMemoryServer (orb_instance,
-					iiop_ver,
-					max_message_size);
-			// server->set_conn_limit(conn_limit);
-			for (mico_vec_size_type i = 0; i < shmaddr.size(); ++i) {
-		Address *addr = Address::sharedMemoryParse (shmaddr[i].c_str());
-		if (!addr) {
-				if (MICO::Logger::IsLogged (MICO::Logger::Error)) {
-			MICOMT::AutoDebugLock lock;
-			MICO::Logger::Stream (MICO::Logger::Error)
-					<< "Error: ORB_init(): bad address: "
-					<< iiopaddrs[i] << endl;
-				}
-				mico_throw (CORBA::INITIALIZE());
-		}
-		// ###ras Bug???
-		if (!shm_server_instance->listen (addr, fwproxyaddr))
-				mico_throw (CORBA::INITIALIZE());
-		delete addr;
-			}
-			if (shmaddr.size() == 0) {
-		shm_server_instance->listen ();
-			}
-	} else {
-			orb_instance->ior_template()->add_profile (
-									 new MICO::LocalProfile ((Octet *)"", 1));
-	}
-		}
-
     // create IIOP server
     if (!use_sl3) {
 	if (run_iiop_server) {
@@ -4128,6 +4107,39 @@ CORBA::ORB_init (int &argc, char **argv, const char *_id)
 						       new MICO::LocalProfile ((Octet *)"", 1));
 	}
     }
+
+		if (!use_sl3) {
+	if (TRUE) {
+			shm_orb_instance->run_shm(run_shm_server);
+			MICO::SharedMemoryServer* shm_server_instance
+		= new MICO::SharedMemoryServer (shm_orb_instance, orb_instance,
+					iiop_ver,
+					max_message_size);
+			 //server->set_conn_limit(conn_limit);
+			for (mico_vec_size_type i = 0; i < shmaddr.size(); ++i) {
+		Address *addr = Address::sharedMemoryParse (shmaddr[i].c_str());
+		if (!addr) {
+				if (MICO::Logger::IsLogged (MICO::Logger::Error)) {
+			MICOMT::AutoDebugLock lock;
+			MICO::Logger::Stream (MICO::Logger::Error)
+					<< "Error: ORB_init(): bad address: "
+					<< iiopaddrs[i] << endl;
+				}
+				mico_throw (CORBA::INITIALIZE());
+		}
+		// ###ras Bug???
+		if (!shm_server_instance->listen (addr, fwproxyaddr))
+				mico_throw (CORBA::INITIALIZE());
+				delete addr;
+			}
+			if (shmaddr.size() == 0) {
+				shm_server_instance->listen ();
+			}
+	} else {
+			shm_orb_instance->ior_template()->add_profile (
+									 new MICO::LocalProfile ((Octet *)"", 1));
+	}
+		}
 
     // connect to / create implementation repository
     Object_var imr;

@@ -795,6 +795,8 @@ public:
     SharedMemoryProxy (CORBA::ORB_ptr,
                CORBA::UShort giop_ver = 0x0100,
 	       CORBA::ULong max_size = 0);
+
+    SharedMemoryProxy ();
     ~SharedMemoryProxy ();
 
     void register_profile_id (CORBA::ULong id);
@@ -906,6 +908,7 @@ class SharedMemoryServer :  public CORBA::ObjectAdapter,
   MICOMT::Mutex _orbids_mutex;
 
   CORBA::ORB_ptr _orb;
+  CORBA::ORB_ptr orb;
 
 #ifdef USE_IOP_CACHE
   SharedMemoryServerInvokeRec *_cache_rec;
@@ -943,7 +946,7 @@ class SharedMemoryServer :  public CORBA::ObjectAdapter,
   void handle_bind_reply   (CORBA::ORBMsgId);
 
 public:
-  SharedMemoryServer (CORBA::ORB_ptr, CORBA::UShort iiop_ver = 0x0100,
+  SharedMemoryServer (CORBA::ORB_ptr, CORBA::ORB_ptr, CORBA::UShort iiop_ver = 0x0100,
   CORBA::ULong max_size = 0);
   ~SharedMemoryServer ();
 

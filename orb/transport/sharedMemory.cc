@@ -67,7 +67,6 @@ MICO::SharedMemoryTransport::open (CORBA::Long thefd)
   assert(state == Closed);
 
   shm_fd = thefd;
-  assert(thefd >= 0);
 
   is_buffering = FALSE;
 
@@ -133,7 +132,10 @@ MICO::SharedMemoryTransport::get_sem_value(){
 int
 MICO::SharedMemoryTransport::get_shm_fd()
 {
-  return shm_fd;
+  int fd = 0;
+  fd = shm_open("foo", O_RDWR, 0777);
+  //Since we are on the same machine using shm and iiop, for testing return 0
+  return fd;
 }
 
 void
@@ -259,6 +261,7 @@ MICO::SharedMemoryTransportServer::open_shm()
       CORBA::Long shmfd = shm_open("foo", O_CREAT | O_RDWR, 0777);
       ftruncate(shmfd, 8096);
       assert(shmfd >= 0);
+      //OSNet::sock_close (shmfd);
 
       shm_fd = shmfd;
       //_length = length;
@@ -298,7 +301,10 @@ MICO::SharedMemoryTransportServer::get_sem_value(){
 int
 MICO::SharedMemoryTransportServer::get_shm_fd()
 {
-  return shm_fd;
+  int fd = 0;
+  fd = shm_open("foo", O_RDWR, 0777);
+
+  return fd;
 }
 
 void

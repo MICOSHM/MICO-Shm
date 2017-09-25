@@ -61,6 +61,7 @@ class SelectDispatcher : public CORBA::Dispatcher {
     CORBA::Long locked;
     CORBA::Boolean modified;
     FDSet curr_wset, curr_rset, curr_xset;
+    FDSet shm_wset, shm_rset, shm_xset;
     CORBA::Long fd_max;
     int r;
     int svalue;
@@ -75,6 +76,7 @@ class SelectDispatcher : public CORBA::Dispatcher {
     void handle_fevents (FDSet &rset, FDSet &wset, FDSet &xset);
     void update_fevents ();
     void update_shm_events ();
+    void handle_shm_events ();
     void sleeptime (OSMisc::TimeVal &);
 
     static CORBA::Boolean _isblocking;

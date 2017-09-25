@@ -224,29 +224,26 @@ MICO::SelectDispatcher::update_shm_events ()
 {
     modified = TRUE;
 
-    FD_ZERO (&curr_rset);
-    FD_ZERO (&curr_wset);
-    FD_ZERO (&curr_xset);
-    fd_max = 0;
+    FD_ZERO (&shm_wset);
+    FD_ZERO (&shm_rset);
+    FD_ZERO (&shm_xset);
 
     list<FileEvent>::iterator i;
     for (i = shm_events.begin(); i != shm_events.end(); ++i) {
 	if (!(*i).deleted) {
 	    switch ((*i).event) {
 	    case Read:
-		FD_SET ((*i).fd, &curr_rset);
+		FD_SET ((*i).fd, &shm_rset);
 		break;
 	    case Write:
-		FD_SET ((*i).fd, &curr_wset);
+		FD_SET ((*i).fd, &shm_wset);
 		break;
 	    case Except:
-		FD_SET ((*i).fd, &curr_xset);
-		break;
+		FD_SET ((*i).fd, &shm_xset);
+	   break;
 	    default:
 		assert (0);
 	    }
-            if ((*i).fd > fd_max)
-                fd_max = (*i).fd;
 	}
     }
 }
@@ -295,7 +292,6 @@ MICO::SelectDispatcher::handle_fevents (FDSet &rset, FDSet &wset, FDSet &xset)
     lock ();
     list<FileEvent>::iterator i;
 
-
     if(r > 0){
     for (i = fevents.begin(); i != fevents.end(); ++i) {
 	if (!(*i).deleted) {
@@ -319,20 +315,28 @@ MICO::SelectDispatcher::handle_fevents (FDSet &rset, FDSet &wset, FDSet &xset)
     }
   }
 
+    unlock ();
+}
+
+void
+MICO::SelectDispatcher::handle_shm_events ()
+{
+    // already signal safe because of lock()/unlock()
+
+    lock ();
+    list<FileEvent>::iterator i;
+
   if(svalue > 0){
   for (i = shm_events.begin(); i != shm_events.end(); ++i) {
 if (!(*i).deleted) {
     switch ((*i).event) {
     case Read:
-  if (FD_ISSET ((*i).fd, &rset))
       (*i).cb->callback (this, Read);
   break;
     case Write:
-  if (FD_ISSET ((*i).fd, &wset))
       (*i).cb->callback (this, Write);
   break;
     case Except:
-  if (FD_ISSET ((*i).fd, &xset))
       (*i).cb->callback (this, Except);
   break;
     default:
@@ -593,12 +597,14 @@ MICO::SelectDispatcher::run (CORBA::Boolean infinite, CORBA::Boolean _runShm)
             continue;
         }
 #endif // HAVE_THREADS
-	//assert (r >= 0 || errno == EINTR || errno == EAGAIN ||
-    //            errno == EWOULDBLOCK);
+	//assert ((r >= 0 || errno == EINTR || errno == EAGAIN ||
+    //            errno == EWOULDBLOCK) || svalue );
 
   //When using shm, ::select always assumes ready to read as disk based files are considered always ready to read
-	if (r > 0 || svalue > 0)
+	if (r > 0)
 	    handle_fevents (rset, wset, xset);
+  if(svalue > 0)
+      handle_shm_events ();
 	handle_tevents ();
     } while (infinite);
 }
@@ -871,6 +877,12 @@ MICO::PollDispatcher::handle_fevents()
     }
 
     unlock ();
+}
+
+void
+MICO::PollDispatcher::handle_shm_fevents()
+{
+
 }
 
 void

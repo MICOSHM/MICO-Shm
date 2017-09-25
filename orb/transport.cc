@@ -392,7 +392,7 @@ MICO::SocketTransportServer::aselect (CORBA::Dispatcher *disp,
 	adisp = 0;
 	acb = 0;
     }
-    if (cb) {
+    if (cb && !is_shm) {
 	listen ();
 	disp->rd_event (this, fd);
 	adisp = disp;

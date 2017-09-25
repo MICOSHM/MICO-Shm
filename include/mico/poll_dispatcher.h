@@ -72,6 +72,7 @@ class PollDispatcher : public CORBA::Dispatcher {
     void update_tevents ();
     void handle_tevents ();
     void handle_fevents ();
+    void handle_shm_fevents ();
     CORBA::Long sleeptime ();
 
     static CORBA::Boolean _isblocking;
