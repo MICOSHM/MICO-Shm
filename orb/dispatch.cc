@@ -581,7 +581,7 @@ MICO::SelectDispatcher::run (CORBA::Boolean infinite, CORBA::Boolean _runShm)
   if(_runShm == TRUE) {
     CORBA::TransportServer *tserv = new SharedMemoryTransportServer();
     svalue = tserv->get_sem_value();
-    delete tserv;
+    //delete tserv;
     }
 
 	   r = ::select (fd_max+1,

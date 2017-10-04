@@ -2494,7 +2494,7 @@ CORBA::ORB::get_oa (Object_ptr o)
 	shm_FD = shm_open("foo", O_RDWR, 0777);
 
   Boolean local = is_local (o);
-	shm_FD = -1;
+	//shm_FD = -1;
 
   for (ULong i0 = 0; i0 < _adapters.size(); ++i0) {
 		if(shm_FD > -1 && _adapters[i0]->is_shm() == TRUE) {

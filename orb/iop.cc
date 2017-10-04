@@ -2337,7 +2337,7 @@ MICO::GIOPConn::GIOPConn (CORBA::Dispatcher *disp, CORBA::Transport *transp,
     }
 #endif // HAVE_THREADS
 
-		_transp->get_shm_fd();
+		//shm_fd = _transp->get_shm_fd();
 
 		if(shm_fd > 0)
 		{
@@ -2425,7 +2425,7 @@ MICO::GIOPConn::terminate ()
 		CORBA::Boolean is_shm = FALSE;
 		int shm_fd = 0;
 
-		shm_fd = _transp->get_shm_fd();
+		//shm_fd = _transp->get_shm_fd();
 
     if (MICO::Logger::IsLogged (MICO::Logger::GIOP)) {
 	MICOMT::AutoDebugLock __lock;
@@ -2619,7 +2619,7 @@ MICO::GIOPConn::do_read ( const CORBA::Boolean break_after_read )
 	CORBA::Boolean is_shm = FALSE;
 	int shm_fd = 0;
 
-	shm_fd = _transp->get_shm_fd();
+	//shm_fd = _transp->get_shm_fd();
 
 	if(shm_fd > 0)
 	{
@@ -2926,7 +2926,7 @@ MICO::GIOPConn::do_write ()
 
 		CORBA::Boolean is_shm = FALSE;
 		int shm_fd = 0;
-		shm_fd = _transp->get_shm_fd();
+		//shm_fd = _transp->get_shm_fd();
 
 		if(shm_fd > 0)
 		{
@@ -3003,7 +3003,7 @@ MICO::GIOPConn::check_idle ()
 {
 	CORBA::Boolean is_shm = FALSE;
 	int shm_fd = 0;
-	shm_fd = _transp->get_shm_fd();
+	//shm_fd = _transp->get_shm_fd();
 
 	if(shm_fd > 0)
 	{
@@ -3028,7 +3028,7 @@ MICO::GIOPConn::check_busy ()
 	CORBA::Boolean is_shm = FALSE;
 	int shm_fd = 0;
 
-	shm_fd = _trans->get_shm_fd();
+	//shm_fd = _trans->get_shm_fd();
 
 	if(shm_fd > 0)
 	{
