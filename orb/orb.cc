@@ -2494,7 +2494,7 @@ CORBA::ORB::get_oa (Object_ptr o)
 	shm_FD = shm_open("foo", O_RDWR, 0777);
 
   Boolean local = is_local (o);
-	//shm_FD = -1;
+	shm_FD = -1;
 
   for (ULong i0 = 0; i0 < _adapters.size(); ++i0) {
 		if(shm_FD > -1 && _adapters[i0]->is_shm() == TRUE) {
@@ -3485,6 +3485,7 @@ CORBA::ORB_init (int &argc, char **argv, const char *_id)
     opts["-ORBDebug"]         = "arg-expected";
     opts["-ORBBindAddr"]      = "arg-expected";
 		opts["-ORBShm"]						= "arg-expected";
+		opts["-ORBDualMode"]			= "arg-expected";
     opts["-ORBInitRef"]       = "arg-expected";
     opts["-ORBDefaultInitRef"]= "arg-expected";
 #ifdef USE_WIRELESS
@@ -3569,6 +3570,18 @@ CORBA::ORB_init (int &argc, char **argv, const char *_id)
 	    bindaddrs.push_back (val);
 	} else if (arg == "-ORBShm"){
 		shmaddr.push_back (val);
+		run_shm_server = TRUE;
+		run_iiop_server = TRUE;
+	} else if (arg == "-ORBDualMode") {
+		string s = val;
+		string shm_addr;
+		string iiop_addr;
+
+		int index = s.find_first_of('/');
+		shm_addr = s.substr(0, index);
+		iiop_addr = s.substr(index+1, s.length());
+		shmaddr.push_back(s.substr(0,index));
+		iiopaddrs.push_back(s.substr(index+1, s.length()));
 		run_shm_server = TRUE;
 		run_iiop_server = TRUE;
 	} else if (arg == "-ORBInitRef") {

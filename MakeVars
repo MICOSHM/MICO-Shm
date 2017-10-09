@@ -23,7 +23,7 @@
 
 prefix		= /usr/local
 exec_prefix	= ${prefix}
-SRCDIR		= /home/miller/Mico/mico/.
+SRCDIR		= /home/miller/Mico/mico/MICO-Shm/.
 INSTDIR		= /usr/local
 SHARED_INSTDIR	= /usr/local
 

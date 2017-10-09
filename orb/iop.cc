@@ -3112,7 +3112,7 @@ MICO::GIOPConn::output_handler (CORBA::Buffer *b)
 		int shm_fd = 0;
 
 		ret->get_sem_value();
-		shm_fd = _transp->get_shm_fd();
+		//shm_fd = _transp->get_shm_fd();
 
 		if(shm_fd > 0)
 		{
