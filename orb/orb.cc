@@ -2494,7 +2494,7 @@ CORBA::ORB::get_oa (Object_ptr o)
 	shm_FD = shm_open("foo", O_RDWR, 0777);
 
   Boolean local = is_local (o);
-	shm_FD = -1;
+	//shm_FD = -1;
 
   for (ULong i0 = 0; i0 < _adapters.size(); ++i0) {
 		if(shm_FD > -1 && _adapters[i0]->is_shm() == TRUE) {
@@ -3359,7 +3359,7 @@ CORBA::ORB_init (int &argc, char **argv, const char *_id)
 #endif
 #endif
     PInterceptor::PI::_init();
-		Boolean run_shm_server = FALSE;
+		Boolean run_shm_server = TRUE;
     Boolean run_iiop_server = TRUE;
     Boolean run_iiop_proxy = TRUE;
 		Boolean run_shm_proxy = TRUE;
@@ -3486,6 +3486,7 @@ CORBA::ORB_init (int &argc, char **argv, const char *_id)
     opts["-ORBBindAddr"]      = "arg-expected";
 		opts["-ORBShm"]						= "arg-expected";
 		opts["-ORBDualMode"]			= "arg-expected";
+		opts["-ORBNoShm"]					= "";
     opts["-ORBInitRef"]       = "arg-expected";
     opts["-ORBDefaultInitRef"]= "arg-expected";
 #ifdef USE_WIRELESS
@@ -3584,6 +3585,8 @@ CORBA::ORB_init (int &argc, char **argv, const char *_id)
 		iiopaddrs.push_back(s.substr(index+1, s.length()));
 		run_shm_server = TRUE;
 		run_iiop_server = TRUE;
+	} else if (arg == "-ORBNoShm"){
+		run_shm_server = FALSE;
 	} else if (arg == "-ORBInitRef") {
 	    InitRefs.push_back (val);
 	} else if (arg == "-ORBDefaultInitRef") {
@@ -4122,7 +4125,7 @@ CORBA::ORB_init (int &argc, char **argv, const char *_id)
     }
 
 		if (!use_sl3) {
-	if (TRUE) {
+	if (run_shm_server) {
 			shm_orb_instance->run_shm(run_shm_server);
 			MICO::SharedMemoryServer* shm_server_instance
 		= new MICO::SharedMemoryServer (shm_orb_instance, orb_instance,
@@ -4140,7 +4143,6 @@ CORBA::ORB_init (int &argc, char **argv, const char *_id)
 				}
 				mico_throw (CORBA::INITIALIZE());
 		}
-		// ###ras Bug???
 		if (!shm_server_instance->listen (addr, fwproxyaddr))
 				mico_throw (CORBA::INITIALIZE());
 				delete addr;

@@ -160,7 +160,7 @@ MICO::SocketTransport::post (){
 }
 
 void
-MICO::SocketTransport::wait (){
+MICO::SocketTransport::wait (std::string semName){
 
 }
 
@@ -367,7 +367,7 @@ MICO::SocketTransportServer::~SocketTransportServer ()
 }
 
 int
-MICO::SocketTransportServer::get_sem_value () {
+MICO::SocketTransportServer::get_sem_value (std::string semName) {
 
   return 0;
 }
@@ -385,7 +385,7 @@ MICO::SocketTransportServer::open_shm ()
 
 void
 MICO::SocketTransportServer::aselect (CORBA::Dispatcher *disp,
-				      CORBA::TransportServerCallback *cb, CORBA::Boolean is_shm)
+				      CORBA::TransportServerCallback *cb, CORBA::Boolean is_shm, std::string semName)
 {
     if (acb && adisp) {
 	adisp->remove (this, CORBA::Dispatcher::Read);
@@ -401,6 +401,7 @@ MICO::SocketTransportServer::aselect (CORBA::Dispatcher *disp,
     if (cb && is_shm) {
   listen ();
   disp->shm_rd_event (this, 0);
+  disp->set_sem_name(semName);
   adisp = disp;
   acb = cb;
     }

@@ -48,7 +48,7 @@ public:
     virtual void close ();
 
 		virtual void post ();
-		virtual void wait ();
+		virtual void wait (std::string semName);
 		virtual int get_sem_value ();
 		virtual int get_shm_fd ();
 
@@ -98,13 +98,13 @@ public:
     SocketTransportServer ();
     virtual ~SocketTransportServer ();
 
-		int get_sem_value ();
+		int get_sem_value (std::string semName);
 		int get_shm_fd ();
 
 		CORBA::Boolean open_shm ();
 
     void aselect (CORBA::Dispatcher *,
-    		  CORBA::TransportServerCallback *, CORBA::Boolean is_shm);
+    		  CORBA::TransportServerCallback *, CORBA::Boolean is_shm, std::string semName);
     void callback (CORBA::Dispatcher *, CORBA::Dispatcher::Event);
 
     CORBA::Boolean isblocking () const;

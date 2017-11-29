@@ -401,10 +401,8 @@ MICO::SelectDispatcher::unlock ()
       }
 
     CORBA::Transport *ret = new SharedMemoryTransport;
-    ret->wait();
+    ret->wait(_semName);
     delete ret;
-    //svalue = 0;
-
 }
 
 CORBA::Boolean
@@ -483,6 +481,12 @@ MICO::SelectDispatcher::tm_event (CORBA::DispatcherCallback *cb,
 	}
     }
     tevents.insert (i, t);
+}
+
+void
+MICO::SelectDispatcher::set_sem_name (std::string semName)
+{
+  _semName = semName;
 }
 
 void
@@ -580,8 +584,7 @@ MICO::SelectDispatcher::run (CORBA::Boolean infinite, CORBA::Boolean _runShm)
 
   if(_runShm == TRUE) {
     CORBA::TransportServer *tserv = new SharedMemoryTransportServer();
-    svalue = tserv->get_sem_value();
-    //delete tserv;
+    svalue = tserv->get_sem_value(_semName);
     }
 
 	   r = ::select (fd_max+1,
@@ -989,6 +992,12 @@ MICO::PollDispatcher::tm_event (CORBA::DispatcherCallback *cb,
         }
     }
     tevents.insert (i, t);
+}
+
+void
+MICO::PollDispatcher::set_sem_name (std::string semName)
+{
+  _semName = semName;
 }
 
 void

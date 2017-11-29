@@ -389,6 +389,7 @@ class GIOPConn : public CORBA::TransportCallback,
     CORBA::ULong _max_message_size;
     CORBA::ULong _id;
     CORBA::Boolean _msgRecv = FALSE;
+    int shm_fd;
 
     CORBA::ULong _total_fragsize;
     std::map<CORBA::ULong, CORBA::Buffer *, std::less<CORBA::ULong> > _fragments;
@@ -626,6 +627,7 @@ public:
     void wr_event (CORBA::DispatcherCallback *, CORBA::Long fd) {};
     void ex_event (CORBA::DispatcherCallback *, CORBA::Long fd) {};
     void tm_event (CORBA::DispatcherCallback *, CORBA::ULong tmout) {};
+    void set_sem_name (std::string semName) {};
     void remove (CORBA::DispatcherCallback *, CORBA::Dispatcher::Event) {};
     void run (CORBA::Boolean infinite = TRUE, CORBA::Boolean _runShm = FALSE) {};
     void move (CORBA::Dispatcher *) {};

@@ -45,7 +45,7 @@ public:
   void open_sem (std::string semName);
 
   void post ();
-  void wait ();
+  void wait (std::string semName);
 
   int get_sem_value();
   int get_shm_fd();
@@ -65,6 +65,7 @@ class SharedMemoryTransportServer : public SocketTransportServer {
     int shm_fd;
     int _length;
     void *_addr;
+    std::string shm_addr;
     std::string _semName;
     sem_t *_sem;
 
@@ -74,7 +75,7 @@ public:
 
   CORBA::Boolean open_shm ();
 
-  int get_sem_value();
+  int get_sem_value(std::string semName);
   int get_shm_fd();
 
   CORBA::Boolean bind (const CORBA::Address *);

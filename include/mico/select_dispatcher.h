@@ -63,6 +63,7 @@ class SelectDispatcher : public CORBA::Dispatcher {
     FDSet curr_wset, curr_rset, curr_xset;
     FDSet shm_wset, shm_rset, shm_xset;
     CORBA::Long fd_max;
+    std::string _semName;
     int r;
     int svalue;
 
@@ -77,6 +78,7 @@ class SelectDispatcher : public CORBA::Dispatcher {
     void update_fevents ();
     void update_shm_events ();
     void handle_shm_events ();
+    //void set_sem_name (std::string semName);
     void sleeptime (OSMisc::TimeVal &);
 
     static CORBA::Boolean _isblocking;
@@ -89,10 +91,13 @@ public:
     virtual void wr_event (CORBA::DispatcherCallback *, CORBA::Long fd);
     virtual void ex_event (CORBA::DispatcherCallback *, CORBA::Long fd);
     virtual void tm_event (CORBA::DispatcherCallback *, CORBA::ULong tmout);
+    void set_sem_name (std::string semName);
     virtual void remove (CORBA::DispatcherCallback *, Event);
     virtual void move (CORBA::Dispatcher *);
     virtual void run (CORBA::Boolean infinite = TRUE, CORBA::Boolean _runShm = FALSE);
     virtual CORBA::Boolean idle () const;
+
+
 
     virtual void block (CORBA::Boolean b);
     virtual CORBA::Boolean isblocking ();

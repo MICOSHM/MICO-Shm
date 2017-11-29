@@ -77,7 +77,7 @@ MICO::SharedMemoryTransport::open (CORBA::Long thefd)
 void
 MICO::SharedMemoryTransport::open_sem(std::string semName){
   _semName = semName;
-  _sem = sem_open("/sem", O_RDWR);
+  _sem = sem_open(_semName.c_str(), O_RDWR);
 
 }
 
@@ -85,7 +85,7 @@ void
 MICO::SharedMemoryTransport::post(){
   sem_t *sem;
 
-  if((sem = sem_open("/sem", O_RDWR)) == NULL){
+  if((sem = sem_open(_semName.c_str(), O_RDWR)) == NULL){
     return;
   } else {
       sem_post(sem);
@@ -94,22 +94,18 @@ MICO::SharedMemoryTransport::post(){
 }
 
 void
-MICO::SharedMemoryTransport::wait(){
+MICO::SharedMemoryTransport::wait(std::string semName){
   sem_t *sem;
-  int svalue;
+  int svalue = 0;
 
-  if((sem = sem_open("/sem", O_RDWR)) == NULL){
+  if((sem = sem_open(semName.c_str(), O_RDWR)) == NULL){
     return;
   }
 
   sem_getvalue(sem, &svalue);
 
-  while(svalue != 0) {
-      //int svalue;
-      //sem_getvalue(sem, &svalue);
-      sem_wait(sem);
-      sem_getvalue(sem, &svalue);
-    }
+  sem_wait(sem);
+  sem_getvalue(sem, &svalue);
 
   sem_close(sem);
 }
@@ -119,7 +115,7 @@ MICO::SharedMemoryTransport::get_sem_value(){
   int svalue = -1;
   sem_t *sem;
 
-  if((sem = sem_open("/sem", O_RDWR)) == NULL){
+  if((sem = sem_open(_semName.c_str(), O_RDWR)) == NULL){
     return svalue;
   } else {
       sem_getvalue(sem, &svalue);
@@ -245,9 +241,10 @@ MICO::SharedMemoryTransportServer::SharedMemoryTransportServer (CORBA::Address *
     SharedMemoryAddress *shmAddr;
     shmAddr = (SharedMemoryAddress *)addr;
 
-    std::string _addr = shmAddr->address();
-    int _len = shmAddr->length();
-    std::string sem = shmAddr->semName();
+    shm_addr = shmAddr->address();
+
+    _length = shmAddr->length();
+    _semName = shmAddr->semName();
 }
 
 MICO::SharedMemoryTransportServer::SharedMemoryTransportServer (){
@@ -258,39 +255,28 @@ CORBA::Boolean
 MICO::SharedMemoryTransportServer::open_shm()
 {
     try{
-      CORBA::Long shmfd = shm_open("foo", O_CREAT | O_RDWR, 0777);
-      ftruncate(shmfd, 8096);
-      assert(shmfd >= 0);
-      //OSNet::sock_close (shmfd);
-
-      shm_fd = shmfd;
-      //_length = length;
-      //_semName = semName;
+      shm_fd = shm_open(shm_addr.c_str(), O_CREAT | O_RDWR, 0777);
+      ftruncate(shm_fd, 8096);
+      assert(shm_fd >= -1);
 
       is_blocking = FALSE;
-      sem_unlink("/sem");
-      _sem = sem_open("/sem", O_CREAT | O_EXCL, S_IRUSR | S_IWUSR, 0);
+      sem_unlink(_semName.c_str());
+      _sem = sem_open(_semName.c_str(), O_CREAT | O_EXCL, S_IRUSR | S_IWUSR, 0);
   } catch (...) {
       return FALSE;
     }
-    //if(shmfd < 0) {
-      //return FALSE;
-    //}
 
     return TRUE;
 }
 
 int
-MICO::SharedMemoryTransportServer::get_sem_value(){
+MICO::SharedMemoryTransportServer::get_sem_value(std::string semName){
   int svalue = -1;
   sem_t *sem;
 
-  if((sem = sem_open("/sem", O_RDWR)) == NULL){
+  if((sem = sem_open(semName.c_str(), O_RDWR)) == NULL){
     return -1;
-  } //else {
-      //sem_getvalue(sem, &svalue);
-      //sem_close(sem);
-  //}
+  }
 
   sem_getvalue(sem, &svalue);
   sem_close(sem);
@@ -302,7 +288,7 @@ int
 MICO::SharedMemoryTransportServer::get_shm_fd()
 {
   int fd = 0;
-  fd = shm_open("foo", O_RDWR, 0777);
+  fd = shm_open(shm_addr.c_str(), O_RDWR, 0777);
 
   return fd;
 }
@@ -327,9 +313,8 @@ MICO::SharedMemoryTransportServer::close ()
   #endif // HAVE_THREADS
 
   remove_aselect();
-
   munmap(_addr, _length);
-  shm_unlink("foo");
+  shm_unlink(shm_addr.c_str());
   sem_close(_sem);
 
   // force blocking mode directly on fd

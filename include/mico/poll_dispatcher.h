@@ -57,6 +57,7 @@ class PollDispatcher : public CORBA::Dispatcher {
     CORBA::Long last_update;
     CORBA::Boolean init;
     CORBA::Long locked;
+    std::string _semName;
 
     CORBA::Boolean has_deleted_fevents;
     CORBA::Boolean must_rebuild_pollset;
@@ -85,6 +86,7 @@ public:
     virtual void wr_event (CORBA::DispatcherCallback *, CORBA::Long fd);
     virtual void ex_event (CORBA::DispatcherCallback *, CORBA::Long fd);
     virtual void tm_event (CORBA::DispatcherCallback *, CORBA::ULong tmout);
+    virtual void set_sem_name (std::string semName);
     virtual void remove (CORBA::DispatcherCallback *, Event);
     virtual void move (CORBA::Dispatcher *);
     virtual void run (CORBA::Boolean infinite = TRUE, CORBA::Boolean _runShm = FALSE);

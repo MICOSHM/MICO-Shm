@@ -51,6 +51,7 @@ public:
     virtual void wr_event (DispatcherCallback *, Long fd) = 0;
     virtual void ex_event (DispatcherCallback *, Long fd) = 0;
     virtual void tm_event (DispatcherCallback *, ULong tmout) = 0;
+    virtual void set_sem_name (std::string semName) = 0;
     virtual void remove (DispatcherCallback *, Event) = 0;
     virtual void run (Boolean infinite = TRUE, CORBA::Boolean _runShm = FALSE) = 0;
     virtual void move (Dispatcher *) = 0;
@@ -108,7 +109,7 @@ public:
     virtual void open (CORBA::Long fd = -1) = 0;
     virtual void open_sem (std::string semName) = 0;
     virtual void post () = 0;
-    virtual void wait () = 0;
+    virtual void wait (std::string semName) = 0;
     virtual int get_sem_value () = 0;
     virtual int get_shm_fd () = 0;
     virtual void close () = 0;
@@ -144,11 +145,11 @@ struct TransportCallback {
 
 class TransportServer {
 public:
-    virtual int get_sem_value () = 0;
+    virtual int get_sem_value (std::string semName) = 0;
     virtual int get_shm_fd () = 0;
     virtual CORBA::Boolean open_shm () = 0;
 
-    virtual void aselect (Dispatcher *, TransportServerCallback *, CORBA::Boolean shm) = 0;
+    virtual void aselect (Dispatcher *, TransportServerCallback *, CORBA::Boolean shm, std::string semName) = 0;
 
     virtual Boolean bind (const Address *) = 0;
     virtual void close () = 0;

@@ -36,6 +36,10 @@
 #define MICO_CONF_POA
 
 #include <CORBA-SMALL.h>
+#include <sys/stat.h>        /* For mode constants */
+#include <sys/mman.h>
+#include <fcntl.h>           /* For O_* constants */
+#include <unistd.h>
 #ifndef _WIN32
 #include <string.h>
 #endif
@@ -2319,8 +2323,7 @@ MICO::GIOPConn::GIOPConn (CORBA::Dispatcher *disp, CORBA::Transport *transp,
     _infrag = 0;
     _inbufs = 0;
     _total_fragsize = 0;
-
-		int shm_fd = 0;
+		shm_fd = 0;
 
 		CORBA::Boolean is_shm = FALSE;
 
@@ -2338,6 +2341,7 @@ MICO::GIOPConn::GIOPConn (CORBA::Dispatcher *disp, CORBA::Transport *transp,
 #endif // HAVE_THREADS
 
 		//shm_fd = _transp->get_shm_fd();
+		shm_fd = shm_open("foo", O_RDWR, 0777);
 
 		if(shm_fd > 0)
 		{
@@ -2423,9 +2427,6 @@ void
 MICO::GIOPConn::terminate ()
 {
 		CORBA::Boolean is_shm = FALSE;
-		int shm_fd = 0;
-
-		//shm_fd = _transp->get_shm_fd();
 
     if (MICO::Logger::IsLogged (MICO::Logger::GIOP)) {
 	MICOMT::AutoDebugLock __lock;
@@ -2449,7 +2450,7 @@ MICO::GIOPConn::terminate ()
 
     _transp->close();
 
-
+		//int _shm_fd = shm_open("foo", O_RDWR, 0777);
 		if(shm_fd > 0)
 		{
 			is_shm = TRUE;
@@ -2617,9 +2618,7 @@ MICO::GIOPConn::do_read ( const CORBA::Boolean break_after_read )
 {
 
 	CORBA::Boolean is_shm = FALSE;
-	int shm_fd = 0;
-
-	//shm_fd = _transp->get_shm_fd();
+	//int _shm_fd = shm_open("foo", O_RDWR, 0777);
 
 	if(shm_fd > 0)
 	{
@@ -2925,8 +2924,7 @@ MICO::GIOPConn::do_write ()
     MICOMT::AutoLock lock(write_lock_);
 
 		CORBA::Boolean is_shm = FALSE;
-		int shm_fd = 0;
-		//shm_fd = _transp->get_shm_fd();
+		//int _shm_fd = shm_open("foo", O_RDWR, 0777);
 
 		if(shm_fd > 0)
 		{
@@ -3002,9 +3000,7 @@ void
 MICO::GIOPConn::check_idle ()
 {
 	CORBA::Boolean is_shm = FALSE;
-	int shm_fd = 0;
-	//shm_fd = _transp->get_shm_fd();
-
+	//int _shm_fd = shm_open("foo", O_RDWR, 0777);
 	if(shm_fd > 0)
 	{
 		is_shm = TRUE;
@@ -3026,9 +3022,7 @@ void
 MICO::GIOPConn::check_busy ()
 {
 	CORBA::Boolean is_shm = FALSE;
-	int shm_fd = 0;
-
-	//shm_fd = _trans->get_shm_fd();
+	//int shm_fd = shm_open("foo", O_RDWR, 0777);
 
 	if(shm_fd > 0)
 	{
@@ -3108,18 +3102,14 @@ MICO::GIOPConn::output_handler (CORBA::Buffer *b)
     MICOMT::AutoLock lock(write_lock_);
 
 		CORBA::Boolean is_shm = FALSE;
-		CORBA::Transport *ret = new SharedMemoryTransport;
-		int shm_fd = 0;
 
-		ret->get_sem_value();
-		//shm_fd = _transp->get_shm_fd();
+		_transp->get_sem_value();
+		//int _shm_fd = shm_open("foo", O_RDWR, 0777);
 
 		if(shm_fd > 0)
 		{
 			is_shm = TRUE;
 		}
-
-		std::cout << shm_fd << "output_handler\n";
 
     if (MICO::Logger::IsLogged (MICO::Logger::Transport)) {
 	MICOMT::AutoDebugLock __lock;
@@ -3133,13 +3123,10 @@ MICO::GIOPConn::output_handler (CORBA::Buffer *b)
 	    delete b;
 
 			if(is_shm) {
-			CORBA::Transport *ret = new SharedMemoryTransport;
-			ret->post();
-			ret->get_sem_value();
+			_transp->post();
+			_transp->get_sem_value();
 			std::cout << "post\n";
 		}
-			ret->get_sem_value();
-			delete ret;
 	    return;
 	}
 #ifndef HAVE_THREADS
@@ -3370,7 +3357,7 @@ MICO::SharedMemoryServer::listen (CORBA::Address *addr, CORBA::Address *fwproxya
     }
 
     shm_tserv->block ( Dispatcher()->isblocking() );
-    shm_tserv->aselect ( Dispatcher(), this, TRUE);
+    shm_tserv->aselect ( Dispatcher(), this, TRUE, shmAddr->semName());
 
     if (!fwproxyaddr) {
 					prof = addr->make_ior_profile ((CORBA::Octet *)"", 1,CORBA::MultiComponent(),_iiop_ver);
@@ -3385,8 +3372,6 @@ MICO::SharedMemoryServer::listen (CORBA::Address *addr, CORBA::Address *fwproxya
     if (!MICO::MTManager::thread_pool())
 	shm_tserv->start();
 #endif // HAVE_THREADS
-
-	std::cout << "Listen()\n";
 
     return TRUE;
 }
@@ -3439,7 +3424,6 @@ MICO::SharedMemoryServerInvokeRec *
 MICO::SharedMemoryServer::pull_invoke_reqid (MsgId msgid, GIOPConn *conn)
 {
     MICOMT::AutoLock l(_orbids_mutex);
-		std::cout << "pull_invoke_reqid()\n";
 
 #ifdef USE_IOP_CACHE
     if (_cache_used && _cache_rec->reqid() == msgid &&
@@ -3463,7 +3447,6 @@ MICO::SharedMemoryServer::pull_invoke_reqid (MsgId msgid, GIOPConn *conn)
 MICO::SharedMemoryServerInvokeRec *
 MICO::SharedMemoryServer::pull_invoke_orbid (CORBA::ORBMsgId id)
 {
-	std::cout << "pull_invoke_orbid()\n";
 #ifdef USE_IOP_CACHE
     if (_cache_used && _cache_rec->orbid() == msgid) {
 	_cache_rec->deactivate();
@@ -3488,7 +3471,6 @@ void
 MICO::SharedMemoryServer::add_invoke (SharedMemoryServerInvokeRec *rec)
 {
     MICOMT::AutoLock l(_orbids_mutex);
-		std::cout << "add_invoke()\n";
 
 #ifdef USE_IOP_CACHE
     if (_cache_rec == rec)
@@ -3509,7 +3491,6 @@ void
 MICO::SharedMemoryServer::del_invoke_orbid (SharedMemoryServerInvokeRec *rec)
 {
     MICOMT::AutoLock l(_orbids_mutex);
-		std::cout << "del_invoke_orbid()\n";
 
     if (MICO::Logger::IsLogged (MICO::Logger::GIOP)) {
 	MICOMT::AutoDebugLock __lock;
@@ -3539,7 +3520,6 @@ void
 MICO::SharedMemoryServer::del_invoke_reqid (MsgId msgid, GIOPConn *conn)
 {
     MICOMT::AutoLock l(_orbids_mutex);
-		std::cout << "del_invoke_reqid()\n";
 
 #ifdef USE_IOP_CACHE
     if (_cache_used && _cache_rec->reqid() == msgid &&
@@ -3569,7 +3549,6 @@ MICO::SharedMemoryServer::del_invoke_reqid (MsgId msgid, GIOPConn *conn)
 void
 MICO::SharedMemoryServer::abort_invoke_orbid (SharedMemoryServerInvokeRec *rec)
 {
-		std::cout << "abort_invoke_orbid()\n";
     orb->cancel ( rec->orbmsgid() );
     // del_invoke_orbid ( rec );
 }
@@ -3579,7 +3558,6 @@ MICO::SharedMemoryServer::abort_invoke_orbid (SharedMemoryServerInvokeRec *rec)
 void
 MICO::SharedMemoryServer::deref_conn (GIOPConn *conn, CORBA::Boolean all )
 {
-	std::cout << "deref_conn()\n";
     if ( conn->deref() ) {
 	this->send_orb_msg( conn, MICO::ORBMsg::KillConn );
 	orb->resource_manager ().release_connection ();
@@ -3591,7 +3569,6 @@ MICO::SharedMemoryServer::deref_conn (GIOPConn *conn, CORBA::Boolean all )
 void
 MICO::SharedMemoryServer::deref_conn (GIOPConn *conn, CORBA::Boolean all )
 {
-		std::cout << "deref_conn2()\n";
     conn->deref(all);
     if (all)
 	delete conn;
@@ -3602,7 +3579,6 @@ MICO::SharedMemoryServer::deref_conn (GIOPConn *conn, CORBA::Boolean all )
 void
 MICO::SharedMemoryServer::kill_conn (GIOPConn *conn, CORBA::Boolean redo)
 {
-	std::cout << "kill_conn()\n";
 #ifdef HAVE_THREADS
     if (conn->state() != MICOMT::StateRefCnt::Active
         && conn->state() != MICOMT::StateRefCnt::InitShutdown) {
@@ -3701,7 +3677,6 @@ MICO::SharedMemoryServer::conn_closed (GIOPConn *conn)
 CORBA::Boolean
 MICO::SharedMemoryServer::handle_input (GIOPConn *conn, CORBA::Buffer *inp)
 {
-	std::cout << "handle_input()\n";
     if (MICO::Logger::IsLogged (MICO::Logger::IIOP)) {
       MICOMT::AutoDebugLock __lock;
       MICO::Logger::Stream (MICO::Logger::IIOP)
@@ -3801,7 +3776,6 @@ MICO::SharedMemoryServer::exec_invoke_request (GIOPInContext &in,
 				       GIOPConn *conn,
 				       CORBA::ORBMsgId orbid)
 {
-	std::cout << "exec_invoke_request()\n";
     if (!strcmp (req->op_name(), "_bind")) {
 	// its a bind
 	CORBA::String_var repoid;
@@ -3823,7 +3797,6 @@ MICO::SharedMemoryServer::exec_invoke_request (GIOPInContext &in,
 CORBA::Boolean
 MICO::SharedMemoryServer::handle_invoke_request (GIOPConn *conn, GIOPInContext &in)
 {
-		std::cout << "handle_invoke_request()\n";
     CORBA::ULong req_id;
     CORBA::Boolean resp;
     CORBA::ORBRequest *req;
@@ -3895,7 +3868,6 @@ MICO::SharedMemoryServer::handle_invoke_request (GIOPConn *conn, GIOPInContext &
 CORBA::Boolean
 MICO::SharedMemoryServer::handle_locate_request (GIOPConn *conn, GIOPInContext &in)
 {
-	std::cout << "handle_locate_request()\n";
     CORBA::ULong req_id;
     CORBA::Object_ptr obj = new CORBA::Object (new CORBA::IOR);
 
@@ -3950,7 +3922,6 @@ CORBA::Boolean
 MICO::SharedMemoryServer::handle_cancel_request (GIOPConn *conn, GIOPInContext &in)
 {
     CORBA::ULong req_id;
-		std::cout << "handle_cancel_request()\n";
 
     if (!conn->codec()->get_cancel_request (in, req_id)) {
       if (MICO::Logger::IsLogged (MICO::Logger::GIOP)) {
@@ -4009,7 +3980,6 @@ MICO::SharedMemoryServer::handle_invoke_reply (CORBA::ORBMsgId id)
     CORBA::Object_ptr obj = CORBA::Object::_nil();
 
     GIOP::AddressingDisposition ad;
-		std::cout << "handle_invoke_reply()\n";
 
     SharedMemoryServerInvokeRec *rec = pull_invoke_orbid ( id );
     if (rec == NULL)
@@ -4082,7 +4052,6 @@ MICO::SharedMemoryServer::handle_invoke_reply (CORBA::ORBMsgId id)
 void
 MICO::SharedMemoryServer::handle_locate_reply (CORBA::ORBMsgId id)
 {
-		std::cout << "handle_locate_reply()\n";
     CORBA::Object_ptr obj = CORBA::Object::_nil();
 
     GIOP::AddressingDisposition ad;
@@ -4137,7 +4106,6 @@ MICO::SharedMemoryServer::handle_locate_reply (CORBA::ORBMsgId id)
 void
 MICO::SharedMemoryServer::handle_bind_reply (CORBA::ORBMsgId id)
 {
-	std::cout << "handle_bind_reply()\n";
     CORBA::Object_ptr obj = CORBA::Object::_nil();
 
     SharedMemoryServerInvokeRec *rec = pull_invoke_orbid ( id );
@@ -4260,7 +4228,6 @@ MICO::SharedMemoryServer::cancel (CORBA::ORBMsgId)
 void
 MICO::SharedMemoryServer::shutdown (CORBA::Boolean wait_for_completion)
 {
-	std::cout << "shutdown()\n";
     {
 	MICOMT::AutoLock lock(_tservers);
 	for (CORBA::ULong i = 0; i < _tservers.size(); i++) {
@@ -4372,14 +4339,12 @@ MICO::SharedMemoryServer::input_callback (GIOPConn *conn, CORBA::Buffer *inp)
 	    << "   conn: " << conn << endl
 	    << "    inp: " << inp << endl;
     }
-		std::cout << "input_callback()\n";
     return handle_input( conn, inp );
 }
 
 CORBA::Boolean
 MICO::SharedMemoryServer::callback (GIOPConn *conn, GIOPConnCallback::Event ev)
 {
-	std::cout << "callback()\n";
     switch (ev) {
     case GIOPConnCallback::InputReady:
 	return input_callback (conn, conn->input());
@@ -4422,7 +4387,6 @@ void
 MICO::SharedMemoryServer::callback (CORBA::TransportServer *tserv,
 			    CORBA::TransportServerCallback::Event ev)
 {
-	std::cout << "callback2()\n";
     if (MICO::Logger::IsLogged (MICO::Logger::GIOP)) {
 	MICOMT::AutoDebugLock __lock;
 	MICO::Logger::Stream (MICO::Logger::GIOP)
@@ -8313,7 +8277,7 @@ MICO::IIOPServer::~IIOPServer ()
     {
 	MICOMT::AutoLock lock(_tservers);
 	for (CORBA::ULong i = 0; i < _tservers.size(); i++) {
-	    _tservers[i]->aselect(this->Dispatcher(), NULL, FALSE);
+	    _tservers[i]->aselect(this->Dispatcher(), NULL, FALSE, "");
 	    delete _tservers[i];
 	    _tservers[i] = NULL;
 	}
@@ -8349,7 +8313,7 @@ MICO::IIOPServer::listen (CORBA::Address *addr, CORBA::Address *fwproxyaddr, con
       return FALSE;
     }
     tserv->block ( Dispatcher()->isblocking() );
-    tserv->aselect ( Dispatcher(), this, FALSE);
+    tserv->aselect ( Dispatcher(), this, FALSE, "");
 
     if (!fwproxyaddr) {
         prof = tserv->addr()->make_ior_profile ((CORBA::Octet *)"", 1,
