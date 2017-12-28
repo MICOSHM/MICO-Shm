@@ -2361,7 +2361,7 @@ CORBA::StaticRequest::send_deferred ()
 	return;
     }
 #endif // USE_OLD_INTERCEPTORS
-    
+
 //      CORBA::ULong msgid = orb->new_msgid();
     CORBA::ORBMsgId id = orb->new_orbid();
     PInterceptor::PI::_send_request_ip
@@ -2582,7 +2582,7 @@ CORBA::StaticServerRequest::~StaticServerRequest ()
                 stat = CORBA::InvokeUsrEx;
             }
         }
-	// change aruments after servant is done        
+	// change aruments after servant is done
 	CORBA::ORBInvokeRec* rec = _id;
 	if (rec) {
 	    PInterceptor::PI::_set_sri_exception
@@ -2668,7 +2668,7 @@ CORBA::StaticServerRequest::read_args ()
 	return FALSE;
     }
 #endif // USE_OLD_INTERCEPTORS
-    
+
     CORBA::ORB_ptr orb = _obj->_orbnc();
     CORBA::ORBInvokeRec* rec = _id;
     if (!rec)

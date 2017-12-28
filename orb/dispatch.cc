@@ -402,7 +402,6 @@ MICO::SelectDispatcher::unlock ()
 
     CORBA::Transport *ret = new SharedMemoryTransport;
     ret->wait(_semName);
-    delete ret;
 }
 
 CORBA::Boolean
@@ -486,7 +485,7 @@ MICO::SelectDispatcher::tm_event (CORBA::DispatcherCallback *cb,
 void
 MICO::SelectDispatcher::set_sem_name (std::string semName)
 {
-  _semName = semName;
+  _semName = "sem";
 }
 
 void

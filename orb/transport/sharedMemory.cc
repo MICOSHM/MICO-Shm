@@ -42,7 +42,7 @@ using namespace std;
 
 /***************************** SharedMemoryTransport **********************************/
 MICO::SharedMemoryTransport::~SharedMemoryTransport () {
-    //close();
+    close();
 }
 
 CORBA::Boolean
@@ -104,8 +104,10 @@ MICO::SharedMemoryTransport::wait(std::string semName){
 
   sem_getvalue(sem, &svalue);
 
-  sem_wait(sem);
-  sem_getvalue(sem, &svalue);
+  while(svalue != 0) {
+    sem_wait(sem);
+    sem_getvalue(sem, &svalue);
+  }
 
   sem_close(sem);
 }

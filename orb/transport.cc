@@ -206,7 +206,7 @@ MICO::SocketTransport::rselect (CORBA::Dispatcher *disp,
 	rdisp = disp;
 	rcb = cb;
     }
-    if(cb && fd < 0){
+    if(cb && is_shm){
   disp->shm_rd_event(this, 0);
   rdisp = disp;
   rcb = cb;
@@ -222,12 +222,12 @@ MICO::SocketTransport::wselect (CORBA::Dispatcher *disp,
 	wdisp = 0;
 	wcb = 0;
     }
-    if (cb && fd > 0) {
+    if (cb) {
 	disp->wr_event (this, fd);
 	wdisp = disp;
 	wcb = cb;
     }
-    if(cb && fd < 1){
+    if(cb && is_shm){
     disp->shm_wr_event(this, fd);
     wdisp = disp;
     wcb = cb;

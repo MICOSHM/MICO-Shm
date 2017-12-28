@@ -3289,46 +3289,46 @@ MICO::SharedMemoryServer::SharedMemoryServer(CORBA::ORB_ptr shm_orb, CORBA::ORB_
 
 MICO::SharedMemoryServer::~SharedMemoryServer ()
 {
-    //_orb->unregister_oa (this);
+  	_orb->unregister_oa (this);
     /*
      * the GIOPConn entries in the 'orbids' and 'reqids' maps are just
      * pointers to the entries in the 'conns' list, so do not delete them
      */
 
-    //_conns.lock();
+    _conns.lock();
 
-    //for (ListConn::iterator i0 = _conns.begin(); i0 != _conns.end(); ++i0)
-	//delete *i0;
+    for (ListConn::iterator i0 = _conns.begin(); i0 != _conns.end(); ++i0)
+	delete *i0;
 
-    //_conns.unlock();
+    _conns.unlock();
 
 
-//#ifdef USE_IOP_CACHE
-  //  if (_cache_used)
-	//_orb->cancel (_cache_rec->orbid());
-//#endif
-  //  {
-	//MICOMT::AutoLock l(_orbids_mutex);
+#ifdef USE_IOP_CACHE
+    if (_cache_used)
+	_orb->cancel (_cache_rec->orbid());
+#endif
+    {
+	MICOMT::AutoLock l(_orbids_mutex);
 
-	//for (MapIdConn::iterator i1 = _orbids.begin();
-	  //   i1 != _orbids.end(); ++i1) {
-	    //SharedMemoryServerInvokeRec *rec = (*i1).second;
-	  //  _orb->cancel ( rec->orbid() );
-	  //  delete rec;
-	//}
-    //}
+	for (MapIdConn::iterator i1 = _orbids.begin();
+	     i1 != _orbids.end(); ++i1) {
+	    SharedMemoryServerInvokeRec *rec = (*i1).second;
+	    _orb->cancel ( rec->orbid() );
+	    delete rec;
+	}
+    }
 
-    //{
-	//MICOMT::AutoLock lock(_tservers);
-	//for (CORBA::ULong i = 0; i < _tservers.size(); i++) {
-	  //  _tservers[i]->aselect(this->Dispatcher(), NULL, TRUE);
-	  //  delete _tservers[i];
-	  //  _tservers[i] = NULL;
-	//}
-	//_tservers.erase(_tservers.begin(), _tservers.end());
-    //}
-    //assert(SharedMemoryServer_instance_ != NULL);
-    //SharedMemoryServer_instance_ = NULL;
+    {
+	MICOMT::AutoLock lock(_tservers);
+	for (CORBA::ULong i = 0; i < _tservers.size(); i++) {
+	    _tservers[i]->aselect(this->Dispatcher(), NULL, TRUE, "");
+	    delete _tservers[i];
+	    _tservers[i] = NULL;
+	}
+	_tservers.erase(_tservers.begin(), _tservers.end());
+    }
+  	assert(SharedMemoryServer_instance_ != NULL);
+    SharedMemoryServer_instance_ = NULL;
 }
 
 CORBA::Boolean
@@ -3356,7 +3356,7 @@ MICO::SharedMemoryServer::listen (CORBA::Address *addr, CORBA::Address *fwproxya
       return FALSE;
     }
 
-    shm_tserv->block ( Dispatcher()->isblocking() );
+    shm_tserv->block ( Dispatcher()->isblocking());
     shm_tserv->aselect ( Dispatcher(), this, TRUE, shmAddr->semName());
 
     if (!fwproxyaddr) {
@@ -3367,7 +3367,7 @@ MICO::SharedMemoryServer::listen (CORBA::Address *addr, CORBA::Address *fwproxya
 
     orb->ior_template()->add_profile (prof);
 
-    //_tservers.push_back(tserv);
+    _tservers.push_back(shm_tserv);
 #ifdef HAVE_THREADS
     if (!MICO::MTManager::thread_pool())
 	shm_tserv->start();
@@ -3394,17 +3394,17 @@ void
 MICO::SharedMemoryServer::shutdown(CORBA::Address* addr)
 {
      //stop listening on the specified address
-    //MICOMT::AutoLock lock(_tservers);
-    //for (vector<CORBA::TransportServer*>::iterator iter = _tservers.begin();
-	 //iter != _tservers.end();
-	 //iter++) {
-	//if ((*(*iter)->addr()) == (*addr)) {
-	  //  (*iter)->close();
-	  //  delete (*iter);
-	  //  _tservers.erase(iter);
-	  //  break;
-//	}
-  //  }
+    MICOMT::AutoLock lock(_tservers);
+    for (vector<CORBA::TransportServer*>::iterator iter = _tservers.begin();
+	 iter != _tservers.end();
+	 iter++) {
+	if ((*(*iter)->addr()) == (*addr)) {
+	    (*iter)->close();
+	    delete (*iter);
+	    _tservers.erase(iter);
+	    break;
+	}
+    }
 }
 
 MICO::SharedMemoryServerInvokeRec *
